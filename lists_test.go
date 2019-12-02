@@ -1,10 +1,9 @@
 package unisender_test
 
 import (
-	"bytes"
 	"fmt"
-	"io/ioutil"
 	"net/http"
+	"net/url"
 
 	"github.com/alexeyco/unisender"
 
@@ -12,48 +11,65 @@ import (
 	. "github.com/onsi/gomega"
 )
 
-var _ = Describe("Lists request", func() {
-	Context("createList", func() {
+var _ = Describe("createList", func() {
+	var (
+		requestUrl  string
+		expectedUrl string
+	)
+
+	When("data is correct", func() {
 		var (
-			apiKey   string
-			language string
-			id       int64
-			title    string
+			id    int64
+			title string
+			lists []unisender.List
+			err   error
 		)
 
 		BeforeEach(func() {
-			apiKey = randomAPIKey()
-			language = randomLanguage()
+			apiKey := randomAPIKey()
+			language := randomLanguage()
 			id = randomInt64(999, 99999)
 			title = randomString(64)
-		})
 
-		It("should return correct data", func() {
-			expectedUrl := "https://api.unisender.com/" + language + "/api/getLists"
+			expectedUrl = "https://api.unisender.com/" + language + "/api/getLists"
 
 			client := &http.Client{
-				Transport: RoundTripFunc(func(req *http.Request) *http.Response {
-					Expect(req.URL.String()).To(Equal(expectedUrl), "Incorrect request URL")
-					Expect(req.Method).To(Equal(http.MethodPost), "Incorrect request method")
-
-					body := fmt.Sprintf(`{"result":[{"id":%d,"title":%s}]}`, id, title)
-
-					return &http.Response{
-						StatusCode: http.StatusOK,
-						Body:       ioutil.NopCloser(bytes.NewBufferString(body)),
-						Header:     make(http.Header),
-					}
-				}),
+				Transport: roundTrip{
+					Before: func(url *url.URL) {
+						requestUrl = url.String()
+					},
+					Body: func() string {
+						return fmt.Sprintf(`{"result":[{"id":%d,"title":"%s"}]}`, id, title)
+					},
+				},
 			}
 
 			usndr := unisender.New(apiKey)
 			usndr.SetLanguage(language)
 			usndr.SetClient(client)
 
-			lists, err := usndr.GetLists()
+			lists, err = usndr.GetLists()
+		})
 
-			Expect(len(lists)).To(Equal(1), "Wrong lists length returned")
+		It("should sent to correct URL", func() {
+			Expect(requestUrl).To(Equal(expectedUrl), "URLs should be equal")
+		})
+
+		It("should return no error", func() {
 			Expect(err).To(BeNil(), "Error should be nil")
+		})
+
+		Context("result", func() {
+			It("should have correct length", func() {
+				Expect(len(lists)).To(Equal(1), "Wrong lists length returned")
+			})
+
+			It("should return correct data", func() {
+				list := lists[0]
+
+				Expect(list.ID).To(Equal(id), "ID's should be equal")
+				Expect(list.Title).To(Equal(title), "Titles should be equal")
+			})
 		})
 	})
 })

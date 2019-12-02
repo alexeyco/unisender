@@ -1,8 +1,11 @@
 package unisender_test
 
 import (
+	"bytes"
+	"io/ioutil"
 	"math/rand"
 	"net/http"
+	"net/url"
 	"testing"
 	"time"
 
@@ -12,12 +15,40 @@ import (
 	. "github.com/onsi/gomega"
 )
 
-// RoundTripFunc .
-type RoundTripFunc func(req *http.Request) *http.Response
+//// RoundTripFunc .
+//type RoundTripFunc func(req *http.Request) *http.Response
+//
+//// RoundTrip .
+//func (f RoundTripFunc) RoundTrip(req *http.Request) (*http.Response, error) {
+//	return f(req), nil
+//}
 
-// RoundTrip .
-func (f RoundTripFunc) RoundTrip(req *http.Request) (*http.Response, error) {
-	return f(req), nil
+type roundTrip struct {
+	Before     func(url *url.URL)
+	StatusCode func() int
+	Body       func() string
+}
+
+func (r roundTrip) RoundTrip(req *http.Request) (*http.Response, error) {
+	if r.Before != nil {
+		r.Before(req.URL)
+	}
+
+	statusCode := http.StatusOK
+	if r.StatusCode != nil {
+		statusCode = r.StatusCode()
+	}
+
+	var body string
+	if r.Body != nil {
+		body = r.Body()
+	}
+
+	return &http.Response{
+		StatusCode: statusCode,
+		Body:       ioutil.NopCloser(bytes.NewBufferString(body)),
+		Header:     make(http.Header),
+	}, nil
 }
 
 var seededRand *rand.Rand = rand.New(
