@@ -13,26 +13,61 @@ import (
 
 var _ = Describe("createList", func() {
 	var (
+		language    string
+		apiKey      string
 		requestUrl  string
 		expectedUrl string
+		id          int64
+		title       string
+		lists       []unisender.List
+		err         error
 	)
 
-	When("data is correct", func() {
-		var (
-			id    int64
-			title string
-			lists []unisender.List
-			err   error
-		)
+	BeforeEach(func() {
+		language = randomLanguage()
+		apiKey = randomAPIKey()
 
+		expectedUrl = fmt.Sprintf("https://api.unisender.com/%s/api/getLists", language)
+
+		id = randomInt64(999, 99999)
+		title = randomString(64)
+	})
+
+	When("API responds with non-200 status", func() {
 		BeforeEach(func() {
-			apiKey := randomAPIKey()
-			language := randomLanguage()
-			id = randomInt64(999, 99999)
-			title = randomString(64)
+			client := &http.Client{
+				Transport: roundTrip{
+					Before: func(url *url.URL) {
+						requestUrl = url.String()
+					},
+					StatusCode: func() int {
+						return http.StatusForbidden
+					},
+				},
+			}
 
-			expectedUrl = "https://api.unisender.com/" + language + "/api/getLists"
+			usndr := unisender.New(apiKey)
+			usndr.SetLanguage(language)
+			usndr.SetClient(client)
 
+			lists, err = usndr.GetLists()
+		})
+
+		It("should sent to correct URL", func() {
+			Expect(requestUrl).To(Equal(expectedUrl), "URLs should be equal")
+		})
+
+		It("should return error", func() {
+			Expect(err).ToNot(BeNil(), "Error should be not nil")
+		})
+
+		It("should return no lists", func() {
+			Expect(len(lists)).To(Equal(0), "Lists slice should be empty")
+		})
+	})
+
+	When("data is correct", func() {
+		BeforeEach(func() {
 			client := &http.Client{
 				Transport: roundTrip{
 					Before: func(url *url.URL) {
