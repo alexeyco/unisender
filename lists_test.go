@@ -5,59 +5,55 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	"testing"
 
 	"github.com/alexeyco/unisender"
+
+	. "github.com/onsi/ginkgo"
+	. "github.com/onsi/gomega"
 )
 
-func TestUnisender_GetLists(t *testing.T) {
-	apiKey := randomAPIKey()
-	language := randomLanguage()
+var _ = Describe("Lists request", func() {
+	Context("createList", func() {
+		var (
+			apiKey   string
+			language string
+			id       int64
+			title    string
+		)
 
-	expectedUrl := "https://api.unisender.com/" + language + "/api/getLists"
+		BeforeEach(func() {
+			apiKey = randomAPIKey()
+			language = randomLanguage()
+			id = randomInt64(999, 99999)
+			title = randomString(64)
+		})
 
-	id := randomInt64(999, 99999)
-	title := randomString(64)
+		It("should return correct data", func() {
+			expectedUrl := "https://api.unisender.com/" + language + "/api/getLists"
 
-	client := &http.Client{
-		Transport: RoundTripFunc(func(req *http.Request) *http.Response {
-			if req.URL.String() != expectedUrl {
-				t.Fatalf(`Request URL should be "%s", but "%s" given`, expectedUrl, req.URL.String())
+			client := &http.Client{
+				Transport: RoundTripFunc(func(req *http.Request) *http.Response {
+					Expect(req.URL.String()).To(Equal(expectedUrl), "Incorrect request URL")
+					Expect(req.Method).To(Equal(http.MethodPost), "Incorrect request method")
+
+					body := fmt.Sprintf(`{"result":[{"id":%d,"title":%s}]}`, id, title)
+
+					return &http.Response{
+						StatusCode: http.StatusOK,
+						Body:       ioutil.NopCloser(bytes.NewBufferString(body)),
+						Header:     make(http.Header),
+					}
+				}),
 			}
 
-			if req.Method != http.MethodPost {
-				t.Fatalf(`Request method should be "%s", but "%s" given`, http.MethodPost, req.Method)
-			}
+			usndr := unisender.New(apiKey)
+			usndr.SetLanguage(language)
+			usndr.SetClient(client)
 
-			body := fmt.Sprintf(`{"result":[{"id":%d,"title":%s}]}`, id, title)
+			lists, err := usndr.GetLists()
 
-			return &http.Response{
-				StatusCode: http.StatusOK,
-				Body:       ioutil.NopCloser(bytes.NewBufferString(body)),
-				Header:     make(http.Header),
-			}
-		}),
-	}
-
-	usndr := unisender.New(apiKey)
-	usndr.SetLanguage(language)
-	usndr.SetClient(client)
-
-	lists, err := usndr.GetLists()
-
-	if err != nil {
-		t.Fatalf(`Error should be nil, but "%s" given`, err.Error())
-	}
-
-	if len(lists) != 1 {
-		t.Fatalf(`List length should be 1, but %d given`, len(lists))
-	}
-
-	if lists[0].ID != id {
-		t.Fatalf(`List ID should be %d, but %d given`, id, lists[0].ID)
-	}
-
-	if lists[0].Title != title {
-		t.Fatalf(`List title should be %s, but %s given`, title, lists[0].Title)
-	}
-}
+			Expect(len(lists)).To(Equal(1), "Wrong lists length returned")
+			Expect(err).To(BeNil(), "Error should be nil")
+		})
+	})
+})

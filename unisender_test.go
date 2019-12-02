@@ -1,10 +1,15 @@
 package unisender_test
 
 import (
-	"github.com/alexeyco/unisender"
 	"math/rand"
 	"net/http"
+	"testing"
 	"time"
+
+	"github.com/alexeyco/unisender"
+
+	. "github.com/onsi/ginkgo"
+	. "github.com/onsi/gomega"
 )
 
 // RoundTripFunc .
@@ -53,4 +58,9 @@ func randomLanguage() (language string) {
 	}
 
 	return languages[seededRand.Intn(len(languages)-1)]
+}
+
+func TestUnisender(t *testing.T) {
+	RegisterFailHandler(Fail)
+	RunSpecs(t, "Unisender test suite")
 }
