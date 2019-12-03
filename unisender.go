@@ -27,9 +27,15 @@ func (u *Unisender) SetClient(client *http.Client) {
 }
 
 // request makes request to UniSender API and parses response
-func (u *Unisender) request(method string, data url.Values, v interface{}) (err error) {
+func (u *Unisender) request(method string, v interface{}, options ...Option) (err error) {
 	uri := fmt.Sprintf(apiEndpointPattern, u.language, method)
+
+	data := url.Values{}
 	data.Add("api_key", u.apiKey)
+
+	for _, o := range options {
+		data.Add(o.name, o.value)
+	}
 
 	var resp *http.Response
 	if resp, err = u.client.PostForm(uri, data); err != nil {
