@@ -3,25 +3,11 @@ package unisender_test
 import (
 	"bytes"
 	"io/ioutil"
-	"math/rand"
 	"net/http"
 	"net/url"
-	"testing"
-	"time"
 
 	"github.com/alexeyco/unisender"
-
-	. "github.com/onsi/ginkgo"
-	. "github.com/onsi/gomega"
 )
-
-//// RoundTripFunc .
-//type RoundTripFunc func(req *http.Request) *http.Response
-//
-//// RoundTrip .
-//func (f RoundTripFunc) RoundTrip(req *http.Request) (*http.Response, error) {
-//	return f(req), nil
-//}
 
 type roundTrip struct {
 	Before     func(url *url.URL)
@@ -51,21 +37,6 @@ func (r roundTrip) RoundTrip(req *http.Request) (*http.Response, error) {
 	}, nil
 }
 
-var seededRand *rand.Rand = rand.New(
-	rand.NewSource(
-		time.Now().UnixNano(),
-	),
-)
-
-const (
-	apiKeyLength = 32
-	charset      = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-)
-
-func randomAPIKey() string {
-	return randomString(apiKeyLength)
-}
-
 func randomString(n int) string {
 	l := len(charset)
 	b := make([]byte, n)
@@ -89,9 +60,4 @@ func randomLanguage() (language string) {
 	}
 
 	return languages[seededRand.Intn(len(languages)-1)]
-}
-
-func TestUnisender(t *testing.T) {
-	RegisterFailHandler(Fail)
-	RunSpecs(t, "Unisender test suite")
 }
