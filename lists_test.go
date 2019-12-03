@@ -8,7 +8,7 @@ import (
 	"github.com/alexeyco/unisender"
 )
 
-func TestUnisender_GetLists(t *testing.T) {
+func TestUniSender_GetLists(t *testing.T) {
 	expectedApiKey := randomString(32)
 	var requestedApiKey string
 
@@ -61,5 +61,80 @@ func TestUnisender_GetLists(t *testing.T) {
 
 	if lists[0].Title != title {
 		t.Fatalf(`List title should be "%s", "%s" given`, title, lists[0].Title)
+	}
+}
+
+func TestUniSender_CreateList(t *testing.T) {
+	expectedApiKey := randomString(32)
+	var requestedApiKey string
+
+	language := randomLanguage()
+
+	expectedUrl := fmt.Sprintf("https://api.unisender.com/%s/api/createList", language)
+	var requestedUrl string
+
+	var requestedBeforeSubscribeUrl string
+	var requestedAfterSubscribeUrl string
+	var requestedTitle string
+
+	expectedID := randomInt64(999, 99999)
+	expectedTitle := randomString(64)
+
+	client := &http.Client{
+		Transport: roundTrip{
+			Before: func(req *http.Request) {
+				requestedUrl = req.URL.String()
+
+				requestedApiKey = req.PostFormValue("api_key")
+
+				requestedTitle = req.PostFormValue("title")
+				requestedBeforeSubscribeUrl = req.PostFormValue("before_subscribe_url")
+				requestedAfterSubscribeUrl = req.PostFormValue("after_subscribe_url")
+			},
+			Body: func() string {
+				return fmt.Sprintf(`{"result":{"id":%d}}`, expectedID)
+			},
+		},
+	}
+
+	usndr := unisender.New(expectedApiKey)
+	usndr.SetLanguage(language)
+	usndr.SetClient(client)
+
+	expectedBeforeSubscribeUrl := "https://before-subscribe.url"
+	expectedAfterSubscribeUrl := "https://after-subscribe.url"
+
+	createdID, err := usndr.CreateList(
+		expectedTitle,
+		unisender.OptionBeforeSubscribeUrl(expectedBeforeSubscribeUrl),
+		unisender.OptionAfterSubscribeUrl(expectedAfterSubscribeUrl),
+	)
+
+	if expectedUrl != requestedUrl {
+		t.Fatalf(`Request URL should be "%s", "%s" given`, expectedUrl, requestedUrl)
+	}
+
+	if expectedApiKey != requestedApiKey {
+		t.Fatalf(`API key should be "%s", "%s" given`, expectedApiKey, requestedApiKey)
+	}
+
+	if expectedTitle != requestedTitle {
+		t.Fatalf(`Title should be "%s", "%s" given`, expectedTitle, requestedTitle)
+	}
+
+	if expectedBeforeSubscribeUrl != requestedBeforeSubscribeUrl {
+		t.Fatalf(`Param "before_subscribe_url" should be "%s", "%s" given`, expectedBeforeSubscribeUrl, requestedBeforeSubscribeUrl)
+	}
+
+	if expectedAfterSubscribeUrl != requestedAfterSubscribeUrl {
+		t.Fatalf(`Param "after_subscribe_url" should be "%s", "%s" given`, expectedAfterSubscribeUrl, requestedAfterSubscribeUrl)
+	}
+
+	if err != nil {
+		t.Fatalf(`Error should be nil, "%s" given`, err.Error())
+	}
+
+	if expectedID != createdID {
+		t.Fatalf(`ID should be %d, %d given`, expectedID, createdID)
 	}
 }

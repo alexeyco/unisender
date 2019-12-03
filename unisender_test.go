@@ -39,7 +39,7 @@ func (r roundTrip) RoundTrip(req *http.Request) (*http.Response, error) {
 	}, nil
 }
 
-var seededRand *rand.Rand = rand.New(
+var seededRand = rand.New(
 	rand.NewSource(
 		time.Now().UnixNano(),
 	),
@@ -72,7 +72,7 @@ func randomLanguage() (language string) {
 	return languages[seededRand.Intn(len(languages)-1)]
 }
 
-func TestUnisender_WrongStatusCode(t *testing.T) {
+func TestUniSender_WrongStatusCode(t *testing.T) {
 	apiKey := randomString(32)
 	language := randomLanguage()
 
@@ -97,7 +97,7 @@ func TestUnisender_WrongStatusCode(t *testing.T) {
 		t.Fatalf(`Error should be %s, nil given`, unisender.ErrWrongStatusCode.Error())
 	}
 }
-func TestUnisender_Error(t *testing.T) {
+func TestUniSender_Error(t *testing.T) {
 	apiKey := randomString(32)
 	language := randomLanguage()
 

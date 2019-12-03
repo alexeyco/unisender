@@ -17,7 +17,7 @@ func OptionBeforeSubscribeUrl(u string) Option {
 // OptionAfterSubscribeUrl returns after_subscribe_url option
 func OptionAfterSubscribeUrl(u string) Option {
 	return Option{
-		name:  "before_subscribe_url",
+		name:  "after_subscribe_url",
 		value: u,
 	}
 }
