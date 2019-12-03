@@ -60,7 +60,7 @@ func (u *UniSender) UpdateList(id int64, title string, options ...Option) (err e
 // see https://www.unisender.com/en/support/api/partners/deletelist/
 func (u *UniSender) DeleteList(id int64) (err error) {
 	option := Option{
-		name:  "id",
+		name:  "list_id",
 		value: fmt.Sprintf("%d", id),
 	}
 
