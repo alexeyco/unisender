@@ -51,6 +51,10 @@ func (u *UniSender) request(method string, v interface{}, options ...Option) (er
 	}
 
 	u.logResponseBody(resp)
+	if v == nil {
+		return
+	}
+
 	if resp.StatusCode != http.StatusOK {
 		return ErrWrongStatusCode
 	}

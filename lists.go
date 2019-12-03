@@ -42,7 +42,7 @@ func (u *UniSender) UpdateList(id int64, title string, options ...Option) (err e
 	options = append(
 		options,
 		Option{
-			name:  "id",
+			name:  "list_id",
 			value: fmt.Sprintf("%d", id),
 		},
 		Option{
