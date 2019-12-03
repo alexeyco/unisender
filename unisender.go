@@ -21,7 +21,7 @@ func (u *Unisender) SetLanguage(language string) {
 	u.language = language
 }
 
-// SetClient sets custom http.Client to Unisender client
+// SetClient sets custom http.Client to UniSender client
 func (u *Unisender) SetClient(client *http.Client) {
 	u.client = client
 }
@@ -57,7 +57,7 @@ func (u *Unisender) request(method string, data url.Values, v interface{}) (err 
 	return
 }
 
-// New returns new Unisender client
+// New returns new UniSender client
 func New(apiKey string) *Unisender {
 	return &Unisender{
 		language: DefaultLanguage,
