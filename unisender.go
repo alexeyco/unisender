@@ -26,10 +26,7 @@ func (u *Unisender) SetClient(client *http.Client) {
 	u.client = client
 }
 
-type requestResult struct {
-	Result interface{} `json:"result"`
-}
-
+// request makes request to UniSender API and parses response
 func (u *Unisender) request(method string, data url.Values, v interface{}) (err error) {
 	uri := fmt.Sprintf(apiEndpointPattern, u.language, method)
 	data.Add("api_key", u.apiKey)
@@ -39,15 +36,23 @@ func (u *Unisender) request(method string, data url.Values, v interface{}) (err 
 		return
 	}
 
-	result := requestResult{
+	if resp.StatusCode != http.StatusOK {
+		return ErrWrongStatusCode
+	}
+
+	response := Response{
 		Result: v,
 	}
 
-	if err = json.NewDecoder(resp.Body).Decode(&result); err != nil {
+	if err = json.NewDecoder(resp.Body).Decode(&response); err != nil {
 		return
 	}
 
-	v = result.Result
+	if err = response.Err(); err != nil {
+		return
+	}
+
+	v = response.Result
 
 	return
 }

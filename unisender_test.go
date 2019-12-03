@@ -3,21 +3,23 @@ package unisender_test
 import (
 	"bytes"
 	"io/ioutil"
+	"math/rand"
 	"net/http"
-	"net/url"
+	"testing"
+	"time"
 
 	"github.com/alexeyco/unisender"
 )
 
 type roundTrip struct {
-	Before     func(url *url.URL)
+	Before     func(req *http.Request)
 	StatusCode func() int
 	Body       func() string
 }
 
 func (r roundTrip) RoundTrip(req *http.Request) (*http.Response, error) {
 	if r.Before != nil {
-		r.Before(req.URL)
+		r.Before(req)
 	}
 
 	statusCode := http.StatusOK
@@ -36,6 +38,14 @@ func (r roundTrip) RoundTrip(req *http.Request) (*http.Response, error) {
 		Header:     make(http.Header),
 	}, nil
 }
+
+var seededRand *rand.Rand = rand.New(
+	rand.NewSource(
+		time.Now().UnixNano(),
+	),
+)
+
+const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 
 func randomString(n int) string {
 	l := len(charset)
@@ -60,4 +70,56 @@ func randomLanguage() (language string) {
 	}
 
 	return languages[seededRand.Intn(len(languages)-1)]
+}
+
+func TestUnisender_WrongStatusCode(t *testing.T) {
+	apiKey := randomString(32)
+	language := randomLanguage()
+
+	client := &http.Client{
+		Transport: roundTrip{
+			StatusCode: func() int {
+				return http.StatusForbidden
+			},
+			Body: func() string {
+				return `{"Response":[]}`
+			},
+		},
+	}
+
+	usndr := unisender.New(apiKey)
+	usndr.SetLanguage(language)
+	usndr.SetClient(client)
+
+	_, err := usndr.GetLists()
+
+	if err == nil {
+		t.Fatalf(`Error should be %s, nil given`, unisender.ErrWrongStatusCode.Error())
+	}
+}
+func TestUnisender_Error(t *testing.T) {
+	apiKey := randomString(32)
+	language := randomLanguage()
+
+	client := &http.Client{
+		Transport: roundTrip{
+			Body: func() string {
+				return `{"Err":"Access Denied.","code":"access_denied"}`
+			},
+		},
+	}
+
+	usndr := unisender.New(apiKey)
+	usndr.SetLanguage(language)
+	usndr.SetClient(client)
+
+	_, err := usndr.GetLists()
+
+	if err == nil {
+		t.Fatalf(`Error should be "%s", nil given`, unisender.ErrAccessDenied.Error())
+	}
+
+	if err != unisender.ErrAccessDenied {
+		t.Fatalf(`Error should be "%s", %s given`, unisender.ErrAccessDenied.Error(), err.Error())
+	}
 }
