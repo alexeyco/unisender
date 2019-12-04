@@ -9,12 +9,11 @@ import (
 type CreateListRequest interface {
 	BeforeSubscribeUrl(u string) CreateListRequest
 	AfterSubscribeUrl(u string) CreateListRequest
-	Execute() (*CreateListResponse, error)
+	Execute() (int64, error)
 }
 
-type CreateListResponse struct {
-	ID    int64  `json:"id"`
-	Title string `json:"title"`
+type createListResponse struct {
+	ID int64 `json:"id"`
 }
 
 type createListRequest struct {
@@ -31,13 +30,15 @@ func (r *createListRequest) AfterSubscribeUrl(u string) CreateListRequest {
 	return r
 }
 
-func (r *createListRequest) Execute() (*CreateListResponse, error) {
-	var res CreateListResponse
-	if err := r.request.Execute("createList", &res); err != nil {
-		return nil, err
+func (r *createListRequest) Execute() (listID int64, err error) {
+	var res createListResponse
+	if err = r.request.Execute("createList", &res); err != nil {
+		return
 	}
 
-	return &res, nil
+	listID = res.ID
+
+	return
 }
 
 func CreateList(request *api.Request, title string) CreateListRequest {

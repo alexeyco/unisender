@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"math/rand"
 	"net/http"
 	"reflect"
 	"testing"
@@ -26,7 +25,6 @@ func TestGetListsRequest_Execute(t *testing.T) {
 	})
 
 	givenLists, err := lists.GetLists(req).Execute()
-
 	if err != nil {
 		t.Fatalf(`Error should be nil, "%s" given`, err.Error())
 	}
@@ -58,8 +56,4 @@ func listsSliceToJson(slice []lists.List) string {
 	})
 
 	return string(b)
-}
-
-func randomInt(min, max int) int {
-	return rand.Intn(max-min) + min
 }
