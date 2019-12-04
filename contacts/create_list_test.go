@@ -1,4 +1,4 @@
-package lists_test
+package contacts_test
 
 import (
 	"bytes"
@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/alexeyco/unisender/lists"
+	"github.com/alexeyco/unisender/contacts"
 )
 
 func TestCreateListRequest_Execute(t *testing.T) {
@@ -35,7 +35,7 @@ func TestCreateListRequest_Execute(t *testing.T) {
 		}, nil
 	})
 
-	givenListID, err := lists.CreateList(req, expectedTitle).
+	givenListID, err := contacts.CreateList(req, expectedTitle).
 		BeforeSubscribeUrl(expectedBeforeSubscribeUrl).
 		AfterSubscribeUrl(expectedAfterSubscribeUrl).
 		Execute()

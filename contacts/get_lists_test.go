@@ -1,4 +1,4 @@
-package lists_test
+package contacts_test
 
 import (
 	"bytes"
@@ -10,7 +10,7 @@ import (
 	"testing"
 
 	"github.com/alexeyco/unisender/api"
-	"github.com/alexeyco/unisender/lists"
+	"github.com/alexeyco/unisender/contacts"
 )
 
 func TestGetListsRequest_Execute(t *testing.T) {
@@ -24,7 +24,7 @@ func TestGetListsRequest_Execute(t *testing.T) {
 		}, nil
 	})
 
-	givenLists, err := lists.GetLists(req).Execute()
+	givenLists, err := contacts.GetLists(req).Execute()
 	if err != nil {
 		t.Fatalf(`Error should be nil, "%s" given`, err.Error())
 	}
@@ -38,10 +38,10 @@ func TestGetListsRequest_Execute(t *testing.T) {
 	}
 }
 
-func getRandomListsSlice() (slice []lists.List) {
+func getRandomListsSlice() (slice []contacts.List) {
 	l := randomInt(12, 36)
 	for i := 0; i < l; i++ {
-		slice = append(slice, lists.List{
+		slice = append(slice, contacts.List{
 			ID:    int64(randomInt(9999, 999999)),
 			Title: fmt.Sprintf("Title #%d", randomInt(9999, 999999)),
 		})
@@ -50,7 +50,7 @@ func getRandomListsSlice() (slice []lists.List) {
 	return
 }
 
-func listsSliceToJson(slice []lists.List) string {
+func listsSliceToJson(slice []contacts.List) string {
 	b, _ := json.Marshal(&api.Response{
 		Result: slice,
 	})

@@ -6,7 +6,6 @@ import (
 
 	"github.com/alexeyco/unisender/api"
 	"github.com/alexeyco/unisender/contacts"
-	"github.com/alexeyco/unisender/lists"
 )
 
 type UniSender struct {
@@ -33,23 +32,23 @@ func (u *UniSender) SetClient(client *http.Client) {
 }
 
 // CreateList creates a new contact list.
-func (u *UniSender) CreateList(title string) lists.CreateListRequest {
-	return lists.CreateList(u.request(), title)
+func (u *UniSender) CreateList(title string) contacts.CreateListRequest {
+	return contacts.CreateList(u.request(), title)
 }
 
 // GetLists returns all available campaign lists.
-func (u *UniSender) GetLists() lists.GetListsRequest {
-	return lists.GetLists(u.request())
+func (u *UniSender) GetLists() contacts.GetListsRequest {
+	return contacts.GetLists(u.request())
 }
 
 // UpdateList changes campaign list properties.
-func (u *UniSender) UpdateList(listID int64, title string) lists.UpdateListRequest {
-	return lists.UpdateList(u.request(), listID, title)
+func (u *UniSender) UpdateList(listID int64, title string) contacts.UpdateListRequest {
+	return contacts.UpdateList(u.request(), listID, title)
 }
 
 // UpdateList removes a list.
-func (u *UniSender) DeleteList(listID int64) lists.DeleteListRequest {
-	return lists.DeleteList(u.request(), listID)
+func (u *UniSender) DeleteList(listID int64) contacts.DeleteListRequest {
+	return contacts.DeleteList(u.request(), listID)
 }
 
 // GetContact returns information about single contact.

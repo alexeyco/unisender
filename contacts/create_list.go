@@ -1,4 +1,4 @@
-package lists
+package contacts
 
 import (
 	"github.com/alexeyco/unisender/api"

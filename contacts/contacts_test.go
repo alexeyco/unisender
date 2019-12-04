@@ -1,4 +1,4 @@
-package lists_test
+package contacts_test
 
 import (
 	"math/rand"

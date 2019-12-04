@@ -1,4 +1,4 @@
-package lists
+package contacts
 
 import (
 	"fmt"

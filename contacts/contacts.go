@@ -2,10 +2,15 @@ package contacts
 
 import "time"
 
+type List struct {
+	ID    int64  `json:"id"`
+	Title string `json:"title"`
+}
+
 type PersonList struct {
 	ID      int64     `json:"id"`
 	Title   string    `json:"title"`
-	AddedAt time.Time `json:"added_at"`
+	AddedAt time.Time `json:"added_at,omitempty"`
 }
 
 type Person struct {

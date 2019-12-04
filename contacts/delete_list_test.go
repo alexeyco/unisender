@@ -1,11 +1,11 @@
-package lists_test
+package contacts_test
 
 import (
 	"net/http"
 	"strconv"
 	"testing"
 
-	"github.com/alexeyco/unisender/lists"
+	"github.com/alexeyco/unisender/contacts"
 )
 
 func TestDeleteListRequest_Execute(t *testing.T) {
@@ -20,7 +20,7 @@ func TestDeleteListRequest_Execute(t *testing.T) {
 		}, nil
 	})
 
-	err := lists.DeleteList(req, expectedListID).Execute()
+	err := contacts.DeleteList(req, expectedListID).Execute()
 
 	if err != nil {
 		t.Fatalf(`Error should be nil, "%s" given`, err.Error())

@@ -1,4 +1,4 @@
-package lists_test
+package contacts_test
 
 import (
 	"fmt"
@@ -6,7 +6,7 @@ import (
 	"strconv"
 	"testing"
 
-	"github.com/alexeyco/unisender/lists"
+	"github.com/alexeyco/unisender/contacts"
 )
 
 func TestUpdateListRequest_Execute(t *testing.T) {
@@ -25,7 +25,7 @@ func TestUpdateListRequest_Execute(t *testing.T) {
 		}, nil
 	})
 
-	err := lists.UpdateList(req, expectedListID, expectedTitle).Execute()
+	err := contacts.UpdateList(req, expectedListID, expectedTitle).Execute()
 
 	if err != nil {
 		t.Fatalf(`Error should be nil, "%s" given`, err.Error())
