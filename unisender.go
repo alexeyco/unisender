@@ -31,12 +31,19 @@ func (u *UniSender) SetClient(client *http.Client) {
 	u.client = client
 }
 
+// CreateList creates a new contact list.
 func (u *UniSender) CreateList(title string) lists.CreateListRequest {
 	return lists.CreateList(u.request(), title)
 }
 
+// GetLists returns all available campaign lists.
 func (u *UniSender) GetLists() lists.GetListsRequest {
 	return lists.GetLists(u.request())
+}
+
+// UpdateList changes campaign list properties.
+func (u *UniSender) UpdateList(listID int64, title string) lists.UpdateListRequest {
+	return lists.UpdateList(u.request(), listID, title)
 }
 
 func (u *UniSender) request() *api.Request {
