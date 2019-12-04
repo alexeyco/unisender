@@ -17,7 +17,7 @@ type deleteListRequest struct {
 }
 
 func (r *deleteListRequest) Execute() error {
-	return r.request.Execute(nil)
+	return r.request.Execute("deleteList", nil)
 }
 
 func DeleteList(request *api.Request, listID int64) DeleteListRequest {

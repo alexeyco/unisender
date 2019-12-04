@@ -19,7 +19,7 @@ func (r *Request) Add(key, value string) *Request {
 	return r
 }
 
-func (r *Request) Execute(v interface{}) (err error) {
+func (r *Request) Execute(method string, v interface{}) (err error) {
 	return
 }
 

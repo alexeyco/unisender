@@ -17,6 +17,7 @@ type getListsRequest struct {
 }
 
 func (r *getListsRequest) Execute() (lists []List, err error) {
+	err = r.request.Execute("getLists", lists)
 	return
 }
 

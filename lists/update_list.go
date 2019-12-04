@@ -29,7 +29,7 @@ func (r *updateListRequest) AfterSubscribeUrl(u string) UpdateListRequest {
 }
 
 func (r *updateListRequest) Execute() error {
-	return r.request.Execute(nil)
+	return r.request.Execute("updateList", nil)
 }
 
 func UpdateList(request *api.Request, listID int64, title string) UpdateListRequest {

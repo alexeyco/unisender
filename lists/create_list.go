@@ -1,7 +1,7 @@
 package lists
 
 import (
-	unisender2 "github.com/alexeyco/unisender/api"
+	"github.com/alexeyco/unisender/api"
 )
 
 // See https://www.unisender.com/en/support/api/partners/createlist/
@@ -18,7 +18,7 @@ type CreateListResponse struct {
 }
 
 type createListRequest struct {
-	request *unisender2.Request
+	request *api.Request
 }
 
 func (r *createListRequest) BeforeSubscribeUrl(u string) CreateListRequest {
@@ -33,14 +33,14 @@ func (r *createListRequest) AfterSubscribeUrl(u string) CreateListRequest {
 
 func (r *createListRequest) Execute() (*CreateListResponse, error) {
 	var res CreateListResponse
-	if err := r.request.Execute(&res); err != nil {
+	if err := r.request.Execute("createList", &res); err != nil {
 		return nil, err
 	}
 
 	return &res, nil
 }
 
-func CreateList(request *unisender2.Request, title string) CreateListRequest {
+func CreateList(request *api.Request, title string) CreateListRequest {
 	request.Add("title", title)
 
 	return &createListRequest{

@@ -59,7 +59,7 @@ func (u *UniSender) request() *api.Request {
 		Add("api_key", u.apiKey)
 }
 
-// New returns new UniSender client
+// New returns new UniSender API client
 func New(apiKey string) *UniSender {
 	return &UniSender{
 		apiKey:   apiKey,
