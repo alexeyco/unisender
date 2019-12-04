@@ -8,7 +8,7 @@ type GetContactRequest interface {
 	IncludeLists() GetContactRequest
 	IncludeFields() GetContactRequest
 	IncludeDetails() GetContactRequest
-	Execute() (contacts []Contact, err error)
+	Execute() (contacts []Person, err error)
 }
 
 type getContactRequest struct {
@@ -30,7 +30,7 @@ func (r *getContactRequest) IncludeDetails() GetContactRequest {
 	return r
 }
 
-func (r *getContactRequest) Execute() (contacts []Contact, err error) {
+func (r *getContactRequest) Execute() (contacts []Person, err error) {
 	err = r.request.Execute("getContact", &contacts)
 	return
 }
