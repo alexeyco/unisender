@@ -46,6 +46,11 @@ func (u *UniSender) UpdateList(listID int64, title string) lists.UpdateListReque
 	return lists.UpdateList(u.request(), listID, title)
 }
 
+// UpdateList removes a list.
+func (u *UniSender) DeleteList(listID int64) lists.DeleteListRequest {
+	return lists.DeleteList(u.request(), listID)
+}
+
 func (u *UniSender) request() *api.Request {
 	u.mu.RLock()
 	defer u.mu.RUnlock()
