@@ -25,6 +25,10 @@ func newClient(fn func(req *http.Request) (res *http.Response, err error)) *http
 	}
 }
 
+type testResponse struct {
+	Foo string `json:"foo"`
+}
+
 func TestRequest_Add(t *testing.T) {
 	method := "method"
 	language := "some-language"
@@ -54,7 +58,7 @@ func TestRequest_Add(t *testing.T) {
 	}
 }
 
-func TestRequest_Execute_Error(t *testing.T) {
+func TestRequest_Execute_WrongStatus(t *testing.T) {
 	method := "method"
 	language := "some-language"
 
@@ -76,8 +80,25 @@ func TestRequest_Execute_Error(t *testing.T) {
 	}
 }
 
-type testResponse struct {
-	Foo string `json:"foo"`
+func TestRequest_Execute_WrongJson(t *testing.T) {
+	method := "method"
+	language := "some-language"
+
+	c := newClient(func(req *http.Request) (res *http.Response, err error) {
+		return &http.Response{
+			StatusCode: http.StatusOK,
+			Body:       ioutil.NopCloser(bytes.NewBufferString(`{"result":{`)),
+		}, nil
+	})
+
+	var res testResponse
+
+	req := api.NewRequest(c, language)
+	err := req.Execute(method, &res)
+
+	if err == nil {
+		t.Fatal("Error should not be nil")
+	}
 }
 
 func TestRequest_Execute_Ok(t *testing.T) {
