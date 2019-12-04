@@ -4,19 +4,19 @@ import (
 	"errors"
 )
 
-// Response UniSender API response
+// Response UniSender API response.
 type Response struct {
 	Result interface{} `json:"result,omitempty"`
 	Error  string      `json:"error,omitempty"`
 	Code   string      `json:"code,omitempty"`
 }
 
-// IsError returns true if response has error
+// IsError returns true if response has error.
 func (r Response) IsError() bool {
 	return r.Error != "" || r.Code != ""
 }
 
-// Err returns response error
+// Err returns response error.
 func (r Response) Err() error {
 	if !r.IsError() {
 		return nil
