@@ -2,13 +2,13 @@ package contacts
 
 import "time"
 
-type ContactList struct {
+type PersonList struct {
 	ID      int64     `json:"id"`
 	Title   string    `json:"title"`
 	AddedAt time.Time `json:"added_at"`
 }
 
-type Contact struct {
+type Person struct {
 	Email        string            `json:"email"`
 	AddedAt      time.Time         `json:"added_at"`
 	Status       string            `json:"status"`
@@ -18,6 +18,6 @@ type Contact struct {
 	LastRead     time.Time         `json:"last_read_datetime,omitempty"`
 	LastClick    time.Time         `json:"last_click_datetime,omitempty"`
 	Rating       float64           `json:"rating,omitempty"`
-	Lists        []ContactList     `json:"lists,omitempty"`
+	Lists        []Person          `json:"lists,omitempty"`
 	Fields       map[string]string `json:"fields,omitempty"`
 }

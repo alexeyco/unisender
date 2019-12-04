@@ -58,9 +58,8 @@ func (u *UniSender) GetContact(email string) contacts.GetContactRequest {
 }
 
 // Subscribe subscribes the contact email or phone number to one or several lists.
-// See https://www.unisender.com/en/support/api/contacts/subscribe/
-func (u *UniSender) Subscribe() {
-
+func (u *UniSender) Subscribe() contacts.SubscribeRequest {
+	return contacts.Subscribe(u.request())
 }
 
 // Unsubscribe unsubscribes the contact email or phone number from one or several lists.
