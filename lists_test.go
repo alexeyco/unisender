@@ -18,7 +18,7 @@ func TestUniSender_GetLists(t *testing.T) {
 	expectedUrl := fmt.Sprintf("https://api.unisender.com/%s/api/getLists", language)
 	var requestedUrl string
 
-	id := randomInt64(999, 99999)
+	listID := randomInt64(999, 99999)
 	title := randomString(64)
 
 	client := &http.Client{
@@ -28,7 +28,7 @@ func TestUniSender_GetLists(t *testing.T) {
 				requestedApiKey = req.PostFormValue("api_key")
 			},
 			Body: func() string {
-				return fmt.Sprintf(`{"result":[{"id":%d,"title":"%s"}]}`, id, title)
+				return fmt.Sprintf(`{"result":[{"id":%d,"title":"%s"}]}`, listID, title)
 			},
 		},
 	}
@@ -56,8 +56,8 @@ func TestUniSender_GetLists(t *testing.T) {
 		t.Fatalf("Lists length should be %d, %d given", 1, l)
 	}
 
-	if lists[0].ID != id {
-		t.Fatalf("List ID should be %d, %d given", id, lists[0].ID)
+	if lists[0].ID != listID {
+		t.Fatalf("List ID should be %d, %d given", listID, lists[0].ID)
 	}
 
 	if lists[0].Title != title {
@@ -78,7 +78,7 @@ func TestUniSender_CreateList(t *testing.T) {
 	var requestedBeforeSubscribeUrl string
 	var requestedAfterSubscribeUrl string
 
-	expectedID := randomInt64(999, 99999)
+	expectedListID := randomInt64(999, 99999)
 	expectedTitle := randomString(64)
 
 	client := &http.Client{
@@ -93,7 +93,7 @@ func TestUniSender_CreateList(t *testing.T) {
 				requestedAfterSubscribeUrl = req.PostFormValue("after_subscribe_url")
 			},
 			Body: func() string {
-				return fmt.Sprintf(`{"result":{"id":%d}}`, expectedID)
+				return fmt.Sprintf(`{"result":{"id":%d}}`, expectedListID)
 			},
 		},
 	}
@@ -135,8 +135,8 @@ func TestUniSender_CreateList(t *testing.T) {
 		t.Fatalf(`Error should be nil, "%s" given`, err.Error())
 	}
 
-	if expectedID != createdID {
-		t.Fatalf(`ID should be %d, %d given`, expectedID, createdID)
+	if expectedListID != createdID {
+		t.Fatalf(`ID should be %d, %d given`, expectedListID, createdID)
 	}
 }
 
@@ -149,12 +149,12 @@ func TestUniSender_UpdateList(t *testing.T) {
 	expectedUrl := fmt.Sprintf("https://api.unisender.com/%s/api/updateList", language)
 	var requestedUrl string
 
-	var requestedID int64
+	var requestedListID int64
 	var requestedTitle string
 	var requestedBeforeSubscribeUrl string
 	var requestedAfterSubscribeUrl string
 
-	expectedID := randomInt64(999, 99999)
+	expectedListID := randomInt64(999, 99999)
 	expectedTitle := randomString(64)
 
 	client := &http.Client{
@@ -164,7 +164,7 @@ func TestUniSender_UpdateList(t *testing.T) {
 
 				requestedApiKey = req.PostFormValue("api_key")
 
-				requestedID, _ = strconv.ParseInt(req.PostFormValue("list_id"), 10, 64)
+				requestedListID, _ = strconv.ParseInt(req.PostFormValue("list_id"), 10, 64)
 				requestedTitle = req.PostFormValue("title")
 				requestedBeforeSubscribeUrl = req.PostFormValue("before_subscribe_url")
 				requestedAfterSubscribeUrl = req.PostFormValue("after_subscribe_url")
@@ -180,7 +180,7 @@ func TestUniSender_UpdateList(t *testing.T) {
 	expectedAfterSubscribeUrl := "https://after-subscribe.url"
 
 	err := usndr.UpdateList(
-		expectedID,
+		expectedListID,
 		expectedTitle,
 		unisender.OptionBeforeSubscribeUrl(expectedBeforeSubscribeUrl),
 		unisender.OptionAfterSubscribeUrl(expectedAfterSubscribeUrl),
@@ -194,8 +194,8 @@ func TestUniSender_UpdateList(t *testing.T) {
 		t.Fatalf(`API key should be "%s", "%s" given`, expectedApiKey, requestedApiKey)
 	}
 
-	if expectedID != requestedID {
-		t.Fatalf(`ID should be %d, %d given`, expectedID, requestedID)
+	if expectedListID != requestedListID {
+		t.Fatalf(`ID should be %d, %d given`, expectedListID, requestedListID)
 	}
 
 	if expectedTitle != requestedTitle {
@@ -224,16 +224,16 @@ func TestUniSender_DeleteList(t *testing.T) {
 	expectedUrl := fmt.Sprintf("https://api.unisender.com/%s/api/deleteList", language)
 	var requestedUrl string
 
-	var requestedID int64
+	var requestedListID int64
 
-	expectedID := randomInt64(999, 99999)
+	expectedListID := randomInt64(999, 99999)
 
 	client := &http.Client{
 		Transport: roundTrip{
 			Before: func(req *http.Request) {
 				requestedUrl = req.URL.String()
 				requestedApiKey = req.PostFormValue("api_key")
-				requestedID, _ = strconv.ParseInt(req.PostFormValue("list_id"), 10, 64)
+				requestedListID, _ = strconv.ParseInt(req.PostFormValue("list_id"), 10, 64)
 			},
 		},
 	}
@@ -242,7 +242,7 @@ func TestUniSender_DeleteList(t *testing.T) {
 	usndr.SetLanguage(language)
 	usndr.SetClient(client)
 
-	err := usndr.DeleteList(expectedID)
+	err := usndr.DeleteList(expectedListID)
 
 	if expectedUrl != requestedUrl {
 		t.Fatalf(`Request URL should be "%s", "%s" given`, expectedUrl, requestedUrl)
@@ -252,8 +252,8 @@ func TestUniSender_DeleteList(t *testing.T) {
 		t.Fatalf(`API key should be "%s", "%s" given`, expectedApiKey, requestedApiKey)
 	}
 
-	if expectedID != requestedID {
-		t.Fatalf(`ID should be %d, %d given`, expectedID, requestedID)
+	if expectedListID != requestedListID {
+		t.Fatalf(`ID should be %d, %d given`, expectedListID, requestedListID)
 	}
 
 	if err != nil {

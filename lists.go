@@ -8,7 +8,7 @@ type List struct {
 }
 
 // GetLists returns all available campaign lists.
-// see https://www.unisender.com/en/support/api/partners/getlists/
+// See https://www.unisender.com/en/support/api/partners/getlists/
 func (u *UniSender) GetLists() (lists []List, err error) {
 	err = u.request("getLists", &lists)
 	return
@@ -19,7 +19,7 @@ type createListResponse struct {
 }
 
 // CreateList creates a new contact list.
-// see https://www.unisender.com/en/support/api/partners/createlist/
+// See https://www.unisender.com/en/support/api/partners/createlist/
 func (u *UniSender) CreateList(title string, options ...Option) (id int64, err error) {
 	options = append(options, Option{
 		name:  "title",
@@ -37,13 +37,13 @@ func (u *UniSender) CreateList(title string, options ...Option) (id int64, err e
 }
 
 // UpdateList changes campaign list properties.
-// see https://www.unisender.com/en/support/api/partners/updatelist/
-func (u *UniSender) UpdateList(id int64, title string, options ...Option) (err error) {
+// See https://www.unisender.com/en/support/api/partners/updatelist/
+func (u *UniSender) UpdateList(listID int64, title string, options ...Option) (err error) {
 	options = append(
 		options,
 		Option{
 			name:  "list_id",
-			value: fmt.Sprintf("%d", id),
+			value: fmt.Sprintf("%d", listID),
 		},
 		Option{
 			name:  "title",
@@ -57,11 +57,11 @@ func (u *UniSender) UpdateList(id int64, title string, options ...Option) (err e
 }
 
 // UpdateList removes a list.
-// see https://www.unisender.com/en/support/api/partners/deletelist/
-func (u *UniSender) DeleteList(id int64) (err error) {
+// See https://www.unisender.com/en/support/api/partners/deletelist/
+func (u *UniSender) DeleteList(listID int64) (err error) {
 	option := Option{
 		name:  "list_id",
-		value: fmt.Sprintf("%d", id),
+		value: fmt.Sprintf("%d", listID),
 	}
 
 	err = u.request("deleteList", nil, option)
