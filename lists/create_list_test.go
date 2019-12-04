@@ -35,7 +35,7 @@ func TestCreateListRequest_Execute(t *testing.T) {
 		}, nil
 	})
 
-	givenListsID, err := lists.CreateList(req, expectedTitle).
+	givenListID, err := lists.CreateList(req, expectedTitle).
 		BeforeSubscribeUrl(expectedBeforeSubscribeUrl).
 		AfterSubscribeUrl(expectedAfterSubscribeUrl).
 		Execute()
@@ -44,8 +44,8 @@ func TestCreateListRequest_Execute(t *testing.T) {
 		t.Fatalf(`Error should be nil, "%s" given`, err.Error())
 	}
 
-	if expectedListID != givenListsID {
-		t.Fatalf("List ID should be %d, %d given", expectedListID, givenListsID)
+	if expectedListID != givenListID {
+		t.Fatalf("List ID should be %d, %d given", expectedListID, givenListID)
 	}
 
 	if expectedTitle != givenTitle {
