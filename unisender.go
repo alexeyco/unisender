@@ -5,6 +5,7 @@ import (
 	"sync"
 
 	"github.com/alexeyco/unisender/api"
+	"github.com/alexeyco/unisender/contacts"
 	"github.com/alexeyco/unisender/lists"
 )
 
@@ -52,9 +53,8 @@ func (u *UniSender) DeleteList(listID int64) lists.DeleteListRequest {
 }
 
 // GetContact returns information about single contact.
-// See https://www.unisender.com/en/support/api/contacts/getcontact/
-func (u *UniSender) GetContact() {
-
+func (u *UniSender) GetContact(email string) contacts.GetContactRequest {
+	return contacts.GetContact(u.request(), email)
 }
 
 // Subscribe subscribes the contact email or phone number to one or several lists.
