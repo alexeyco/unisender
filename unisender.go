@@ -68,9 +68,8 @@ func (u *UniSender) Unsubscribe() {
 }
 
 // Exclude excludes the contact’s email or phone number from one or several lists.
-// See https://www.unisender.com/en/support/api/partners/exclude/
-func (u *UniSender) Exclude() {
-
+func (u *UniSender) Exclude(contact string) contacts.ExcludeRequest {
+	return contacts.Exclude(u.request(), contact)
 }
 
 // ImportContacts
