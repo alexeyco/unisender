@@ -2,7 +2,7 @@ package contacts
 
 import "time"
 
-type ContactValue struct {
+type contactValue struct {
 	value               string
 	status              string
 	availability        bool
@@ -16,8 +16,8 @@ type ContactValue struct {
 }
 
 type Contact struct {
-	email  *ContactValue
-	phone  *ContactValue
+	kind   string
+	value  *contactValue
 	tags   []string
 	delete bool
 }
@@ -31,66 +31,50 @@ func (c *Contact) SetTags(tags ...string) {
 }
 
 func (c *Contact) SetStatusNew() {
-	c.value().status = "new"
+	c.value.status = "new"
 }
 
 func (c *Contact) SetStatusActive() {
-	c.value().status = "active"
+	c.value.status = "active"
 }
 
 func (c *Contact) SetStatusInactive() {
-	c.value().status = "inactive"
+	c.value.status = "inactive"
 }
 
 func (c *Contact) SetStatusUnsubscribed() {
-	c.value().status = "ubsubscribed"
+	c.value.status = "ubsubscribed"
 }
 
 func (c *Contact) SetAvailability(availability bool) {
-	c.value().availability = availability
+	c.value.availability = availability
 }
 
 func (c *Contact) SetEmailAddTime(addTime time.Time) {
-	c.value().addTime = addTime
+	c.value.addTime = addTime
 }
 
 func (c *Contact) SetEmailRequestIP(requestIP string) {
-	c.value().requestIP = requestIP
+	c.value.requestIP = requestIP
 }
 
 func (c *Contact) SetConfirmTime(confirmTime time.Time) {
-	c.value().confirmTime = confirmTime
+	c.value.confirmTime = confirmTime
 }
 
 func (c *Contact) AddListID(listID int64, subscribeTime time.Time) {
-	v := c.value()
+	v := c.value
 
 	v.listIDs = append(v.listIDs, listID)
 	v.subscribeTimes = append(v.subscribeTimes, subscribeTime)
 }
 
 func (c *Contact) SetUnsubscribedListIDs(unsubscribedListIDs ...int64) {
-	c.value().unsubscribedListIDs = unsubscribedListIDs
+	c.value.unsubscribedListIDs = unsubscribedListIDs
 }
 
 func (c *Contact) SetEmailExcludedListIDs(excludedListIDs ...int64) {
-	c.value().excludedListIDs = excludedListIDs
-}
-
-func (c *Contact) value() *ContactValue {
-	if c.email != nil {
-		return c.email
-	}
-
-	return c.phone
-}
-
-func (c *Contact) kind() string {
-	if c.email != nil {
-		return "email"
-	}
-
-	return "phone"
+	c.value.excludedListIDs = excludedListIDs
 }
 
 type Collection struct {
@@ -100,7 +84,8 @@ type Collection struct {
 
 func (c *Collection) Email(email string) *Contact {
 	contact := &Contact{
-		email: &ContactValue{
+		kind: "email",
+		value: &contactValue{
 			value: email,
 		},
 	}
@@ -112,7 +97,8 @@ func (c *Collection) Email(email string) *Contact {
 
 func (c *Collection) Phone(phone string) *Contact {
 	contact := &Contact{
-		phone: &ContactValue{
+		kind: "phone",
+		value: &contactValue{
 			value: phone,
 		},
 	}
