@@ -1,6 +1,10 @@
 package contacts
 
-import "time"
+import (
+	"fmt"
+	"strings"
+	"time"
+)
 
 const (
 	defaultStatus       = "new"
@@ -18,6 +22,38 @@ type contactValue struct {
 	subscribeTimes      []time.Time
 	unsubscribedListIDs []int64
 	excludedListIDs     []int64
+}
+
+func (v *contactValue) toMap() map[string]string {
+	return map[string]string{
+		"status":                v.status,
+		"availability":          v.availability,
+		"add_time":              v.addTime.String(),
+		"request_ip":            v.requestIP,
+		"confirm_time":          v.confirmTime.String(),
+		"list_ids":              v.int64SliceToString(v.listIDs...),
+		"subscribe_times":       v.timeSliceToString(v.subscribeTimes...),
+		"unsubscribed_list_ids": v.int64SliceToString(v.unsubscribedListIDs...),
+		"excluded_list_ids":     v.int64SliceToString(v.excludedListIDs...),
+	}
+}
+
+func (v *contactValue) int64SliceToString(slice ...int64) string {
+	strSlice := make([]string, len(slice))
+	for n, v := range slice {
+		strSlice[n] = fmt.Sprintf("%d", v)
+	}
+
+	return strings.Join(strSlice, ",")
+}
+
+func (v *contactValue) timeSliceToString(slice ...time.Time) string {
+	strSlice := make([]string, len(slice))
+	for n, v := range slice {
+		strSlice[n] = v.String()
+	}
+
+	return strings.Join(strSlice, ",")
 }
 
 type Contact struct {
@@ -100,6 +136,27 @@ func (c *Contact) SetUnsubscribedListIDs(unsubscribedListIDs ...int64) {
 
 func (c *Contact) SetEmailExcludedListIDs(excludedListIDs ...int64) {
 	c.value.excludedListIDs = excludedListIDs
+}
+
+func (c *Contact) toMap() map[string]string {
+	var del string
+	if c.delete {
+		del = "1"
+	} else {
+		del = "0"
+	}
+
+	m := map[string]string{
+		"delete": del,
+		"tags":   strings.Join(c.tags, ","),
+	}
+
+	m[c.kind] = c.value.value
+	for k, v := range c.value.toMap() {
+		m[c.kind+"_"+k] = v
+	}
+
+	return m
 }
 
 type Collection struct {
