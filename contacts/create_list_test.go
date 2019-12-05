@@ -10,21 +10,45 @@ import (
 	"github.com/alexeyco/unisender/contacts"
 )
 
-func TestCreateListRequest_Execute(t *testing.T) {
+func TestCreateListRequest_BeforeSubscribeUrl(t *testing.T) {
 	expectedListID := int64(randomInt(9999, 999999))
-
 	expectedTitle := fmt.Sprintf("Title #%d", randomInt(9999, 999999))
-	var givenTitle string
 
 	expectedBeforeSubscribeUrl := "https://before-subscribe.url"
 	var givenBeforeSubscribeUrl string
+
+	req := newRequest(func(req *http.Request) (res *http.Response, err error) {
+		givenBeforeSubscribeUrl = req.FormValue("before_subscribe_url")
+
+		response := fmt.Sprintf(`{"result":{"id":%d}}`, expectedListID)
+
+		return &http.Response{
+			StatusCode: http.StatusOK,
+			Body:       ioutil.NopCloser(bytes.NewBufferString(response)),
+		}, nil
+	})
+
+	_, err := contacts.CreateList(req, expectedTitle).
+		BeforeSubscribeUrl(expectedBeforeSubscribeUrl).
+		Execute()
+
+	if err != nil {
+		t.Fatalf(`Error should be nil, "%s" given`, err.Error())
+	}
+
+	if givenBeforeSubscribeUrl != expectedBeforeSubscribeUrl {
+		t.Errorf(`Param "before_subscribe_url" should be "%s", "%s" given`, expectedBeforeSubscribeUrl, givenBeforeSubscribeUrl)
+	}
+}
+
+func TestCreateListRequest_AfterSubscribeUrl(t *testing.T) {
+	expectedListID := int64(randomInt(9999, 999999))
+	expectedTitle := fmt.Sprintf("Title #%d", randomInt(9999, 999999))
 
 	expectedAfterSubscribeUrl := "https://after-subscribe.url"
 	var givenAfterSubscribeUrl string
 
 	req := newRequest(func(req *http.Request) (res *http.Response, err error) {
-		givenTitle = req.FormValue("title")
-		givenBeforeSubscribeUrl = req.FormValue("before_subscribe_url")
 		givenAfterSubscribeUrl = req.FormValue("after_subscribe_url")
 
 		response := fmt.Sprintf(`{"result":{"id":%d}}`, expectedListID)
@@ -35,9 +59,37 @@ func TestCreateListRequest_Execute(t *testing.T) {
 		}, nil
 	})
 
-	givenListID, err := contacts.CreateList(req, expectedTitle).
-		BeforeSubscribeUrl(expectedBeforeSubscribeUrl).
+	_, err := contacts.CreateList(req, expectedTitle).
 		AfterSubscribeUrl(expectedAfterSubscribeUrl).
+		Execute()
+
+	if err != nil {
+		t.Fatalf(`Error should be nil, "%s" given`, err.Error())
+	}
+
+	if givenAfterSubscribeUrl != expectedAfterSubscribeUrl {
+		t.Errorf(`Param "after_subscribe_url" should be "%s", "%s" given`, expectedAfterSubscribeUrl, givenAfterSubscribeUrl)
+	}
+}
+
+func TestCreateListRequest_Execute(t *testing.T) {
+	expectedListID := int64(randomInt(9999, 999999))
+
+	expectedTitle := fmt.Sprintf("Title #%d", randomInt(9999, 999999))
+	var givenTitle string
+
+	req := newRequest(func(req *http.Request) (res *http.Response, err error) {
+		givenTitle = req.FormValue("title")
+
+		response := fmt.Sprintf(`{"result":{"id":%d}}`, expectedListID)
+
+		return &http.Response{
+			StatusCode: http.StatusOK,
+			Body:       ioutil.NopCloser(bytes.NewBufferString(response)),
+		}, nil
+	})
+
+	givenListID, err := contacts.CreateList(req, expectedTitle).
 		Execute()
 
 	if err != nil {
@@ -50,13 +102,5 @@ func TestCreateListRequest_Execute(t *testing.T) {
 
 	if expectedTitle != givenTitle {
 		t.Fatalf(`Title should be "%s", "%s" given`, expectedTitle, givenTitle)
-	}
-
-	if givenBeforeSubscribeUrl != expectedBeforeSubscribeUrl {
-		t.Errorf(`Param "before_subscribe_url" should be "%s", "%s" given`, expectedBeforeSubscribeUrl, givenBeforeSubscribeUrl)
-	}
-
-	if givenAfterSubscribeUrl != expectedAfterSubscribeUrl {
-		t.Errorf(`Param "after_subscribe_url" should be "%s", "%s" given`, expectedAfterSubscribeUrl, givenAfterSubscribeUrl)
 	}
 }
