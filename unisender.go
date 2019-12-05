@@ -83,9 +83,8 @@ func (u *UniSender) ExportContacts() contacts.ExportContactsRequest {
 }
 
 // IsContactInList checks whether the contact is in the specified user lists
-// See https://www.unisender.com/en/support/api/contacts/iscontactinlist/
-func (u *UniSender) IsContactInList() {
-
+func (u *UniSender) IsContactInList(email string, listIDs ...int64) contacts.IsContactInListRequest {
+	return contacts.IsContactInList(u.request(), email, listIDs...)
 }
 
 // GetContactCount returns the contacts list size.
