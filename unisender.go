@@ -94,10 +94,9 @@ func (u *UniSender) GetContactCount(listID int64) contacts.GetContactCountReques
 	return contacts.GetContactCount(u.request(), listID)
 }
 
-// GetTotalContactCount returns the contacts database size by the user login.
-// See https://www.unisender.com/en/support/api/partners/gettotalcontactscount/
-func (u *UniSender) GetTotalContactCount() {
-
+// GetTotalContactsCount returns the contacts database size by the user login.
+func (u *UniSender) GetTotalContactsCount(login string) contacts.GetTotalContactsCountRequest {
+	return contacts.GetTotalContactsCount(u.request(), login)
 }
 
 func (u *UniSender) request() *api.Request {
