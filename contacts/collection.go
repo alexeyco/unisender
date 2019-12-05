@@ -2,6 +2,11 @@ package contacts
 
 import "time"
 
+const (
+	defaultStatus       = "new"
+	defaultAvailability = "available"
+)
+
 type contactValue struct {
 	value               string
 	status              string
@@ -104,10 +109,8 @@ type Collection struct {
 
 func (c *Collection) Email(email string) *Contact {
 	contact := &Contact{
-		kind: "email",
-		value: &contactValue{
-			value: email,
-		},
+		kind:  "email",
+		value: c.newContactValue(email),
 	}
 
 	c.contacts = append(c.contacts, contact)
@@ -117,15 +120,21 @@ func (c *Collection) Email(email string) *Contact {
 
 func (c *Collection) Phone(phone string) *Contact {
 	contact := &Contact{
-		kind: "phone",
-		value: &contactValue{
-			value: phone,
-		},
+		kind:  "phone",
+		value: c.newContactValue(phone),
 	}
 
 	c.contacts = append(c.contacts, contact)
 
 	return contact
+}
+
+func (c *Collection) newContactValue(value string) *contactValue {
+	return &contactValue{
+		value:        value,
+		status:       defaultStatus,
+		availability: defaultAvailability,
+	}
 }
 
 func (c *Collection) SetFieldNames(fieldNames ...string) {
