@@ -72,10 +72,9 @@ func (u *UniSender) Exclude(contact string) contacts.ExcludeRequest {
 	return contacts.Exclude(u.request(), contact)
 }
 
-// ImportContacts
-// See https://www.unisender.com/en/support/api/contacts/importcontacts/
-func (u *UniSender) ImportContacts() {
-
+// ImportContacts imports contacts.
+func (u *UniSender) ImportContacts(collection *contacts.Collection) contacts.ImportContactsRequest {
+	return contacts.ImportContacts(u.request(), collection)
 }
 
 // ExportContacts export of contact data from UniSender.
