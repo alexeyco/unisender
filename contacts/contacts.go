@@ -13,7 +13,7 @@ type PersonList struct {
 	AddedAt time.Time `json:"added_at,omitempty"`
 }
 
-type Person struct {
+type PersonEmail struct {
 	Email        string            `json:"email"`
 	AddedAt      time.Time         `json:"added_at"`
 	Status       string            `json:"status"`
@@ -23,6 +23,10 @@ type Person struct {
 	LastRead     time.Time         `json:"last_read_datetime,omitempty"`
 	LastClick    time.Time         `json:"last_click_datetime,omitempty"`
 	Rating       float64           `json:"rating,omitempty"`
-	Lists        []Person          `json:"lists,omitempty"`
+	Lists        []PersonList      `json:"lists,omitempty"`
 	Fields       map[string]string `json:"fields,omitempty"`
+}
+
+type Person struct {
+	Email PersonEmail `json:"email"`
 }
