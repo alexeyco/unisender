@@ -5,7 +5,7 @@ import "time"
 type contactValue struct {
 	value               string
 	status              string
-	availability        bool
+	availability        string
 	addTime             time.Time
 	requestIP           string
 	confirmTime         time.Time
@@ -46,8 +46,28 @@ func (c *Contact) SetStatusUnsubscribed() {
 	c.value.status = "ubsubscribed"
 }
 
-func (c *Contact) SetAvailability(availability bool) {
-	c.value.availability = availability
+func (c *Contact) SetAvailabilityAvailable() {
+	c.value.availability = "available"
+}
+
+func (c *Contact) SetAvailabilityUnreachable() {
+	c.value.availability = "unreachable"
+}
+
+func (c *Contact) SetAvailabilityTempUnreachable() {
+	c.value.availability = "temp_unreachable"
+}
+
+func (c *Contact) SetAvailabilityMailboxFull() {
+	c.value.availability = "mailbox_full"
+}
+
+func (c *Contact) SetAvailabilitySpamRejected() {
+	c.value.availability = "spam_rejected"
+}
+
+func (c *Contact) SetAvailabilitySpamFolder() {
+	c.value.availability = "spam_folder"
 }
 
 func (c *Contact) SetEmailAddTime(addTime time.Time) {
