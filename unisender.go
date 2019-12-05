@@ -78,10 +78,9 @@ func (u *UniSender) ImportContacts() {
 
 }
 
-// ExportContacts
-// See https://www.unisender.com/en/support/api/contacts/exportcontacts/
-func (u *UniSender) ExportContacts() {
-
+// ExportContacts export of contact data from UniSender.
+func (u *UniSender) ExportContacts() contacts.ExportContactsRequest {
+	return contacts.ExportContacts(u.request())
 }
 
 // IsContactInList checks whether the contact is in the specified user lists
