@@ -1,7 +1,7 @@
 package contacts
 
 import (
-	"fmt"
+	"strconv"
 
 	"github.com/alexeyco/unisender/api"
 )
@@ -45,7 +45,7 @@ func (r *exportContactsRequest) NotifyUrl(notifyUrl string) ExportContactsReques
 }
 
 func (r *exportContactsRequest) ListID(listID int64) ExportContactsRequest {
-	r.request.Add("list_id", fmt.Sprintf("%d", listID))
+	r.request.Add("list_id", strconv.FormatInt(listID, 10))
 	return r
 }
 

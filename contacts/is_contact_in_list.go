@@ -1,7 +1,7 @@
 package contacts
 
 import (
-	"fmt"
+	"strconv"
 	"strings"
 
 	"github.com/alexeyco/unisender/api"
@@ -37,7 +37,7 @@ func (r *isContactInListRequest) Execute() (res bool, err error) {
 func IsContactInList(request *api.Request, email string, listIDs ...int64) IsContactInListRequest {
 	ids := make([]string, len(listIDs))
 	for n, id := range listIDs {
-		ids[n] = fmt.Sprintf("%d", id)
+		ids[n] = strconv.FormatInt(id, 10)
 	}
 
 	request.Add("email", email).

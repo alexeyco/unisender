@@ -1,7 +1,7 @@
 package contacts
 
 import (
-	"fmt"
+	"strconv"
 
 	"github.com/alexeyco/unisender/api"
 )
@@ -21,7 +21,7 @@ func (r *deleteListRequest) Execute() error {
 }
 
 func DeleteList(request *api.Request, listID int64) DeleteListRequest {
-	request.Add("list_id", fmt.Sprintf("%d", listID))
+	request.Add("list_id", strconv.FormatInt(listID, 10))
 
 	return &deleteListRequest{
 		request: request,

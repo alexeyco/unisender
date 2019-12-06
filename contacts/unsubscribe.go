@@ -1,7 +1,7 @@
 package contacts
 
 import (
-	"fmt"
+	"strconv"
 	"strings"
 
 	"github.com/alexeyco/unisender/api"
@@ -33,7 +33,7 @@ func (r *unsubscribeRequest) ContactTypePhone() UnsubscribeRequest {
 func (r *unsubscribeRequest) ListIDs(listID ...int64) UnsubscribeRequest {
 	ids := make([]string, len(listID))
 	for n, id := range listID {
-		ids[n] = fmt.Sprintf("%d", id)
+		ids[n] = strconv.FormatInt(id, 10)
 	}
 
 	r.request.Add("list_ids", strings.Join(ids, ","))

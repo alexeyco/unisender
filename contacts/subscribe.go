@@ -1,7 +1,7 @@
 package contacts
 
 import (
-	"fmt"
+	"strconv"
 	"strings"
 
 	"github.com/alexeyco/unisender/api"
@@ -71,7 +71,7 @@ func (r *subscribeRequest) Execute() (personID int64, err error) {
 func Subscribe(request *api.Request, listIDs ...int64) SubscribeRequest {
 	ids := make([]string, len(listIDs))
 	for n, id := range listIDs {
-		ids[n] = fmt.Sprintf("%d", id)
+		ids[n] = strconv.FormatInt(id, 10)
 	}
 
 	request.Add("list_ids", strings.Join(ids, ","))

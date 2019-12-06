@@ -1,7 +1,7 @@
 package contacts
 
 import (
-	"fmt"
+	"strconv"
 
 	"github.com/alexeyco/unisender/api"
 )
@@ -25,7 +25,7 @@ type getContactCountRequest struct {
 }
 
 func (r *getContactCountRequest) ParamsTagID(tagID int64) GetContactCountRequest {
-	r.request.Add("params[tagId]", fmt.Sprintf("%d", tagID))
+	r.request.Add("params[tagId]", strconv.FormatInt(tagID, 10))
 	return r
 }
 
@@ -56,7 +56,7 @@ func (r *getContactCountRequest) Execute() (count int64, err error) {
 }
 
 func GetContactCount(request *api.Request, listID int64) GetContactCountRequest {
-	request.Add("list_id", fmt.Sprintf("%d", listID))
+	request.Add("list_id", strconv.FormatInt(listID, 10))
 
 	return &getContactCountRequest{
 		request: request,

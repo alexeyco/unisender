@@ -1,7 +1,7 @@
 package contacts
 
 import (
-	"fmt"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -41,7 +41,7 @@ func (v *contactValue) toMap() map[string]string {
 func (v *contactValue) int64SliceToString(slice ...int64) string {
 	strSlice := make([]string, len(slice))
 	for n, v := range slice {
-		strSlice[n] = fmt.Sprintf("%d", v)
+		strSlice[n] = strconv.FormatInt(v, 10)
 	}
 
 	return strings.Join(strSlice, ",")

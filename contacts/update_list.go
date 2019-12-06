@@ -1,7 +1,7 @@
 package contacts
 
 import (
-	"fmt"
+	"strconv"
 
 	"github.com/alexeyco/unisender/api"
 )
@@ -33,7 +33,7 @@ func (r *updateListRequest) Execute() error {
 }
 
 func UpdateList(request *api.Request, listID int64, title string) UpdateListRequest {
-	request.Add("list_id", fmt.Sprintf("%d", listID)).
+	request.Add("list_id", strconv.FormatInt(listID, 10)).
 		Add("title", title)
 
 	return &updateListRequest{
