@@ -16,12 +16,12 @@ func (r *roundTripper) RoundTrip(req *http.Request) (res *http.Response, err err
 	return r.fn(req)
 }
 
-// NewRequest returns testing API request.
+// NewRequest returns test API request.
 func NewRequest(fn func(req *http.Request) (res *http.Response, err error)) *api.Request {
 	return api.NewRequest(NewClient(fn), api.DefaultLanguage)
 }
 
-// NewClient returns testing http client.
+// NewClient returns test http client.
 func NewClient(fn func(req *http.Request) (res *http.Response, err error)) *http.Client {
 	return &http.Client{
 		Transport: &roundTripper{
@@ -30,20 +30,24 @@ func NewClient(fn func(req *http.Request) (res *http.Response, err error)) *http
 	}
 }
 
+// RandomInt returns an int in the given interval.
 func RandomInt(min, max int) int {
 	return rand.Intn(max-min) + min
 }
 
+// RandomInt returns an int64 in the given interval.
 func RandomInt64(min, max int) int64 {
 	return int64(RandomInt(min, max))
 }
 
+// RandomTime random time.Time.
 func RandomTime(min, max int) time.Time {
 	return time.Now().AddDate(0, 0, -RandomInt(min, max))
 }
 
 const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 
+// RandomString returns random string with random length in given interval.
 func RandomString(min, max int) string {
 	length := RandomInt(min, max)
 
@@ -54,6 +58,7 @@ func RandomString(min, max int) string {
 	return string(b)
 }
 
+// RandomInt64Slice returns []int64 slice with random length in given interval.
 func RandomInt64Slice(min, max int) (slice []int64) {
 	l := RandomInt(min, max)
 	for i := 0; i < l; i++ {
@@ -63,6 +68,7 @@ func RandomInt64Slice(min, max int) (slice []int64) {
 	return slice
 }
 
+// RandomStringSlice returns []string slice with random length in given interval.
 func RandomStringSlice(min, max int) []string {
 	l := RandomInt(min, max)
 	slice := make([]string, l)
