@@ -3,7 +3,6 @@ package contacts_test
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"net/http"
 	"reflect"
@@ -11,23 +10,29 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/alexeyco/unisender/api"
 	"github.com/alexeyco/unisender/contacts"
+	"github.com/alexeyco/unisender/test"
 )
 
 func TestExportContactsRequest_NotifyUrl(t *testing.T) {
 	expectedResult := randomExportContactsResult()
 
-	expectedNotifyUrl := "https://notify-url.com"
+	expectedNotifyUrl := test.RandomString(12, 32)
 	var givenNotifyUrl string
 
-	req := newRequest(func(req *http.Request) (res *http.Response, err error) {
+	req := test.NewRequest(func(req *http.Request) (res *http.Response, err error) {
 		givenNotifyUrl = req.FormValue("notify_url")
 
-		response := exportContactResultToJson(expectedResult)
+		result := api.Response{
+			Result: expectedResult,
+		}
+
+		response, _ := json.Marshal(&result)
 
 		return &http.Response{
 			StatusCode: http.StatusOK,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(response)),
+			Body:       ioutil.NopCloser(bytes.NewBuffer(response)),
 		}, nil
 	})
 
@@ -47,17 +52,21 @@ func TestExportContactsRequest_NotifyUrl(t *testing.T) {
 func TestExportContactsRequest_ListID(t *testing.T) {
 	expectedResult := randomExportContactsResult()
 
-	expectedListID := int64(randomInt(9999, 999999))
+	expectedListID := test.RandomInt64(9999, 999999)
 	var givenListID int64
 
-	req := newRequest(func(req *http.Request) (res *http.Response, err error) {
+	req := test.NewRequest(func(req *http.Request) (res *http.Response, err error) {
 		givenListID, _ = strconv.ParseInt(req.FormValue("list_id"), 10, 64)
 
-		response := exportContactResultToJson(expectedResult)
+		result := api.Response{
+			Result: expectedResult,
+		}
+
+		response, _ := json.Marshal(&result)
 
 		return &http.Response{
 			StatusCode: http.StatusOK,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(response)),
+			Body:       ioutil.NopCloser(bytes.NewBuffer(response)),
 		}, nil
 	})
 
@@ -77,17 +86,21 @@ func TestExportContactsRequest_ListID(t *testing.T) {
 func TestExportContactsRequest_FieldNames(t *testing.T) {
 	expectedResult := randomExportContactsResult()
 
-	expectedFieldNames := randomStringSlice(16, 32)
+	expectedFieldNames := test.RandomStringSlice(16, 32)
 	var givenFieldNames []string
 
-	req := newRequest(func(req *http.Request) (res *http.Response, err error) {
+	req := test.NewRequest(func(req *http.Request) (res *http.Response, err error) {
 		givenFieldNames = strings.Split(req.FormValue("field_names"), ",")
 
-		response := exportContactResultToJson(expectedResult)
+		result := api.Response{
+			Result: expectedResult,
+		}
+
+		response, _ := json.Marshal(&result)
 
 		return &http.Response{
 			StatusCode: http.StatusOK,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(response)),
+			Body:       ioutil.NopCloser(bytes.NewBuffer(response)),
 		}, nil
 	})
 
@@ -107,17 +120,21 @@ func TestExportContactsRequest_FieldNames(t *testing.T) {
 func TestExportContactsRequest_Email(t *testing.T) {
 	expectedResult := randomExportContactsResult()
 
-	expectedEmail := "foo@bar.example"
+	expectedEmail := test.RandomString(12, 36)
 	var givenEmail string
 
-	req := newRequest(func(req *http.Request) (res *http.Response, err error) {
+	req := test.NewRequest(func(req *http.Request) (res *http.Response, err error) {
 		givenEmail = req.FormValue("email")
 
-		response := exportContactResultToJson(expectedResult)
+		result := api.Response{
+			Result: expectedResult,
+		}
+
+		response, _ := json.Marshal(&result)
 
 		return &http.Response{
 			StatusCode: http.StatusOK,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(response)),
+			Body:       ioutil.NopCloser(bytes.NewBuffer(response)),
 		}, nil
 	})
 
@@ -137,17 +154,21 @@ func TestExportContactsRequest_Email(t *testing.T) {
 func TestExportContactsRequest_Phone(t *testing.T) {
 	expectedResult := randomExportContactsResult()
 
-	expectedPhone := "+1234567890"
+	expectedPhone := test.RandomString(12, 32)
 	var givenPhone string
 
-	req := newRequest(func(req *http.Request) (res *http.Response, err error) {
+	req := test.NewRequest(func(req *http.Request) (res *http.Response, err error) {
 		givenPhone = req.FormValue("phone")
 
-		response := exportContactResultToJson(expectedResult)
+		result := api.Response{
+			Result: expectedResult,
+		}
+
+		response, _ := json.Marshal(&result)
 
 		return &http.Response{
 			StatusCode: http.StatusOK,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(response)),
+			Body:       ioutil.NopCloser(bytes.NewBuffer(response)),
 		}, nil
 	})
 
@@ -167,17 +188,21 @@ func TestExportContactsRequest_Phone(t *testing.T) {
 func TestExportContactsRequest_Tag(t *testing.T) {
 	expectedResult := randomExportContactsResult()
 
-	expectedTag := fmt.Sprintf("%d", randomInt(9999, 999999))
+	expectedTag := test.RandomString(12, 32)
 	var givenTag string
 
-	req := newRequest(func(req *http.Request) (res *http.Response, err error) {
+	req := test.NewRequest(func(req *http.Request) (res *http.Response, err error) {
 		givenTag = req.FormValue("tag")
 
-		response := exportContactResultToJson(expectedResult)
+		result := api.Response{
+			Result: expectedResult,
+		}
+
+		response, _ := json.Marshal(&result)
 
 		return &http.Response{
 			StatusCode: http.StatusOK,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(response)),
+			Body:       ioutil.NopCloser(bytes.NewBuffer(response)),
 		}, nil
 	})
 
@@ -200,14 +225,18 @@ func TestExportContactsRequest_EmailStatusNew(t *testing.T) {
 	expectedEmailStatus := "new"
 	var givenEmailStatus string
 
-	req := newRequest(func(req *http.Request) (res *http.Response, err error) {
+	req := test.NewRequest(func(req *http.Request) (res *http.Response, err error) {
 		givenEmailStatus = req.FormValue("email_status")
 
-		response := exportContactResultToJson(expectedResult)
+		result := api.Response{
+			Result: expectedResult,
+		}
+
+		response, _ := json.Marshal(&result)
 
 		return &http.Response{
 			StatusCode: http.StatusOK,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(response)),
+			Body:       ioutil.NopCloser(bytes.NewBuffer(response)),
 		}, nil
 	})
 
@@ -230,14 +259,18 @@ func TestExportContactsRequest_EmailStatusInvited(t *testing.T) {
 	expectedEmailStatus := "invited"
 	var givenEmailStatus string
 
-	req := newRequest(func(req *http.Request) (res *http.Response, err error) {
+	req := test.NewRequest(func(req *http.Request) (res *http.Response, err error) {
 		givenEmailStatus = req.FormValue("email_status")
 
-		response := exportContactResultToJson(expectedResult)
+		result := api.Response{
+			Result: expectedResult,
+		}
+
+		response, _ := json.Marshal(&result)
 
 		return &http.Response{
 			StatusCode: http.StatusOK,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(response)),
+			Body:       ioutil.NopCloser(bytes.NewBuffer(response)),
 		}, nil
 	})
 
@@ -260,14 +293,18 @@ func TestExportContactsRequest_EmailStatusActive(t *testing.T) {
 	expectedEmailStatus := "active"
 	var givenEmailStatus string
 
-	req := newRequest(func(req *http.Request) (res *http.Response, err error) {
+	req := test.NewRequest(func(req *http.Request) (res *http.Response, err error) {
 		givenEmailStatus = req.FormValue("email_status")
 
-		response := exportContactResultToJson(expectedResult)
+		result := api.Response{
+			Result: expectedResult,
+		}
+
+		response, _ := json.Marshal(&result)
 
 		return &http.Response{
 			StatusCode: http.StatusOK,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(response)),
+			Body:       ioutil.NopCloser(bytes.NewBuffer(response)),
 		}, nil
 	})
 
@@ -290,14 +327,18 @@ func TestExportContactsRequest_EmailStatusInactive(t *testing.T) {
 	expectedEmailStatus := "inactive"
 	var givenEmailStatus string
 
-	req := newRequest(func(req *http.Request) (res *http.Response, err error) {
+	req := test.NewRequest(func(req *http.Request) (res *http.Response, err error) {
 		givenEmailStatus = req.FormValue("email_status")
 
-		response := exportContactResultToJson(expectedResult)
+		result := api.Response{
+			Result: expectedResult,
+		}
+
+		response, _ := json.Marshal(&result)
 
 		return &http.Response{
 			StatusCode: http.StatusOK,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(response)),
+			Body:       ioutil.NopCloser(bytes.NewBuffer(response)),
 		}, nil
 	})
 
@@ -320,14 +361,18 @@ func TestExportContactsRequest_EmailStatusUnsubscribed(t *testing.T) {
 	expectedEmailStatus := "unsubscribed"
 	var givenEmailStatus string
 
-	req := newRequest(func(req *http.Request) (res *http.Response, err error) {
+	req := test.NewRequest(func(req *http.Request) (res *http.Response, err error) {
 		givenEmailStatus = req.FormValue("email_status")
 
-		response := exportContactResultToJson(expectedResult)
+		result := api.Response{
+			Result: expectedResult,
+		}
+
+		response, _ := json.Marshal(&result)
 
 		return &http.Response{
 			StatusCode: http.StatusOK,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(response)),
+			Body:       ioutil.NopCloser(bytes.NewBuffer(response)),
 		}, nil
 	})
 
@@ -350,14 +395,18 @@ func TestExportContactsRequest_EmailStatusBlocked(t *testing.T) {
 	expectedEmailStatus := "blocked"
 	var givenEmailStatus string
 
-	req := newRequest(func(req *http.Request) (res *http.Response, err error) {
+	req := test.NewRequest(func(req *http.Request) (res *http.Response, err error) {
 		givenEmailStatus = req.FormValue("email_status")
 
-		response := exportContactResultToJson(expectedResult)
+		result := api.Response{
+			Result: expectedResult,
+		}
+
+		response, _ := json.Marshal(&result)
 
 		return &http.Response{
 			StatusCode: http.StatusOK,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(response)),
+			Body:       ioutil.NopCloser(bytes.NewBuffer(response)),
 		}, nil
 	})
 
@@ -380,14 +429,18 @@ func TestExportContactsRequest_EmailStatusActivationRequested(t *testing.T) {
 	expectedEmailStatus := "activation_requested"
 	var givenEmailStatus string
 
-	req := newRequest(func(req *http.Request) (res *http.Response, err error) {
+	req := test.NewRequest(func(req *http.Request) (res *http.Response, err error) {
 		givenEmailStatus = req.FormValue("email_status")
 
-		response := exportContactResultToJson(expectedResult)
+		result := api.Response{
+			Result: expectedResult,
+		}
+
+		response, _ := json.Marshal(&result)
 
 		return &http.Response{
 			StatusCode: http.StatusOK,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(response)),
+			Body:       ioutil.NopCloser(bytes.NewBuffer(response)),
 		}, nil
 	})
 
@@ -410,14 +463,18 @@ func TestExportContactsRequest_PhoneStatusNew(t *testing.T) {
 	expectedPhoneStatus := "new"
 	var givenPhoneStatus string
 
-	req := newRequest(func(req *http.Request) (res *http.Response, err error) {
+	req := test.NewRequest(func(req *http.Request) (res *http.Response, err error) {
 		givenPhoneStatus = req.FormValue("phone_status")
 
-		response := exportContactResultToJson(expectedResult)
+		result := api.Response{
+			Result: expectedResult,
+		}
+
+		response, _ := json.Marshal(&result)
 
 		return &http.Response{
 			StatusCode: http.StatusOK,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(response)),
+			Body:       ioutil.NopCloser(bytes.NewBuffer(response)),
 		}, nil
 	})
 
@@ -440,14 +497,18 @@ func TestExportContactsRequest_PhoneStatusActive(t *testing.T) {
 	expectedPhoneStatus := "active"
 	var givenPhoneStatus string
 
-	req := newRequest(func(req *http.Request) (res *http.Response, err error) {
+	req := test.NewRequest(func(req *http.Request) (res *http.Response, err error) {
 		givenPhoneStatus = req.FormValue("phone_status")
 
-		response := exportContactResultToJson(expectedResult)
+		result := api.Response{
+			Result: expectedResult,
+		}
+
+		response, _ := json.Marshal(&result)
 
 		return &http.Response{
 			StatusCode: http.StatusOK,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(response)),
+			Body:       ioutil.NopCloser(bytes.NewBuffer(response)),
 		}, nil
 	})
 
@@ -470,14 +531,18 @@ func TestExportContactsRequest_PhoneStatusInactive(t *testing.T) {
 	expectedPhoneStatus := "inactive"
 	var givenPhoneStatus string
 
-	req := newRequest(func(req *http.Request) (res *http.Response, err error) {
+	req := test.NewRequest(func(req *http.Request) (res *http.Response, err error) {
 		givenPhoneStatus = req.FormValue("phone_status")
 
-		response := exportContactResultToJson(expectedResult)
+		result := api.Response{
+			Result: expectedResult,
+		}
+
+		response, _ := json.Marshal(&result)
 
 		return &http.Response{
 			StatusCode: http.StatusOK,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(response)),
+			Body:       ioutil.NopCloser(bytes.NewBuffer(response)),
 		}, nil
 	})
 
@@ -500,14 +565,18 @@ func TestExportContactsRequest_PhoneStatusUnsubscribed(t *testing.T) {
 	expectedPhoneStatus := "unsubscribed"
 	var givenPhoneStatus string
 
-	req := newRequest(func(req *http.Request) (res *http.Response, err error) {
+	req := test.NewRequest(func(req *http.Request) (res *http.Response, err error) {
 		givenPhoneStatus = req.FormValue("phone_status")
 
-		response := exportContactResultToJson(expectedResult)
+		result := api.Response{
+			Result: expectedResult,
+		}
+
+		response, _ := json.Marshal(&result)
 
 		return &http.Response{
 			StatusCode: http.StatusOK,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(response)),
+			Body:       ioutil.NopCloser(bytes.NewBuffer(response)),
 		}, nil
 	})
 
@@ -530,14 +599,18 @@ func TestExportContactsRequest_PhoneStatusBlocked(t *testing.T) {
 	expectedPhoneStatus := "blocked"
 	var givenPhoneStatus string
 
-	req := newRequest(func(req *http.Request) (res *http.Response, err error) {
+	req := test.NewRequest(func(req *http.Request) (res *http.Response, err error) {
 		givenPhoneStatus = req.FormValue("phone_status")
 
-		response := exportContactResultToJson(expectedResult)
+		result := api.Response{
+			Result: expectedResult,
+		}
+
+		response, _ := json.Marshal(&result)
 
 		return &http.Response{
 			StatusCode: http.StatusOK,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(response)),
+			Body:       ioutil.NopCloser(bytes.NewBuffer(response)),
 		}, nil
 	})
 
@@ -557,12 +630,16 @@ func TestExportContactsRequest_PhoneStatusBlocked(t *testing.T) {
 func TestExportContactsRequest_Execute(t *testing.T) {
 	expectedResult := randomExportContactsResult()
 
-	req := newRequest(func(req *http.Request) (res *http.Response, err error) {
-		response := exportContactResultToJson(expectedResult)
+	req := test.NewRequest(func(req *http.Request) (res *http.Response, err error) {
+		result := api.Response{
+			Result: expectedResult,
+		}
+
+		response, _ := json.Marshal(&result)
 
 		return &http.Response{
 			StatusCode: http.StatusOK,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(response)),
+			Body:       ioutil.NopCloser(bytes.NewBuffer(response)),
 		}, nil
 	})
 
@@ -573,29 +650,14 @@ func TestExportContactsRequest_Execute(t *testing.T) {
 		t.Fatalf(`Error should be nil, "%s" given`, err.Error())
 	}
 
-	if reflect.DeepEqual(expectedResult, givenResult) {
+	if !reflect.DeepEqual(expectedResult, givenResult) {
 		t.Fatal("Results should be equal")
 	}
 }
 
 func randomExportContactsResult() *contacts.ExportContactResult {
 	return &contacts.ExportContactResult{
-		TaskUUID: fmt.Sprintf("%d", randomInt(9999, 9999999)),
-		Status:   fmt.Sprintf("%d", randomInt(9999, 9999999)),
+		TaskUUID: test.RandomString(12, 32),
+		Status:   test.RandomString(12, 32),
 	}
-}
-
-func exportContactResultToJson(res *contacts.ExportContactResult) string {
-	b, _ := json.Marshal(res)
-	return string(b)
-}
-
-func randomStringSlice(min, max int) []string {
-	l := randomInt(min, max)
-	slice := make([]string, l)
-	for i := 0; i < l; i++ {
-		slice[i] = fmt.Sprintf("%d", randomInt(9999, 999999))
-	}
-
-	return slice
 }

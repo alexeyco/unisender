@@ -12,16 +12,17 @@ import (
 
 	"github.com/alexeyco/unisender/api"
 	"github.com/alexeyco/unisender/contacts"
+	"github.com/alexeyco/unisender/test"
 )
 
 func TestIsContactInListRequest_ConditionOr(t *testing.T) {
-	expectedEmail := randomString(12, 36)
-	expectedListIDs := randomInt64Slice(12, 32)
+	expectedEmail := test.RandomString(12, 36)
+	expectedListIDs := test.RandomInt64Slice(12, 32)
 
 	expectedCondition := "or"
 	var givenCondition string
 
-	req := newRequest(func(req *http.Request) (res *http.Response, err error) {
+	req := test.NewRequest(func(req *http.Request) (res *http.Response, err error) {
 		givenCondition = req.FormValue("condition")
 
 		result := api.Response{
@@ -50,13 +51,13 @@ func TestIsContactInListRequest_ConditionOr(t *testing.T) {
 }
 
 func TestIsContactInListRequest_ConditionAnd(t *testing.T) {
-	expectedEmail := randomString(12, 36)
-	expectedListIDs := randomInt64Slice(12, 32)
+	expectedEmail := test.RandomString(12, 36)
+	expectedListIDs := test.RandomInt64Slice(12, 32)
 
 	expectedCondition := "and"
 	var givenCondition string
 
-	req := newRequest(func(req *http.Request) (res *http.Response, err error) {
+	req := test.NewRequest(func(req *http.Request) (res *http.Response, err error) {
 		givenCondition = req.FormValue("condition")
 
 		result := api.Response{
@@ -85,10 +86,10 @@ func TestIsContactInListRequest_ConditionAnd(t *testing.T) {
 }
 
 func TestIsContactInListRequest_Execute(t *testing.T) {
-	expectedEmail := randomString(12, 36)
+	expectedEmail := test.RandomString(12, 36)
 	var givenEmail string
 
-	expectedListIDs := randomInt64Slice(12, 32)
+	expectedListIDs := test.RandomInt64Slice(12, 32)
 	var givenListIDs []int64
 
 	expectedCondition := "and"
@@ -97,7 +98,7 @@ func TestIsContactInListRequest_Execute(t *testing.T) {
 	expectedResult := true
 	var givenResult bool
 
-	req := newRequest(func(req *http.Request) (res *http.Response, err error) {
+	req := test.NewRequest(func(req *http.Request) (res *http.Response, err error) {
 		givenEmail = req.FormValue("email")
 		listIDs := req.FormValue("list_ids")
 		givenCondition = req.FormValue("condition")

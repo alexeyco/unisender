@@ -1,22 +1,22 @@
 package contacts_test
 
 import (
-	"fmt"
 	"net/http"
 	"strconv"
 	"testing"
 
 	"github.com/alexeyco/unisender/contacts"
+	"github.com/alexeyco/unisender/test"
 )
 
 func TestUpdateListRequest_Execute(t *testing.T) {
-	expectedListID := int64(randomInt(9999, 999999))
+	expectedListID := test.RandomInt64(9999, 999999)
 	var givenListID int64
 
-	expectedTitle := fmt.Sprintf("Title #%d", randomInt(9999, 999999))
+	expectedTitle := test.RandomString(12, 36)
 	var givenTitle string
 
-	req := newRequest(func(req *http.Request) (res *http.Response, err error) {
+	req := test.NewRequest(func(req *http.Request) (res *http.Response, err error) {
 		givenListID, err = strconv.ParseInt(req.FormValue("list_id"), 10, 64)
 		givenTitle = req.FormValue("title")
 

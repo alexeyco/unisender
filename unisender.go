@@ -62,9 +62,8 @@ func (u *UniSender) Subscribe() contacts.SubscribeRequest {
 }
 
 // Unsubscribe unsubscribes the contact email or phone number from one or several lists.
-// See https://www.unisender.com/en/support/api/partners/unsubscribe/
-func (u *UniSender) Unsubscribe() {
-
+func (u *UniSender) Unsubscribe(contact string) contacts.UnsubscribeRequest {
+	return contacts.Unsubscribe(u.request(), contact)
 }
 
 // Exclude excludes the contact’s email or phone number from one or several lists.

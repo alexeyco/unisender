@@ -10,16 +10,17 @@ import (
 
 	"github.com/alexeyco/unisender/api"
 	"github.com/alexeyco/unisender/contacts"
+	"github.com/alexeyco/unisender/test"
 )
 
 func TestGetContactCountRequest_ParamsTagID(t *testing.T) {
-	expectedListID := int64(randomInt(9999, 999999))
+	expectedListID := test.RandomInt64(9999, 999999)
 	expectedResult := randomGetContactCountResult()
 
-	expectedParamsTagID := int64(randomInt(9999, 999999))
+	expectedParamsTagID := test.RandomInt64(9999, 999999)
 	var givenParamsTagID int64
 
-	req := newRequest(func(req *http.Request) (res *http.Response, err error) {
+	req := test.NewRequest(func(req *http.Request) (res *http.Response, err error) {
 		givenParamsTagID, _ = strconv.ParseInt(req.FormValue("params[tagId]"), 10, 64)
 
 		result := api.Response{
@@ -48,13 +49,13 @@ func TestGetContactCountRequest_ParamsTagID(t *testing.T) {
 }
 
 func TestGetContactCountRequest_ParamsTypeAddress(t *testing.T) {
-	expectedListID := int64(randomInt(9999, 999999))
+	expectedListID := test.RandomInt64(9999, 999999)
 	expectedResult := randomGetContactCountResult()
 
 	expectedParamsType := "address"
 	var givenParamsType string
 
-	req := newRequest(func(req *http.Request) (res *http.Response, err error) {
+	req := test.NewRequest(func(req *http.Request) (res *http.Response, err error) {
 		givenParamsType = req.FormValue("params[type]")
 
 		result := api.Response{
@@ -83,13 +84,13 @@ func TestGetContactCountRequest_ParamsTypeAddress(t *testing.T) {
 }
 
 func TestGetContactCountRequest_ParamsTypePhone(t *testing.T) {
-	expectedListID := int64(randomInt(9999, 999999))
+	expectedListID := test.RandomInt64(9999, 999999)
 	expectedResult := randomGetContactCountResult()
 
 	expectedParamsType := "phone"
 	var givenParamsType string
 
-	req := newRequest(func(req *http.Request) (res *http.Response, err error) {
+	req := test.NewRequest(func(req *http.Request) (res *http.Response, err error) {
 		givenParamsType = req.FormValue("params[type]")
 
 		result := api.Response{
@@ -118,13 +119,13 @@ func TestGetContactCountRequest_ParamsTypePhone(t *testing.T) {
 }
 
 func TestGetContactCountRequest_ParamsSearch(t *testing.T) {
-	expectedListID := int64(randomInt(9999, 999999))
+	expectedListID := test.RandomInt64(9999, 999999)
 	expectedResult := randomGetContactCountResult()
 
-	expectedParamsSearch := randomString(12, 48)
+	expectedParamsSearch := test.RandomString(12, 36)
 	var givenParamsSearch string
 
-	req := newRequest(func(req *http.Request) (res *http.Response, err error) {
+	req := test.NewRequest(func(req *http.Request) (res *http.Response, err error) {
 		givenParamsSearch = req.FormValue("params[search]")
 
 		result := api.Response{
@@ -153,12 +154,12 @@ func TestGetContactCountRequest_ParamsSearch(t *testing.T) {
 }
 
 func TestGetContactCountRequest_Execute(t *testing.T) {
-	expectedListID := int64(randomInt(9999, 999999))
+	expectedListID := test.RandomInt64(9999, 999999)
 	var givenListID int64
 
 	expectedResult := randomGetContactCountResult()
 
-	req := newRequest(func(req *http.Request) (res *http.Response, err error) {
+	req := test.NewRequest(func(req *http.Request) (res *http.Response, err error) {
 		givenListID, _ = strconv.ParseInt(req.FormValue("list_id"), 10, 64)
 
 		result := api.Response{
@@ -191,6 +192,6 @@ func TestGetContactCountRequest_Execute(t *testing.T) {
 
 func randomGetContactCountResult() *contacts.GetContactCountResult {
 	return &contacts.GetContactCountResult{
-		Count: int64(randomInt(9999, 999999)),
+		Count: test.RandomInt64(9999, 999999),
 	}
 }

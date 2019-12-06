@@ -9,15 +9,16 @@ import (
 
 	"github.com/alexeyco/unisender/api"
 	"github.com/alexeyco/unisender/contacts"
+	"github.com/alexeyco/unisender/test"
 )
 
 func TestGetTotalContactCountRequest_Execute(t *testing.T) {
-	expectedLogin := randomString(12, 36)
+	expectedLogin := test.RandomString(12, 36)
 	var givenLogin string
 
 	expectedResult := randomGetTotalContactsCountResult()
 
-	req := newRequest(func(req *http.Request) (res *http.Response, err error) {
+	req := test.NewRequest(func(req *http.Request) (res *http.Response, err error) {
 		givenLogin = req.FormValue("login")
 
 		result := api.Response{
@@ -50,6 +51,6 @@ func TestGetTotalContactCountRequest_Execute(t *testing.T) {
 
 func randomGetTotalContactsCountResult() *contacts.GetTotalContactsCountResponse {
 	return &contacts.GetTotalContactsCountResponse{
-		Total: int64(randomInt(9999, 999999)),
+		Total: test.RandomInt64(9999, 999999),
 	}
 }

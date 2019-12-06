@@ -2,29 +2,37 @@ package contacts_test
 
 import (
 	"bytes"
-	"fmt"
+	"encoding/json"
 	"io/ioutil"
 	"net/http"
 	"testing"
 
+	"github.com/alexeyco/unisender/api"
 	"github.com/alexeyco/unisender/contacts"
+	"github.com/alexeyco/unisender/test"
 )
 
 func TestCreateListRequest_BeforeSubscribeUrl(t *testing.T) {
-	expectedListID := int64(randomInt(9999, 999999))
-	expectedTitle := fmt.Sprintf("Title #%d", randomInt(9999, 999999))
+	expectedListID := test.RandomInt64(9999, 999999)
+	expectedTitle := test.RandomString(12, 36)
 
-	expectedBeforeSubscribeUrl := "https://before-subscribe.url"
+	expectedBeforeSubscribeUrl := test.RandomString(12, 36)
 	var givenBeforeSubscribeUrl string
 
-	req := newRequest(func(req *http.Request) (res *http.Response, err error) {
+	req := test.NewRequest(func(req *http.Request) (res *http.Response, err error) {
 		givenBeforeSubscribeUrl = req.FormValue("before_subscribe_url")
 
-		response := fmt.Sprintf(`{"result":{"id":%d}}`, expectedListID)
+		result := api.Response{
+			Result: &contacts.CreateListResponse{
+				ID: expectedListID,
+			},
+		}
+
+		response, _ := json.Marshal(result)
 
 		return &http.Response{
 			StatusCode: http.StatusOK,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(response)),
+			Body:       ioutil.NopCloser(bytes.NewBuffer(response)),
 		}, nil
 	})
 
@@ -42,20 +50,26 @@ func TestCreateListRequest_BeforeSubscribeUrl(t *testing.T) {
 }
 
 func TestCreateListRequest_AfterSubscribeUrl(t *testing.T) {
-	expectedListID := int64(randomInt(9999, 999999))
-	expectedTitle := fmt.Sprintf("Title #%d", randomInt(9999, 999999))
+	expectedListID := test.RandomInt64(9999, 999999)
+	expectedTitle := test.RandomString(12, 36)
 
-	expectedAfterSubscribeUrl := "https://after-subscribe.url"
+	expectedAfterSubscribeUrl := test.RandomString(12, 36)
 	var givenAfterSubscribeUrl string
 
-	req := newRequest(func(req *http.Request) (res *http.Response, err error) {
+	req := test.NewRequest(func(req *http.Request) (res *http.Response, err error) {
 		givenAfterSubscribeUrl = req.FormValue("after_subscribe_url")
 
-		response := fmt.Sprintf(`{"result":{"id":%d}}`, expectedListID)
+		result := api.Response{
+			Result: &contacts.CreateListResponse{
+				ID: expectedListID,
+			},
+		}
+
+		response, _ := json.Marshal(result)
 
 		return &http.Response{
 			StatusCode: http.StatusOK,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(response)),
+			Body:       ioutil.NopCloser(bytes.NewBuffer(response)),
 		}, nil
 	})
 
@@ -73,19 +87,25 @@ func TestCreateListRequest_AfterSubscribeUrl(t *testing.T) {
 }
 
 func TestCreateListRequest_Execute(t *testing.T) {
-	expectedListID := int64(randomInt(9999, 999999))
+	expectedListID := test.RandomInt64(9999, 999999)
 
-	expectedTitle := fmt.Sprintf("Title #%d", randomInt(9999, 999999))
+	expectedTitle := test.RandomString(12, 36)
 	var givenTitle string
 
-	req := newRequest(func(req *http.Request) (res *http.Response, err error) {
+	req := test.NewRequest(func(req *http.Request) (res *http.Response, err error) {
 		givenTitle = req.FormValue("title")
 
-		response := fmt.Sprintf(`{"result":{"id":%d}}`, expectedListID)
+		result := api.Response{
+			Result: &contacts.CreateListResponse{
+				ID: expectedListID,
+			},
+		}
+
+		response, _ := json.Marshal(result)
 
 		return &http.Response{
 			StatusCode: http.StatusOK,
-			Body:       ioutil.NopCloser(bytes.NewBufferString(response)),
+			Body:       ioutil.NopCloser(bytes.NewBuffer(response)),
 		}, nil
 	})
 

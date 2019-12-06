@@ -6,13 +6,14 @@ import (
 	"testing"
 
 	"github.com/alexeyco/unisender/contacts"
+	"github.com/alexeyco/unisender/test"
 )
 
 func TestDeleteListRequest_Execute(t *testing.T) {
-	expectedListID := int64(randomInt(9999, 999999))
+	expectedListID := test.RandomInt64(9999, 999999)
 	var givenListID int64
 
-	req := newRequest(func(req *http.Request) (res *http.Response, err error) {
+	req := test.NewRequest(func(req *http.Request) (res *http.Response, err error) {
 		givenListID, _ = strconv.ParseInt(req.FormValue("list_id"), 10, 64)
 
 		return &http.Response{

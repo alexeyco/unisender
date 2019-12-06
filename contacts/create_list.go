@@ -12,7 +12,7 @@ type CreateListRequest interface {
 	Execute() (int64, error)
 }
 
-type createListResponse struct {
+type CreateListResponse struct {
 	ID int64 `json:"id"`
 }
 
@@ -31,7 +31,7 @@ func (r *createListRequest) AfterSubscribeUrl(u string) CreateListRequest {
 }
 
 func (r *createListRequest) Execute() (listID int64, err error) {
-	var res createListResponse
+	var res CreateListResponse
 	if err = r.request.Execute("createList", &res); err != nil {
 		return
 	}
