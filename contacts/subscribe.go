@@ -1,6 +1,7 @@
 package contacts
 
 import (
+	"fmt"
 	"strconv"
 	"strings"
 
@@ -10,16 +11,20 @@ import (
 // See https://www.unisender.com/en/support/api/contacts/subscribe/
 
 type SubscribeRequest interface {
+	Field(field, value string) SubscribeRequest
 	Email(email string) SubscribeRequest
 	Phone(phone string) SubscribeRequest
-	Name(name string) SubscribeRequest
 	Tags(tags ...string) SubscribeRequest
-	DoubleOptin() SubscribeRequest
-	Overwrite() SubscribeRequest
+	DoubleOptinUnconfirmed() SubscribeRequest
+	DoubleOptinConfirmed() SubscribeRequest
+	DoubleOptinConfirmedIfActiveOrNew() SubscribeRequest
+	DoNotOverwrite() SubscribeRequest
+	OverwriteAll() SubscribeRequest
+	OverwritePartially() SubscribeRequest
 	Execute() (personID int64, err error)
 }
 
-type subscribeResponse struct {
+type SubscribeResponse struct {
 	PersonID int64 `json:"person_id"`
 }
 
@@ -27,19 +32,17 @@ type subscribeRequest struct {
 	request *api.Request
 }
 
-func (r *subscribeRequest) Email(email string) SubscribeRequest {
-	r.request.Add("fields[email]", email)
+func (r *subscribeRequest) Field(field, value string) SubscribeRequest {
+	r.request.Add(fmt.Sprintf("fields[%s]", field), value)
 	return r
+}
+
+func (r *subscribeRequest) Email(email string) SubscribeRequest {
+	return r.Field("email", email)
 }
 
 func (r *subscribeRequest) Phone(phone string) SubscribeRequest {
-	r.request.Add("fields[phone]", phone)
-	return r
-}
-
-func (r *subscribeRequest) Name(name string) SubscribeRequest {
-	r.request.Add("fields[Name]", name)
-	return r
+	return r.Field("phone", phone)
 }
 
 func (r *subscribeRequest) Tags(tags ...string) SubscribeRequest {
@@ -47,18 +50,38 @@ func (r *subscribeRequest) Tags(tags ...string) SubscribeRequest {
 	return r
 }
 
-func (r *subscribeRequest) DoubleOptin() SubscribeRequest {
+func (r *subscribeRequest) DoubleOptinUnconfirmed() SubscribeRequest {
 	r.request.Add("double_optin", "0")
 	return r
 }
 
-func (r *subscribeRequest) Overwrite() SubscribeRequest {
+func (r *subscribeRequest) DoubleOptinConfirmed() SubscribeRequest {
+	r.request.Add("double_optin", "3")
+	return r
+}
+
+func (r *subscribeRequest) DoubleOptinConfirmedIfActiveOrNew() SubscribeRequest {
+	r.request.Add("double_optin", "4")
+	return r
+}
+
+func (r *subscribeRequest) DoNotOverwrite() SubscribeRequest {
 	r.request.Add("overwrite", "0")
 	return r
 }
 
+func (r *subscribeRequest) OverwriteAll() SubscribeRequest {
+	r.request.Add("overwrite", "1")
+	return r
+}
+
+func (r *subscribeRequest) OverwritePartially() SubscribeRequest {
+	r.request.Add("overwrite", "2")
+	return r
+}
+
 func (r *subscribeRequest) Execute() (personID int64, err error) {
-	var res subscribeResponse
+	var res SubscribeResponse
 	if err = r.request.Execute("subscribe", &res); err != nil {
 		return
 	}
