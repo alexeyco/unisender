@@ -1,6 +1,13 @@
+# IDE
 /.idea
+
+# Dev tools
 /Dockerfile
 /docker-compose.yml
+
+# Vendor directory
 /vendor
+
+# Coverage reports
 /*.coverprofile
 /*.out
