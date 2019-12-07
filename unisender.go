@@ -101,6 +101,7 @@ func (u *UniSender) request() *api.Request {
 	defer u.mu.RUnlock()
 
 	return api.NewRequest(u.client, u.language).
+		Add("format", "json").
 		Add("api_key", u.apiKey)
 }
 
