@@ -151,7 +151,7 @@ func TestGetContactRequest_Execute(t *testing.T) {
 		t.Fatalf(`Email should be "%s", "%s" given`, expectedEmail, givenEmail)
 	}
 
-	if reflect.DeepEqual(expectedResult, givenResult) {
+	if !reflect.DeepEqual(expectedResult, givenResult) {
 		t.Fatal("Results should be equal")
 	}
 }
