@@ -137,6 +137,13 @@ func (c *ImportContactsContact) SetExcludedListIDs(listIDs ...int64) *ImportCont
 	return c.setField("excluded_list_ids", c.int64SliceToString(listIDs...), true)
 }
 
+func (c *ImportContactsContact) SetField(name, value string) *ImportContactsContact {
+	c.mu.Lock()
+	defer c.mu.Unlock()
+
+	return c.setField(name, value)
+}
+
 func (c *ImportContactsContact) setField(name, value string, withKind ...bool) *ImportContactsContact {
 	if len(withKind) > 0 && withKind[0] {
 		name = fmt.Sprintf("%s_%s", c.kind, name)
