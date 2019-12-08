@@ -12,7 +12,7 @@ type UniSender struct {
 	apiKey   string
 	language string
 	client   *http.Client
-	logger   Logger
+	logger   api.Logger
 	mu       sync.RWMutex
 }
 
@@ -33,7 +33,7 @@ func (u *UniSender) SetClient(client *http.Client) {
 }
 
 // SetLogger sets logger to UniSender client.
-func (u *UniSender) SetLogger(logger Logger) {
+func (u *UniSender) SetLogger(logger api.Logger) {
 	u.mu.Lock()
 	defer u.mu.Unlock()
 
@@ -110,6 +110,7 @@ func (u *UniSender) request() *api.Request {
 	defer u.mu.RUnlock()
 
 	return api.NewRequest(u.client, u.language).
+		SetLogger(u.logger).
 		Add("format", "json").
 		Add("api_key", u.apiKey)
 }

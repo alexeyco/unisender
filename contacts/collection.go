@@ -1,201 +1,211 @@
 package contacts
 
 import (
+	"fmt"
 	"strconv"
 	"strings"
+	"sync"
 	"time"
 )
 
-const (
-	defaultStatus       = "new"
-	defaultAvailability = "available"
-)
-
-type contactValue struct {
-	value               string
-	status              string
-	availability        string
-	addTime             time.Time
-	requestIP           string
-	confirmTime         time.Time
-	listIDs             []int64
-	subscribeTimes      []time.Time
-	unsubscribedListIDs []int64
-	excludedListIDs     []int64
-}
-
-func (v *contactValue) toMap() map[string]string {
-	return map[string]string{
-		"status":                v.status,
-		"availability":          v.availability,
-		"add_time":              v.addTime.String(),
-		"request_ip":            v.requestIP,
-		"confirm_time":          v.confirmTime.String(),
-		"list_ids":              v.int64SliceToString(v.listIDs...),
-		"subscribe_times":       v.timeSliceToString(v.subscribeTimes...),
-		"unsubscribed_list_ids": v.int64SliceToString(v.unsubscribedListIDs...),
-		"excluded_list_ids":     v.int64SliceToString(v.excludedListIDs...),
-	}
-}
-
-func (v *contactValue) int64SliceToString(slice ...int64) string {
-	strSlice := make([]string, len(slice))
-	for n, v := range slice {
-		strSlice[n] = strconv.FormatInt(v, 10)
-	}
-
-	return strings.Join(strSlice, ",")
-}
-
-func (v *contactValue) timeSliceToString(slice ...time.Time) string {
-	strSlice := make([]string, len(slice))
-	for n, v := range slice {
-		strSlice[n] = v.String()
-	}
-
-	return strings.Join(strSlice, ",")
-}
-
 type Contact struct {
-	kind   string
-	value  *contactValue
-	tags   []string
-	delete bool
+	mu         sync.RWMutex
+	collection *Collection
+	kind       string
+	fields     map[string]string
+	listIDs    map[int64]time.Time
 }
 
-func (c *Contact) Delete() {
-	c.delete = true
+func (c *Contact) Delete() *Contact {
+	return c.setField("delete", "1")
 }
 
-func (c *Contact) SetTags(tags ...string) {
-	c.tags = tags
+func (c *Contact) SetTags(tags ...string) *Contact {
+	return c.setField("tags", strings.Join(tags, ","))
 }
 
-func (c *Contact) SetStatusNew() {
-	c.value.status = "new"
+func (c *Contact) SetStatusNew() *Contact {
+	return c.setField("status", "new", true)
 }
 
-func (c *Contact) SetStatusActive() {
-	c.value.status = "active"
+func (c *Contact) SetStatusActive() *Contact {
+	return c.setField("status", "active", true)
 }
 
-func (c *Contact) SetStatusInactive() {
-	c.value.status = "inactive"
+func (c *Contact) SetStatusInactive() *Contact {
+	return c.setField("status", "inactive", true)
 }
 
-func (c *Contact) SetStatusUnsubscribed() {
-	c.value.status = "ubsubscribed"
+func (c *Contact) SetStatusUnsubscribed() *Contact {
+	return c.setField("status", "unsubscribed", true)
 }
 
-func (c *Contact) SetAvailabilityAvailable() {
-	c.value.availability = "available"
+func (c *Contact) SetAvailabilityAvailable() *Contact {
+	return c.setField("availability", "available", true)
 }
 
-func (c *Contact) SetAvailabilityUnreachable() {
-	c.value.availability = "unreachable"
+func (c *Contact) SetAvailabilityUnreachable() *Contact {
+	return c.setField("availability", "unreachable", true)
 }
 
-func (c *Contact) SetAvailabilityTempUnreachable() {
-	c.value.availability = "temp_unreachable"
+func (c *Contact) SetAvailabilityTempUnreachable() *Contact {
+	return c.setField("availability", "temp_unreachable", true)
 }
 
-func (c *Contact) SetAvailabilityMailboxFull() {
-	c.value.availability = "mailbox_full"
+func (c *Contact) SetAvailabilityMailboxFull() *Contact {
+	return c.setField("availability", "mailbox_full", true)
 }
 
-func (c *Contact) SetAvailabilitySpamRejected() {
-	c.value.availability = "spam_rejected"
+func (c *Contact) SetAvailabilitySpamRejected() *Contact {
+	return c.setField("availability", "spam_rejected", true)
 }
 
-func (c *Contact) SetAvailabilitySpamFolder() {
-	c.value.availability = "spam_folder"
+func (c *Contact) SetAvailabilitySpamFolder() *Contact {
+	return c.setField("availability", "spam_folder", true)
 }
 
-func (c *Contact) SetEmailAddTime(addTime time.Time) {
-	c.value.addTime = addTime
+func (c *Contact) SetAddTime(addTime time.Time) *Contact {
+	return c.setField("add_time", addTime.Format(time.RFC3339), true)
 }
 
-func (c *Contact) SetEmailRequestIP(requestIP string) {
-	c.value.requestIP = requestIP
+func (c *Contact) SetConfirmTime(confirmTime time.Time) *Contact {
+	return c.setField("confirm_time", confirmTime.Format(time.RFC3339), true)
 }
 
-func (c *Contact) SetConfirmTime(confirmTime time.Time) {
-	c.value.confirmTime = confirmTime
-}
+func (c *Contact) AddListID(listID int64, subscribeTime time.Time) *Contact {
+	c.mu.Lock()
+	c.listIDs[listID] = subscribeTime
 
-func (c *Contact) AddListID(listID int64, subscribeTime time.Time) {
-	v := c.value
+	l := len(c.listIDs)
+	listIDs := make([]string, l)
+	subscribeTimes := make([]string, l)
 
-	v.listIDs = append(v.listIDs, listID)
-	v.subscribeTimes = append(v.subscribeTimes, subscribeTime)
-}
+	i := 0
+	for listID, subscribeTime := range c.listIDs {
+		listIDs[i] = strconv.FormatInt(listID, 10)
+		subscribeTimes[i] = subscribeTime.Format(time.RFC3339)
 
-func (c *Contact) SetUnsubscribedListIDs(unsubscribedListIDs ...int64) {
-	c.value.unsubscribedListIDs = unsubscribedListIDs
-}
-
-func (c *Contact) SetEmailExcludedListIDs(excludedListIDs ...int64) {
-	c.value.excludedListIDs = excludedListIDs
-}
-
-func (c *Contact) toMap() map[string]string {
-	var del string
-	if c.delete {
-		del = "1"
-	} else {
-		del = "0"
+		i++
 	}
 
-	m := map[string]string{
-		"delete": del,
-		"tags":   strings.Join(c.tags, ","),
+	c.mu.Unlock()
+
+	c.setField("list_ids", strings.Join(listIDs, ","), true)
+	c.setField("subscribe_times", strings.Join(subscribeTimes, ","), true)
+
+	return c
+}
+
+func (c *Contact) SetUnsubscribedListIDs(listIDs ...int64) *Contact {
+	return c.setField("unsubscribed_list_ids", c.int64SliceToString(listIDs...), true)
+}
+
+func (c *Contact) SetExcludedListIDs(listIDs ...int64) *Contact {
+	return c.setField("excluded_list_ids", c.int64SliceToString(listIDs...), true)
+}
+
+func (c *Contact) setField(name, value string, withKind ...bool) *Contact {
+	c.mu.Lock()
+	defer c.mu.Unlock()
+
+	if len(withKind) > 0 && withKind[0] {
+		name = fmt.Sprintf("%s_%s", c.kind, name)
 	}
 
-	m[c.kind] = c.value.value
-	for k, v := range c.value.toMap() {
-		m[c.kind+"_"+k] = v
+	c.fields[name] = value
+	c.collection.addFieldName(name)
+
+	return c
+}
+
+func (c *Contact) int64SliceToString(v ...int64) string {
+	s := make([]string, len(v))
+	for n, i := range v {
+		s[n] = strconv.FormatInt(i, 10)
 	}
 
-	return m
+	return strings.Join(s, ",")
+}
+
+func (c *Contact) data() (data map[int]string) {
+	c.mu.RLock()
+	defer c.mu.RUnlock()
+
+	data = map[int]string{}
+	for n, fieldName := range c.collection.fieldNames {
+		if v, ok := c.fields[fieldName]; ok {
+			data[n] = v
+		}
+	}
+
+	return data
 }
 
 type Collection struct {
-	contacts []*Contact
+	mu         sync.RWMutex
+	contacts   []*Contact
+	fieldNames []string
 }
 
 func (c *Collection) Email(email string) *Contact {
-	contact := &Contact{
-		kind:  "email",
-		value: c.newContactValue(email),
-	}
-
-	c.contacts = append(c.contacts, contact)
-
-	return contact
+	return c.newContact("email", email)
 }
 
 func (c *Collection) Phone(phone string) *Contact {
-	contact := &Contact{
-		kind:  "phone",
-		value: c.newContactValue(phone),
-	}
-
-	c.contacts = append(c.contacts, contact)
-
-	return contact
+	return c.newContact("phone", phone)
 }
 
-func (c *Collection) Data(fieldNames ...string) (data [][]string) {
+func (c *Collection) newContact(kind, contact string) (cnt *Contact) {
+	c.addFieldName(kind)
+
+	cnt = &Contact{
+		collection: c,
+		kind:       kind,
+		fields: map[string]string{
+			kind: contact,
+		},
+		listIDs: map[int64]time.Time{},
+	}
+
+	c.mu.Lock()
+	defer c.mu.Unlock()
+
+	c.contacts = append(c.contacts, cnt)
 
 	return
 }
 
-func (c *Collection) newContactValue(value string) *contactValue {
-	return &contactValue{
-		value:        value,
-		status:       defaultStatus,
-		availability: defaultAvailability,
+func (c *Collection) addFieldName(fieldName string) {
+	c.mu.Lock()
+	defer c.mu.Unlock()
+
+	// Prevent duplication
+	for _, name := range c.fieldNames {
+		if name == fieldName {
+			return
+		}
 	}
+
+	c.fieldNames = append(c.fieldNames, fieldName)
+}
+
+func (c *Collection) FieldNames() []string {
+	c.mu.RLock()
+	defer c.mu.RUnlock()
+
+	return c.fieldNames
+}
+
+func (c *Collection) Data() (data map[int]map[int]string) {
+	c.mu.RLock()
+	defer c.mu.RUnlock()
+
+	data = map[int]map[int]string{}
+	for n, contact := range c.contacts {
+		data[n] = contact.data()
+	}
+
+	return
 }
 
 func NewCollection() *Collection {
