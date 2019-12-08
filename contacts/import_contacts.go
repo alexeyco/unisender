@@ -1,11 +1,19 @@
 package contacts
 
-import "github.com/alexeyco/unisender/api"
+import (
+	"fmt"
+	"strings"
+
+	"github.com/alexeyco/unisender/api"
+)
 
 // See https://www.unisender.com/en/support/api/contacts/importcontacts/
 
 type ImportContactsRequest interface {
-	Execute() (err error)
+	FieldNames(fieldNames ...string) ImportContactsRequest
+	OverwriteTags() ImportContactsRequest
+	OverwriteLists() ImportContactsRequest
+	Execute() (res *ImportContactsResponse, err error)
 }
 
 type ImportContactsResponse struct {
@@ -27,6 +35,14 @@ type ImportContactsResponseLogMessage struct {
 type importContactsRequest struct {
 	request    *api.Request
 	collection *Collection
+	fieldNames []string
+}
+
+func (r *importContactsRequest) FieldNames(fieldNames ...string) ImportContactsRequest {
+	r.request.Add("field_names", strings.Join(fieldNames, ","))
+	r.fieldNames = fieldNames
+
+	return r
 }
 
 func (r *importContactsRequest) OverwriteTags() ImportContactsRequest {
@@ -39,7 +55,21 @@ func (r *importContactsRequest) OverwriteLists() ImportContactsRequest {
 	return r
 }
 
-func (r *importContactsRequest) Execute() (err error) {
+func (r *importContactsRequest) Execute() (res *ImportContactsResponse, err error) {
+	data := r.collection.Data(r.fieldNames...)
+	for row, c := range data {
+		for col, val := range c {
+			r.request.Add(fmt.Sprintf("data[%d][%d]", row, col), val)
+		}
+	}
+
+	var result ImportContactsResponse
+	if err = r.request.Execute("importContacts", &result); err != nil {
+		return
+	}
+
+	res = &result
+
 	return
 }
 

@@ -12,6 +12,7 @@ type UniSender struct {
 	apiKey   string
 	language string
 	client   *http.Client
+	logger   Logger
 	mu       sync.RWMutex
 }
 
@@ -23,12 +24,20 @@ func (u *UniSender) SetLanguage(language string) {
 	u.language = language
 }
 
-// SetClient sets custom http.Request to UniSender client
+// SetClient sets custom http.Request to UniSender client.
 func (u *UniSender) SetClient(client *http.Client) {
 	u.mu.Lock()
 	defer u.mu.Unlock()
 
 	u.client = client
+}
+
+// SetLogger sets logger to UniSender client.
+func (u *UniSender) SetLogger(logger Logger) {
+	u.mu.Lock()
+	defer u.mu.Unlock()
+
+	u.logger = logger
 }
 
 // CreateList creates a new contact list.

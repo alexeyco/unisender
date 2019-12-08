@@ -11,3 +11,6 @@
 # Coverage reports
 /*.coverprofile
 /*.out
+
+# Example directory
+/_example

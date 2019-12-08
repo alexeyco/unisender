@@ -160,8 +160,7 @@ func (c *Contact) toMap() map[string]string {
 }
 
 type Collection struct {
-	contacts   []*Contact
-	fieldNames []string
+	contacts []*Contact
 }
 
 func (c *Collection) Email(email string) *Contact {
@@ -186,16 +185,17 @@ func (c *Collection) Phone(phone string) *Contact {
 	return contact
 }
 
+func (c *Collection) Data(fieldNames ...string) (data [][]string) {
+
+	return
+}
+
 func (c *Collection) newContactValue(value string) *contactValue {
 	return &contactValue{
 		value:        value,
 		status:       defaultStatus,
 		availability: defaultAvailability,
 	}
-}
-
-func (c *Collection) SetFieldNames(fieldNames ...string) {
-	c.fieldNames = fieldNames
 }
 
 func NewCollection() *Collection {
