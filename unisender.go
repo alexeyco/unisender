@@ -81,7 +81,7 @@ func (u *UniSender) Exclude(contact string) contacts.ExcludeRequest {
 }
 
 // ImportContacts imports contacts.
-func (u *UniSender) ImportContacts(collection *contacts.Collection) contacts.ImportContactsRequest {
+func (u *UniSender) ImportContacts(collection *contacts.ImportContactsCollection) contacts.ImportContactsRequest {
 	return contacts.ImportContacts(u.request(), collection)
 }
 

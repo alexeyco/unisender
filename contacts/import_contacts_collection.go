@@ -8,71 +8,71 @@ import (
 	"time"
 )
 
-type Contact struct {
+type ImportContactsContact struct {
 	mu         sync.RWMutex
-	collection *Collection
+	collection *ImportContactsCollection
 	kind       string
 	fields     map[string]string
 	listIDs    map[int64]time.Time
 }
 
-func (c *Contact) Delete() *Contact {
+func (c *ImportContactsContact) Delete() *ImportContactsContact {
 	return c.setField("delete", "1")
 }
 
-func (c *Contact) SetTags(tags ...string) *Contact {
+func (c *ImportContactsContact) SetTags(tags ...string) *ImportContactsContact {
 	return c.setField("tags", strings.Join(tags, ","))
 }
 
-func (c *Contact) SetStatusNew() *Contact {
+func (c *ImportContactsContact) SetStatusNew() *ImportContactsContact {
 	return c.setField("status", "new", true)
 }
 
-func (c *Contact) SetStatusActive() *Contact {
+func (c *ImportContactsContact) SetStatusActive() *ImportContactsContact {
 	return c.setField("status", "active", true)
 }
 
-func (c *Contact) SetStatusInactive() *Contact {
+func (c *ImportContactsContact) SetStatusInactive() *ImportContactsContact {
 	return c.setField("status", "inactive", true)
 }
 
-func (c *Contact) SetStatusUnsubscribed() *Contact {
+func (c *ImportContactsContact) SetStatusUnsubscribed() *ImportContactsContact {
 	return c.setField("status", "unsubscribed", true)
 }
 
-func (c *Contact) SetAvailabilityAvailable() *Contact {
+func (c *ImportContactsContact) SetAvailabilityAvailable() *ImportContactsContact {
 	return c.setField("availability", "available", true)
 }
 
-func (c *Contact) SetAvailabilityUnreachable() *Contact {
+func (c *ImportContactsContact) SetAvailabilityUnreachable() *ImportContactsContact {
 	return c.setField("availability", "unreachable", true)
 }
 
-func (c *Contact) SetAvailabilityTempUnreachable() *Contact {
+func (c *ImportContactsContact) SetAvailabilityTempUnreachable() *ImportContactsContact {
 	return c.setField("availability", "temp_unreachable", true)
 }
 
-func (c *Contact) SetAvailabilityMailboxFull() *Contact {
+func (c *ImportContactsContact) SetAvailabilityMailboxFull() *ImportContactsContact {
 	return c.setField("availability", "mailbox_full", true)
 }
 
-func (c *Contact) SetAvailabilitySpamRejected() *Contact {
+func (c *ImportContactsContact) SetAvailabilitySpamRejected() *ImportContactsContact {
 	return c.setField("availability", "spam_rejected", true)
 }
 
-func (c *Contact) SetAvailabilitySpamFolder() *Contact {
+func (c *ImportContactsContact) SetAvailabilitySpamFolder() *ImportContactsContact {
 	return c.setField("availability", "spam_folder", true)
 }
 
-func (c *Contact) SetAddTime(addTime time.Time) *Contact {
+func (c *ImportContactsContact) SetAddTime(addTime time.Time) *ImportContactsContact {
 	return c.setField("add_time", addTime.Format(time.RFC3339), true)
 }
 
-func (c *Contact) SetConfirmTime(confirmTime time.Time) *Contact {
+func (c *ImportContactsContact) SetConfirmTime(confirmTime time.Time) *ImportContactsContact {
 	return c.setField("confirm_time", confirmTime.Format(time.RFC3339), true)
 }
 
-func (c *Contact) AddListID(listID int64, subscribeTime time.Time) *Contact {
+func (c *ImportContactsContact) AddListID(listID int64, subscribeTime time.Time) *ImportContactsContact {
 	c.mu.Lock()
 	c.listIDs[listID] = subscribeTime
 
@@ -96,15 +96,15 @@ func (c *Contact) AddListID(listID int64, subscribeTime time.Time) *Contact {
 	return c
 }
 
-func (c *Contact) SetUnsubscribedListIDs(listIDs ...int64) *Contact {
+func (c *ImportContactsContact) SetUnsubscribedListIDs(listIDs ...int64) *ImportContactsContact {
 	return c.setField("unsubscribed_list_ids", c.int64SliceToString(listIDs...), true)
 }
 
-func (c *Contact) SetExcludedListIDs(listIDs ...int64) *Contact {
+func (c *ImportContactsContact) SetExcludedListIDs(listIDs ...int64) *ImportContactsContact {
 	return c.setField("excluded_list_ids", c.int64SliceToString(listIDs...), true)
 }
 
-func (c *Contact) setField(name, value string, withKind ...bool) *Contact {
+func (c *ImportContactsContact) setField(name, value string, withKind ...bool) *ImportContactsContact {
 	c.mu.Lock()
 	defer c.mu.Unlock()
 
@@ -118,7 +118,7 @@ func (c *Contact) setField(name, value string, withKind ...bool) *Contact {
 	return c
 }
 
-func (c *Contact) int64SliceToString(v ...int64) string {
+func (c *ImportContactsContact) int64SliceToString(v ...int64) string {
 	s := make([]string, len(v))
 	for n, i := range v {
 		s[n] = strconv.FormatInt(i, 10)
@@ -127,7 +127,7 @@ func (c *Contact) int64SliceToString(v ...int64) string {
 	return strings.Join(s, ",")
 }
 
-func (c *Contact) data() (data map[int]string) {
+func (c *ImportContactsContact) data() (data map[int]string) {
 	c.mu.RLock()
 	defer c.mu.RUnlock()
 
@@ -141,24 +141,24 @@ func (c *Contact) data() (data map[int]string) {
 	return data
 }
 
-type Collection struct {
+type ImportContactsCollection struct {
 	mu         sync.RWMutex
-	contacts   []*Contact
+	contacts   []*ImportContactsContact
 	fieldNames []string
 }
 
-func (c *Collection) Email(email string) *Contact {
+func (c *ImportContactsCollection) Email(email string) *ImportContactsContact {
 	return c.newContact("email", email)
 }
 
-func (c *Collection) Phone(phone string) *Contact {
+func (c *ImportContactsCollection) Phone(phone string) *ImportContactsContact {
 	return c.newContact("phone", phone)
 }
 
-func (c *Collection) newContact(kind, contact string) (cnt *Contact) {
+func (c *ImportContactsCollection) newContact(kind, contact string) (cnt *ImportContactsContact) {
 	c.addFieldName(kind)
 
-	cnt = &Contact{
+	cnt = &ImportContactsContact{
 		collection: c,
 		kind:       kind,
 		fields: map[string]string{
@@ -175,7 +175,7 @@ func (c *Collection) newContact(kind, contact string) (cnt *Contact) {
 	return
 }
 
-func (c *Collection) addFieldName(fieldName string) {
+func (c *ImportContactsCollection) addFieldName(fieldName string) {
 	c.mu.Lock()
 	defer c.mu.Unlock()
 
@@ -189,14 +189,14 @@ func (c *Collection) addFieldName(fieldName string) {
 	c.fieldNames = append(c.fieldNames, fieldName)
 }
 
-func (c *Collection) FieldNames() []string {
+func (c *ImportContactsCollection) FieldNames() []string {
 	c.mu.RLock()
 	defer c.mu.RUnlock()
 
 	return c.fieldNames
 }
 
-func (c *Collection) Data() (data map[int]map[int]string) {
+func (c *ImportContactsCollection) Data() (data map[int]map[int]string) {
 	c.mu.RLock()
 	defer c.mu.RUnlock()
 
@@ -208,6 +208,6 @@ func (c *Collection) Data() (data map[int]map[int]string) {
 	return
 }
 
-func NewCollection() *Collection {
-	return &Collection{}
+func NewImportContactsCollection() *ImportContactsCollection {
+	return &ImportContactsCollection{}
 }

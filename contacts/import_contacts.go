@@ -32,7 +32,7 @@ type ImportContactsResponseLogMessage struct {
 
 type importContactsRequest struct {
 	request    *api.Request
-	collection *Collection
+	collection *ImportContactsCollection
 	fieldNames []string
 }
 
@@ -68,7 +68,7 @@ func (r *importContactsRequest) Execute() (res *ImportContactsResponse, err erro
 	return
 }
 
-func ImportContacts(request *api.Request, collection *Collection) ImportContactsRequest {
+func ImportContacts(request *api.Request, collection *ImportContactsCollection) ImportContactsRequest {
 	return &importContactsRequest{
 		request:    request,
 		collection: collection,

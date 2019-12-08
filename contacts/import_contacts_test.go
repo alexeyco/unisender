@@ -7,47 +7,12 @@ import (
 	"net/http"
 	"reflect"
 	"strconv"
-	"strings"
 	"testing"
 
 	"github.com/alexeyco/unisender/api"
 	"github.com/alexeyco/unisender/contacts"
 	"github.com/alexeyco/unisender/test"
 )
-
-func TestImportContactsRequest_FieldNames(t *testing.T) {
-	expectedFieldNames := test.RandomStringSlice(12, 36)
-	var givenFieldNames []string
-
-	expectedResponse := randomImportContactsResponse()
-
-	req := test.NewRequest(func(req *http.Request) (res *http.Response, err error) {
-		givenFieldNames = strings.Split(req.FormValue("field_names"), ",")
-
-		result := api.Response{
-			Result: expectedResponse,
-		}
-
-		response, _ := json.Marshal(&result)
-
-		return &http.Response{
-			StatusCode: http.StatusOK,
-			Body:       ioutil.NopCloser(bytes.NewBuffer(response)),
-		}, nil
-	})
-
-	_, err := contacts.ImportContacts(req, randomCollection()).
-		FieldNames(expectedFieldNames...).
-		Execute()
-
-	if err != nil {
-		t.Fatalf(`Error should be nil, "%s" given`, err.Error())
-	}
-
-	if !reflect.DeepEqual(expectedFieldNames, givenFieldNames) {
-		t.Fatal("Expected and given field names should be equal")
-	}
-}
 
 func TestImportContactsRequest_OverwriteTags(t *testing.T) {
 	expectedOverwriteTags := 1
@@ -70,7 +35,7 @@ func TestImportContactsRequest_OverwriteTags(t *testing.T) {
 		}, nil
 	})
 
-	_, err := contacts.ImportContacts(req, randomCollection()).
+	_, err := contacts.ImportContacts(req, randomImportContactsCollection()).
 		OverwriteTags().
 		Execute()
 
@@ -104,7 +69,7 @@ func TestImportContactsRequest_OverwriteLists(t *testing.T) {
 		}, nil
 	})
 
-	_, err := contacts.ImportContacts(req, randomCollection()).
+	_, err := contacts.ImportContacts(req, randomImportContactsCollection()).
 		OverwriteLists().
 		Execute()
 
@@ -133,7 +98,7 @@ func TestImportContactsRequest_Execute(t *testing.T) {
 		}, nil
 	})
 
-	givenResponse, err := contacts.ImportContacts(req, randomCollection()).
+	givenResponse, err := contacts.ImportContacts(req, randomImportContactsCollection()).
 		Execute()
 
 	if err != nil {
@@ -145,8 +110,8 @@ func TestImportContactsRequest_Execute(t *testing.T) {
 	}
 }
 
-func randomCollection() (collection *contacts.Collection) {
-	collection = contacts.NewCollection()
+func randomImportContactsCollection() (collection *contacts.ImportContactsCollection) {
+	collection = contacts.NewImportContactsCollection()
 
 	n := test.RandomInt(12, 36)
 	for i := 0; i < n; i++ {
