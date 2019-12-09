@@ -164,26 +164,30 @@ func (c *ImportContactsContact) int64SliceToString(v ...int64) string {
 	return strings.Join(s, ",")
 }
 
+func (c *ImportContactsContact) prepare() {
+	l := len(c.listIDs)
+	if l == 0 {
+		return
+	}
+
+	listIDs := make([]string, l)
+	subscribeTimes := make([]string, l)
+
+	i := 0
+	for listID, subscribeTime := range c.listIDs {
+		listIDs[i] = strconv.FormatInt(listID, 10)
+		subscribeTimes[i] = subscribeTime.Format(time.RFC3339)
+
+		i++
+	}
+
+	c.setField("list_ids", strings.Join(listIDs, ","), true).
+		setField("subscribe_times", strings.Join(subscribeTimes, ","), true)
+}
+
 func (c *ImportContactsContact) data() (data map[int]string) {
 	c.mu.RLock()
 	defer c.mu.RUnlock()
-
-	l := len(c.listIDs)
-	if l > 0 {
-		listIDs := make([]string, l)
-		subscribeTimes := make([]string, l)
-
-		i := 0
-		for listID, subscribeTime := range c.listIDs {
-			listIDs[i] = strconv.FormatInt(listID, 10)
-			subscribeTimes[i] = subscribeTime.Format(time.RFC3339)
-
-			i++
-		}
-
-		c.setField("list_ids", strings.Join(listIDs, ","), true).
-			setField("subscribe_times", strings.Join(subscribeTimes, ","), true)
-	}
 
 	data = map[int]string{}
 	for n, fieldName := range c.collection.fieldNames {
@@ -200,6 +204,7 @@ type ImportContactsCollection struct {
 	muContacts   sync.RWMutex
 	fieldNames   []string
 	muFieldNames sync.RWMutex
+	prepared     bool
 }
 
 func (c *ImportContactsCollection) Email(email string) *ImportContactsContact {
@@ -226,6 +231,7 @@ func (c *ImportContactsCollection) newContact(kind, contact string) (cnt *Import
 	}
 
 	c.contacts = append(c.contacts, cnt)
+	c.prepared = false
 
 	return
 }
@@ -242,9 +248,27 @@ func (c *ImportContactsCollection) addFieldName(fieldName string) {
 	}
 
 	c.fieldNames = append(c.fieldNames, fieldName)
+	c.prepared = false
+}
+
+func (c *ImportContactsCollection) prepare() {
+	if c.prepared {
+		return
+	}
+
+	for _, contact := range c.contacts {
+		contact.prepare()
+	}
+
+	c.prepared = true
 }
 
 func (c *ImportContactsCollection) FieldNames() []string {
+	c.muContacts.RLock()
+	defer c.muContacts.RUnlock()
+
+	c.prepare()
+
 	c.muFieldNames.Lock()
 	defer c.muFieldNames.Unlock()
 
@@ -254,6 +278,8 @@ func (c *ImportContactsCollection) FieldNames() []string {
 func (c *ImportContactsCollection) Data() (data map[int]map[int]string) {
 	c.muContacts.RLock()
 	defer c.muContacts.RUnlock()
+
+	c.prepare()
 
 	data = map[int]map[int]string{}
 	for n, contact := range c.contacts {

@@ -153,9 +153,8 @@ func TestImportContactsContact_AddListID(t *testing.T) {
 		contact.AddListID(listID, subscribeTime)
 	}
 
-	// TODO: fix order
-	data := collection.Data()
 	fieldNames := collection.FieldNames()
+	data := collection.Data()
 
 	c, ok := data[0]
 	if !ok {
