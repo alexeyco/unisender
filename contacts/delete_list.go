@@ -6,24 +6,23 @@ import (
 	"github.com/alexeyco/unisender/api"
 )
 
-// See https://www.unisender.com/en/support/api/partners/deletelist/
-
-type DeleteListRequest interface {
-	Execute() error
-}
-
-type deleteListRequest struct {
+// DeleteListRequest request to delete a list.
+type DeleteListRequest struct {
 	request *api.Request
 }
 
-func (r *deleteListRequest) Execute() error {
+// Execute sends request to UniSender API and returns result.
+func (r *DeleteListRequest) Execute() error {
 	return r.request.Execute("deleteList", nil)
 }
 
-func DeleteList(request *api.Request, listID int64) DeleteListRequest {
+// DeleteList returns request to delete a list.
+//
+// See https://www.unisender.com/en/support/api/partners/deletelist/
+func DeleteList(request *api.Request, listID int64) *DeleteListRequest {
 	request.Add("list_id", strconv.FormatInt(listID, 10))
 
-	return &deleteListRequest{
+	return &DeleteListRequest{
 		request: request,
 	}
 }

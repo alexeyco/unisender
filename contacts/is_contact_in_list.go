@@ -7,34 +7,33 @@ import (
 	"github.com/alexeyco/unisender/api"
 )
 
-// See https://www.unisender.com/en/support/api/contacts/iscontactinlist/
-
-type IsContactInListRequest interface {
-	ConditionOr() IsContactInListRequest
-	ConditionAnd() IsContactInListRequest
-	Execute() (res bool, err error)
-}
-
-type isContactInListRequest struct {
+// IsContactInListRequest request to check whether the contact is in the specified user lists.
+type IsContactInListRequest struct {
 	request *api.Request
 }
 
-func (r *isContactInListRequest) ConditionOr() IsContactInListRequest {
+// ConditionOr if used, request checks if the contact is in at least one of the specified lists.
+func (r *IsContactInListRequest) ConditionOr() *IsContactInListRequest {
 	r.request.Add("condition", "or")
 	return r
 }
 
-func (r *isContactInListRequest) ConditionAnd() IsContactInListRequest {
+// ConditionAnd if used, request checks if the contact is in all specified lists.
+func (r *IsContactInListRequest) ConditionAnd() *IsContactInListRequest {
 	r.request.Add("condition", "and")
 	return r
 }
 
-func (r *isContactInListRequest) Execute() (res bool, err error) {
+// Execute sends request to UniSender API and returns result.
+func (r *IsContactInListRequest) Execute() (res bool, err error) {
 	err = r.request.Execute("isContactInList", &res)
 	return
 }
 
-func IsContactInList(request *api.Request, email string, listIDs ...int64) IsContactInListRequest {
+// IsContactInList returns request to check whether the contact is in the specified user lists.
+//
+// See https://www.unisender.com/en/support/api/contacts/iscontactinlist/
+func IsContactInList(request *api.Request, email string, listIDs ...int64) *IsContactInListRequest {
 	ids := make([]string, len(listIDs))
 	for n, id := range listIDs {
 		ids[n] = strconv.FormatInt(id, 10)
@@ -43,7 +42,7 @@ func IsContactInList(request *api.Request, email string, listIDs ...int64) IsCon
 	request.Add("email", email).
 		Add("list_ids", strings.Join(ids, ","))
 
-	return &isContactInListRequest{
+	return &IsContactInListRequest{
 		request: request,
 	}
 }

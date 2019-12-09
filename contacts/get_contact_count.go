@@ -6,45 +6,43 @@ import (
 	"github.com/alexeyco/unisender/api"
 )
 
-// See https://www.unisender.com/en/support/api/contacts/getcontactcount/
-
-type GetContactCountRequest interface {
-	ParamsTagID(tagID int64) GetContactCountRequest
-	ParamsTypeAddress() GetContactCountRequest
-	ParamsTypePhone() GetContactCountRequest
-	ParamsSearch(search string) GetContactCountRequest
-	Execute() (count int64, err error)
-}
-
 type GetContactCountResult struct {
 	Count int64 `json:"count"`
 }
 
-type getContactCountRequest struct {
+// GetContactCountRequest request for count contacts by specified conditions.
+type GetContactCountRequest struct {
 	request *api.Request
 }
 
-func (r *getContactCountRequest) ParamsTagID(tagID int64) GetContactCountRequest {
+// ParamsTagID search by tag with a specific id (can be obtained using the getTags method).
+func (r *GetContactCountRequest) ParamsTagID(tagID int64) *GetContactCountRequest {
 	r.request.Add("params[tagId]", strconv.FormatInt(tagID, 10))
 	return r
 }
 
-func (r *getContactCountRequest) ParamsTypeAddress() GetContactCountRequest {
+// ParamsTypeAddress search only emails.
+func (r *GetContactCountRequest) ParamsTypeAddress(search ...string) *GetContactCountRequest {
 	r.request.Add("params[type]", "address")
+	if len(search) > 0 {
+		r.request.Add("params[search]", search[0])
+	}
+
 	return r
 }
 
-func (r *getContactCountRequest) ParamsTypePhone() GetContactCountRequest {
+// ParamsTypePhone search only phones.
+func (r *GetContactCountRequest) ParamsTypePhone(search ...string) *GetContactCountRequest {
 	r.request.Add("params[type]", "phone")
+	if len(search) > 0 {
+		r.request.Add("params[search]", search[0])
+	}
+
 	return r
 }
 
-func (r *getContactCountRequest) ParamsSearch(search string) GetContactCountRequest {
-	r.request.Add("params[search]", search)
-	return r
-}
-
-func (r *getContactCountRequest) Execute() (count int64, err error) {
+// Execute sends request to UniSender API and returns result.
+func (r *GetContactCountRequest) Execute() (count int64, err error) {
 	var res GetContactCountResult
 	if err = r.request.Execute("getContactCount", &res); err != nil {
 		return
@@ -55,10 +53,13 @@ func (r *getContactCountRequest) Execute() (count int64, err error) {
 	return
 }
 
-func GetContactCount(request *api.Request, listID int64) GetContactCountRequest {
+// GetContactCount returns request for count contacts by specified conditions.
+//
+// See https://www.unisender.com/en/support/api/contacts/getcontactcount/
+func GetContactCount(request *api.Request, listID int64) *GetContactCountRequest {
 	request.Add("list_id", strconv.FormatInt(listID, 10))
 
-	return &getContactCountRequest{
+	return &GetContactCountRequest{
 		request: request,
 	}
 }

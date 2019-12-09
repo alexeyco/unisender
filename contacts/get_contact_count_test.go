@@ -55,77 +55,11 @@ func TestGetContactCountRequest_ParamsTypeAddress(t *testing.T) {
 	expectedParamsType := "address"
 	var givenParamsType string
 
-	req := test.NewRequest(func(req *http.Request) (res *http.Response, err error) {
-		givenParamsType = req.FormValue("params[type]")
-
-		result := api.Response{
-			Result: expectedResult,
-		}
-
-		response, _ := json.Marshal(&result)
-
-		return &http.Response{
-			StatusCode: http.StatusOK,
-			Body:       ioutil.NopCloser(bytes.NewBuffer(response)),
-		}, nil
-	})
-
-	_, err := contacts.GetContactCount(req, expectedListID).
-		ParamsTypeAddress().
-		Execute()
-
-	if err != nil {
-		t.Fatalf(`Error should be nil, "%s" given`, err.Error())
-	}
-
-	if expectedParamsType != givenParamsType {
-		t.Fatalf(`Param "type" ID should be "%s", "%s" given`, expectedParamsType, givenParamsType)
-	}
-}
-
-func TestGetContactCountRequest_ParamsTypePhone(t *testing.T) {
-	expectedListID := test.RandomInt64(9999, 999999)
-	expectedResult := randomGetContactCountResult()
-
-	expectedParamsType := "phone"
-	var givenParamsType string
-
-	req := test.NewRequest(func(req *http.Request) (res *http.Response, err error) {
-		givenParamsType = req.FormValue("params[type]")
-
-		result := api.Response{
-			Result: expectedResult,
-		}
-
-		response, _ := json.Marshal(&result)
-
-		return &http.Response{
-			StatusCode: http.StatusOK,
-			Body:       ioutil.NopCloser(bytes.NewBuffer(response)),
-		}, nil
-	})
-
-	_, err := contacts.GetContactCount(req, expectedListID).
-		ParamsTypePhone().
-		Execute()
-
-	if err != nil {
-		t.Fatalf(`Error should be nil, "%s" given`, err.Error())
-	}
-
-	if expectedParamsType != givenParamsType {
-		t.Fatalf(`Param "type" ID should be "%s", "%s" given`, expectedParamsType, givenParamsType)
-	}
-}
-
-func TestGetContactCountRequest_ParamsSearch(t *testing.T) {
-	expectedListID := test.RandomInt64(9999, 999999)
-	expectedResult := randomGetContactCountResult()
-
 	expectedParamsSearch := test.RandomString(12, 36)
 	var givenParamsSearch string
 
 	req := test.NewRequest(func(req *http.Request) (res *http.Response, err error) {
+		givenParamsType = req.FormValue("params[type]")
 		givenParamsSearch = req.FormValue("params[search]")
 
 		result := api.Response{
@@ -141,15 +75,62 @@ func TestGetContactCountRequest_ParamsSearch(t *testing.T) {
 	})
 
 	_, err := contacts.GetContactCount(req, expectedListID).
-		ParamsSearch(expectedParamsSearch).
+		ParamsTypeAddress(expectedParamsSearch).
 		Execute()
 
 	if err != nil {
 		t.Fatalf(`Error should be nil, "%s" given`, err.Error())
 	}
 
+	if expectedParamsType != givenParamsType {
+		t.Fatalf(`Param "type" should be "%s", "%s" given`, expectedParamsType, givenParamsType)
+	}
+
 	if expectedParamsSearch != givenParamsSearch {
-		t.Fatalf(`Param "search" ID should be "%s", "%s" given`, expectedParamsSearch, givenParamsSearch)
+		t.Fatalf(`Param "search" should be "%s", "%s" given`, expectedParamsSearch, givenParamsSearch)
+	}
+}
+
+func TestGetContactCountRequest_ParamsTypePhone(t *testing.T) {
+	expectedListID := test.RandomInt64(9999, 999999)
+	expectedResult := randomGetContactCountResult()
+
+	expectedParamsType := "phone"
+	var givenParamsType string
+
+	expectedParamsSearch := test.RandomString(12, 36)
+	var givenParamsSearch string
+
+	req := test.NewRequest(func(req *http.Request) (res *http.Response, err error) {
+		givenParamsType = req.FormValue("params[type]")
+		givenParamsSearch = req.FormValue("params[search]")
+
+		result := api.Response{
+			Result: expectedResult,
+		}
+
+		response, _ := json.Marshal(&result)
+
+		return &http.Response{
+			StatusCode: http.StatusOK,
+			Body:       ioutil.NopCloser(bytes.NewBuffer(response)),
+		}, nil
+	})
+
+	_, err := contacts.GetContactCount(req, expectedListID).
+		ParamsTypePhone(expectedParamsSearch).
+		Execute()
+
+	if err != nil {
+		t.Fatalf(`Error should be nil, "%s" given`, err.Error())
+	}
+
+	if expectedParamsType != givenParamsType {
+		t.Fatalf(`Param "type" should be "%s", "%s" given`, expectedParamsType, givenParamsType)
+	}
+
+	if expectedParamsSearch != givenParamsSearch {
+		t.Fatalf(`Param "search" should be "%s", "%s" given`, expectedParamsSearch, givenParamsSearch)
 	}
 }
 

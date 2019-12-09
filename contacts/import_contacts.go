@@ -6,14 +6,14 @@ import (
 	"github.com/alexeyco/unisender/api"
 )
 
-// See https://www.unisender.com/en/support/api/contacts/importcontacts/
-
-type ImportContactsRequest interface {
-	OverwriteTags() ImportContactsRequest
-	OverwriteLists() ImportContactsRequest
-	Execute() (res *ImportContactsResponse, err error)
+// ImportContactsResponseLogMessage importContacts log messages.
+type ImportContactsResponseLogMessage struct {
+	Index   int    `json:"index"`
+	Code    string `json:"code"`
+	Message string `json:"message"`
 }
 
+// ImportContactsResponse response of importContacts request.
 type ImportContactsResponse struct {
 	Total     int                                `json:"total"`
 	Inserted  int                                `json:"inserted"`
@@ -24,29 +24,27 @@ type ImportContactsResponse struct {
 	Log       []ImportContactsResponseLogMessage `json:"log"`
 }
 
-type ImportContactsResponseLogMessage struct {
-	Index   int    `json:"index"`
-	Code    string `json:"code"`
-	Message string `json:"message"`
-}
-
-type importContactsRequest struct {
+// ImportContactsRequest request to bulk import of contacts.
+type ImportContactsRequest struct {
 	request    *api.Request
 	collection *ImportContactsCollection
 	fieldNames []string
 }
 
-func (r *importContactsRequest) OverwriteTags() ImportContactsRequest {
+// OverwriteTags if used, contacts tags will be replaced.
+func (r *ImportContactsRequest) OverwriteTags() *ImportContactsRequest {
 	r.request.Add("overwrite_tags", "1")
 	return r
 }
 
-func (r *importContactsRequest) OverwriteLists() ImportContactsRequest {
+// OverwriteLists if used, contacts lists will be replaced.
+func (r *ImportContactsRequest) OverwriteLists() *ImportContactsRequest {
 	r.request.Add("overwrite_lists", "1")
 	return r
 }
 
-func (r *importContactsRequest) Execute() (res *ImportContactsResponse, err error) {
+// Execute sends request to UniSender API and returns result.
+func (r *ImportContactsRequest) Execute() (res *ImportContactsResponse, err error) {
 	for n, fieldName := range r.collection.FieldNames() {
 		r.request.Add(fmt.Sprintf("field_names[%d]", n), fieldName)
 	}
@@ -68,8 +66,19 @@ func (r *importContactsRequest) Execute() (res *ImportContactsResponse, err erro
 	return
 }
 
-func ImportContacts(request *api.Request, collection *ImportContactsCollection) ImportContactsRequest {
-	return &importContactsRequest{
+// ImportContacts returns request to bulk import of contacts. It can also be used for periodic synchronization
+// with the contact database stored on your own server (see also the description of the exportContacts method).
+// You can import data of no more than 500 contacts per call. Larger lists must be imported in a few calls.
+//
+// If there are new addresses among the signed e-mail addresses, then by default they receive the status "new".
+//
+// Technical restrictions: the maximum number of user fields is 50. The timeout per call is 30 seconds from the moment
+// the request is completely transmitted to the server. If no response is received after the timeout,
+// then it is recommended to make up to two retries, and if there is no answer again, then contact technical support.
+//
+// See https://www.unisender.com/en/support/api/contacts/importcontacts/
+func ImportContacts(request *api.Request, collection *ImportContactsCollection) *ImportContactsRequest {
+	return &ImportContactsRequest{
 		request:    request,
 		collection: collection,
 	}
