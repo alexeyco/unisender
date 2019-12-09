@@ -12,10 +12,9 @@ notifications:
   email: false
 
 before_install:
-  - go get github.com/onsi/ginkgo/ginkgo
   - go get golang.org/x/tools/cmd/cover
   - go get github.com/mattn/goveralls
 
 script:
-  - $HOME/gopath/bin/ginkgo -cover -r -v ./...
-  - $HOME/gopath/bin/goveralls -coverprofile=roveralls.coverprofile -service=travis-ci -repotoken=$COVERALLS_TOKEN
+  - go test -v -covermode=count -coverprofile=coverage.out ./...
+  - $HOME/gopath/bin/goveralls -coverprofile=coverage.out -service=travis-ci -repotoken=$COVERALLS_TOKEN
