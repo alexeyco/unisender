@@ -136,6 +136,16 @@ func (u *UniSender) GetCheckedEmail(login string) *messages.GetCheckedEmailReque
 	return messages.GetCheckedEmail(u.request(), login)
 }
 
+// GetSenderDomainList returns information about domains.
+func (u *UniSender) GetSenderDomainList(login string) *messages.GetSenderDomainListRequest {
+	return messages.GetSenderDomainList(u.request(), login)
+}
+
+// SetSenderDomain register the domain in the list.
+func (u *UniSender) SetSenderDomain(login, domain string) *messages.SetSenderDomainRequest {
+	return messages.SetSenderDomain(u.request(), login, domain)
+}
+
 func (u *UniSender) request() *api.Request {
 	u.mu.RLock()
 	defer u.mu.RUnlock()
