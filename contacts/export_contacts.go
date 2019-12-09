@@ -90,7 +90,7 @@ func (r *ExportContactsRequest) EmailStatusInactive() *ExportContactsRequest {
 	return r
 }
 
-// EmailStatusUnsubscribed if used, the result will contain only contacts with "ubsubscribed" email address status.
+// EmailStatusUnsubscribed if used, the result will contain only contacts with "unsubscribed" email address status.
 func (r *ExportContactsRequest) EmailStatusUnsubscribed() *ExportContactsRequest {
 	r.request.Add("email_status", "unsubscribed")
 	return r
@@ -126,7 +126,7 @@ func (r *ExportContactsRequest) PhoneStatusInactive() *ExportContactsRequest {
 	return r
 }
 
-// PhoneStatusUnsubscribed if used, if used, the result will contain only contacts with "ubsubscribed" phone number status.
+// PhoneStatusUnsubscribed if used, if used, the result will contain only contacts with "unsubscribed" phone number status.
 func (r *ExportContactsRequest) PhoneStatusUnsubscribed() *ExportContactsRequest {
 	r.request.Add("phone_status", "unsubscribed")
 	return r
