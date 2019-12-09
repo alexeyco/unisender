@@ -15,7 +15,7 @@ type ImportContactsContact struct {
 	listIDs    map[int64]time.Time
 }
 
-// Delete
+// Delete marks contact to remove.
 func (c *ImportContactsContact) Delete() *ImportContactsContact {
 	return c.setField("delete", "1")
 }
