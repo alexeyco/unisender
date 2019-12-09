@@ -40,6 +40,11 @@ func RandomInt64(min, max int) int64 {
 	return int64(RandomInt(min, max))
 }
 
+// RandomFloat64 returns random float64 value.
+func RandomFloat64() float64 {
+	return float64(RandomInt64(9999, 999999)) / float64(RandomInt64(9999, 999999))
+}
+
 // RandomTime random time.Time.
 func RandomTime(min, max int) time.Time {
 	return time.Now().

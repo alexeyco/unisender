@@ -1,6 +1,7 @@
 package unisender
 
 import (
+	"github.com/alexeyco/unisender/common"
 	"github.com/alexeyco/unisender/messages"
 	"net/http"
 	"sync"
@@ -59,6 +60,11 @@ func (u *UniSender) SetLogger(logger api.Logger) {
 	defer u.mu.Unlock()
 
 	u.logger = logger
+}
+
+// GetCurrencyRates returns currency rates.
+func (u *UniSender) GetCurrencyRates() *common.GetCurrencyRatesRequest {
+	return common.GetCurrencyRates(u.request())
 }
 
 // CreateList creates a new contact list.
