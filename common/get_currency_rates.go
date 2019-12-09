@@ -6,8 +6,8 @@ import "github.com/alexeyco/unisender/api"
 type CurrencyRate struct {
 	ID            int64   `json:"id"`
 	Code          string  `json:"code"`
-	RateToUSD     float64 `json:"rate_to_usd"`
-	MinPaymentSum float64 `json:"min_payment_sum"`
+	RateToUSD     float64 `json:"rate_to_usd,string"`
+	MinPaymentSum float64 `json:"min_payment_sum,string"`
 	IsVisible     bool    `json:"is_visible"`
 }
 

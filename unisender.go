@@ -23,43 +23,53 @@ type UniSender struct {
 }
 
 // SetLanguageEnglish sets API response language to English.
-func (u *UniSender) SetLanguageEnglish() {
+func (u *UniSender) SetLanguageEnglish() *UniSender {
 	u.mu.Lock()
 	defer u.mu.Unlock()
 
 	u.language = "en"
+
+	return u
 }
 
 // SetLanguageItalian sets API response language to Italian.
-func (u *UniSender) SetLanguageItalian() {
+func (u *UniSender) SetLanguageItalian() *UniSender {
 	u.mu.Lock()
 	defer u.mu.Unlock()
 
 	u.language = "it"
+
+	return u
 }
 
 // SetLanguageRussian sets API response language to Russian.
-func (u *UniSender) SetLanguageRussian() {
+func (u *UniSender) SetLanguageRussian() *UniSender {
 	u.mu.Lock()
 	defer u.mu.Unlock()
 
 	u.language = "ru"
+
+	return u
 }
 
 // SetClient sets custom http.Request to UniSender client.
-func (u *UniSender) SetClient(client *http.Client) {
+func (u *UniSender) SetClient(client *http.Client) *UniSender {
 	u.mu.Lock()
 	defer u.mu.Unlock()
 
 	u.client = client
+
+	return u
 }
 
 // SetLogger sets logger to UniSender client.
-func (u *UniSender) SetLogger(logger api.Logger) {
+func (u *UniSender) SetLogger(logger api.Logger) *UniSender {
 	u.mu.Lock()
 	defer u.mu.Unlock()
 
 	u.logger = logger
+
+	return u
 }
 
 // GetCurrencyRates returns currency rates.

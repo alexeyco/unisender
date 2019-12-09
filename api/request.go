@@ -2,6 +2,7 @@ package api
 
 import (
 	"encoding/json"
+	"io/ioutil"
 	"net/http"
 	"net/url"
 )
@@ -39,8 +40,13 @@ func (r *Request) Execute(method string, v interface{}) (err error) {
 		return
 	}
 
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return
+	}
+
+	r.logResponse("POST", u, resp.StatusCode, body)
 	if resp.StatusCode != http.StatusOK {
-		//r.logResponse()
 		return ErrWrongStatusCode
 	}
 
@@ -52,7 +58,7 @@ func (r *Request) Execute(method string, v interface{}) (err error) {
 		Result: v,
 	}
 
-	if err = json.NewDecoder(resp.Body).Decode(&response); err != nil {
+	if err = json.Unmarshal(body, &response); err != nil {
 		return
 	}
 
@@ -71,11 +77,12 @@ func (r *Request) logRequest(method, url string, values url.Values) {
 	r.logger.LogRequest(method, url, values)
 }
 
-func (r *Request) logResponse() {
+func (r *Request) logResponse(method, url string, statusCode int, body []byte) {
 	if r.logger == nil {
 		return
 	}
 
+	r.logger.LogResponse(method, url, statusCode, body)
 }
 
 // NewRequest returns new API request.
