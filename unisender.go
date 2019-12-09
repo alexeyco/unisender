@@ -131,6 +131,7 @@ func (u *UniSender) request() *api.Request {
 	return api.NewRequest(u.client, u.language).
 		SetLogger(u.logger).
 		Add("format", "json").
+		Add("lang", u.language).
 		Add("api_key", u.apiKey)
 }
 

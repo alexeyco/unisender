@@ -60,8 +60,6 @@ func (r *Request) Execute(method string, v interface{}) (err error) {
 		return
 	}
 
-	v = response.Result
-
 	return
 }
 

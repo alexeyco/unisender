@@ -42,7 +42,7 @@ func TestUniSender_SetLanguageEnglish(t *testing.T) {
 	var givenLanguage string
 
 	c := test.NewClient(func(req *http.Request) (res *http.Response, err error) {
-		givenLanguage = req.FormValue("language")
+		givenLanguage = req.FormValue("lang")
 
 		res = &http.Response{
 			StatusCode: http.StatusOK,
@@ -71,7 +71,7 @@ func TestUniSender_SetLanguageItalian(t *testing.T) {
 	var givenLanguage string
 
 	c := test.NewClient(func(req *http.Request) (res *http.Response, err error) {
-		givenLanguage = req.FormValue("language")
+		givenLanguage = req.FormValue("lang")
 
 		res = &http.Response{
 			StatusCode: http.StatusOK,
@@ -100,7 +100,7 @@ func TestUniSender_SetLanguageRussian(t *testing.T) {
 	var givenLanguage string
 
 	c := test.NewClient(func(req *http.Request) (res *http.Response, err error) {
-		givenLanguage = req.FormValue("language")
+		givenLanguage = req.FormValue("lang")
 
 		res = &http.Response{
 			StatusCode: http.StatusOK,
