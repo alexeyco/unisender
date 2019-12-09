@@ -154,9 +154,23 @@ func TestUniSender_Format(t *testing.T) {
 	}
 }
 
+func ExampleUniSender_GetCurrencyRates() {
+	usndr := unisender.New("your-api-key").
+		SetLanguageEnglish()
+
+	currencyRates, err := usndr.GetCurrencyRates().
+		Execute()
+
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	log.Println(currencyRates)
+}
+
 func ExampleUniSender_CreateList() {
-	usndr := unisender.New("your-api-key")
-	usndr.SetLanguageItalian()
+	usndr := unisender.New("your-api-key").
+		SetLanguageItalian()
 
 	listID, err := usndr.CreateList("Your list name").
 		Execute()
