@@ -131,6 +131,11 @@ func (u *UniSender) CheckEmail(emailIDs ...int64) *messages.CheckEmailRequest {
 	return messages.CheckEmail(u.request(), emailIDs...)
 }
 
+// CheckEmail returns request to check the delivery status of emails sent using.
+func (u *UniSender) GetCheckedEmail(login string) *messages.GetCheckedEmailRequest {
+	return messages.GetCheckedEmail(u.request(), login)
+}
+
 func (u *UniSender) request() *api.Request {
 	u.mu.RLock()
 	defer u.mu.RUnlock()
