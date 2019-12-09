@@ -9,6 +9,62 @@ import (
 	"github.com/alexeyco/unisender/test"
 )
 
+func TestUpdateListRequest_BeforeSubscribeUrl(t *testing.T) {
+	expectedListID := test.RandomInt64(9999, 999999)
+	expectedTitle := test.RandomString(12, 36)
+
+	expectedBeforeSubscribeUrl := test.RandomString(12, 36)
+	var givenBeforeSubscribeUrl string
+
+	req := test.NewRequest(func(req *http.Request) (res *http.Response, err error) {
+		givenBeforeSubscribeUrl = req.FormValue("before_subscribe_url")
+
+		return &http.Response{
+			StatusCode: http.StatusOK,
+		}, nil
+	})
+
+	err := contacts.UpdateList(req, expectedListID, expectedTitle).
+		BeforeSubscribeUrl(expectedBeforeSubscribeUrl).
+		Execute()
+
+	if err != nil {
+		t.Fatalf(`Error should be nil, "%s" given`, err.Error())
+	}
+
+	if expectedBeforeSubscribeUrl != givenBeforeSubscribeUrl {
+		t.Fatalf(`Before subscribe URL should be "%s", "%s" given`, expectedBeforeSubscribeUrl, givenBeforeSubscribeUrl)
+	}
+}
+
+func TestUpdateListRequest_AfterSubscribeUrl(t *testing.T) {
+	expectedListID := test.RandomInt64(9999, 999999)
+	expectedTitle := test.RandomString(12, 36)
+
+	expectedAfterSubscribeUrl := test.RandomString(12, 36)
+	var givenAfterSubscribeUrl string
+
+	req := test.NewRequest(func(req *http.Request) (res *http.Response, err error) {
+		givenAfterSubscribeUrl = req.FormValue("after_subscribe_url")
+
+		return &http.Response{
+			StatusCode: http.StatusOK,
+		}, nil
+	})
+
+	err := contacts.UpdateList(req, expectedListID, expectedTitle).
+		AfterSubscribeUrl(expectedAfterSubscribeUrl).
+		Execute()
+
+	if err != nil {
+		t.Fatalf(`Error should be nil, "%s" given`, err.Error())
+	}
+
+	if expectedAfterSubscribeUrl != givenAfterSubscribeUrl {
+		t.Fatalf(`After subscribe URL should be "%s", "%s" given`, expectedAfterSubscribeUrl, givenAfterSubscribeUrl)
+	}
+}
+
 func TestUpdateListRequest_Execute(t *testing.T) {
 	expectedListID := test.RandomInt64(9999, 999999)
 	var givenListID int64
