@@ -7,6 +7,7 @@ import (
 	"time"
 )
 
+// ImportContactsContact importable contact.
 type ImportContactsContact struct {
 	collection *ImportContactsCollection
 	kind       string
@@ -14,75 +15,93 @@ type ImportContactsContact struct {
 	listIDs    map[int64]time.Time
 }
 
+// Delete
 func (c *ImportContactsContact) Delete() *ImportContactsContact {
 	return c.setField("delete", "1")
 }
 
+// SetTags sets contact tags.
 func (c *ImportContactsContact) SetTags(tags ...string) *ImportContactsContact {
 	return c.setField("tags", strings.Join(tags, ","))
 }
 
+// SetStatusNew marks contact status as "new".
 func (c *ImportContactsContact) SetStatusNew() *ImportContactsContact {
 	return c.setField("status", "new", true)
 }
 
+// SetStatusActive marks contact status as "active".
 func (c *ImportContactsContact) SetStatusActive() *ImportContactsContact {
 	return c.setField("status", "active", true)
 }
 
+// SetStatusInactive marks contact status as "inactive".
 func (c *ImportContactsContact) SetStatusInactive() *ImportContactsContact {
 	return c.setField("status", "inactive", true)
 }
 
+// SetStatusUnsubscribed marks contact status as "unsubscribed".
 func (c *ImportContactsContact) SetStatusUnsubscribed() *ImportContactsContact {
 	return c.setField("status", "unsubscribed", true)
 }
 
+// SetAvailabilityAvailable sets contact availability as "available".
 func (c *ImportContactsContact) SetAvailabilityAvailable() *ImportContactsContact {
 	return c.setField("availability", "available", true)
 }
 
+// SetAvailabilityUnreachable sets contact availability as "unavailable".
 func (c *ImportContactsContact) SetAvailabilityUnreachable() *ImportContactsContact {
 	return c.setField("availability", "unreachable", true)
 }
 
+// SetAvailabilityTempUnreachable sets contact availability as "temp_unreachable".
 func (c *ImportContactsContact) SetAvailabilityTempUnreachable() *ImportContactsContact {
 	return c.setField("availability", "temp_unreachable", true)
 }
 
+// SetAvailabilityMailboxFull sets contact availability as "mailbox_full".
 func (c *ImportContactsContact) SetAvailabilityMailboxFull() *ImportContactsContact {
 	return c.setField("availability", "mailbox_full", true)
 }
 
+// SetAvailabilitySpamRejected sets contact availability as "spam_rejected".
 func (c *ImportContactsContact) SetAvailabilitySpamRejected() *ImportContactsContact {
 	return c.setField("availability", "spam_rejected", true)
 }
 
+// SetAvailabilitySpamFolder sets contact availability as "spam_folder".
 func (c *ImportContactsContact) SetAvailabilitySpamFolder() *ImportContactsContact {
 	return c.setField("availability", "spam_folder", true)
 }
 
+// SetAddTime sets contact adding time.
 func (c *ImportContactsContact) SetAddTime(addTime time.Time) *ImportContactsContact {
 	return c.setField("add_time", addTime.Format(time.RFC3339), true)
 }
 
+// SetConfirmTime sets contact confirmation time.
 func (c *ImportContactsContact) SetConfirmTime(confirmTime time.Time) *ImportContactsContact {
 	return c.setField("confirm_time", confirmTime.Format(time.RFC3339), true)
 }
 
+// AddListID subscribes contact to specified list.
 func (c *ImportContactsContact) AddListID(listID int64, subscribeTime time.Time) *ImportContactsContact {
 	c.listIDs[listID] = subscribeTime
 	return c
 }
 
+// SetUnsubscribedListIDs unsubscribes contact from specified lists.
 func (c *ImportContactsContact) SetUnsubscribedListIDs(listIDs ...int64) *ImportContactsContact {
 	return c.setField("unsubscribed_list_ids", c.int64SliceToString(listIDs...), true)
 }
 
+// SetExcludedListIDs excludes contact from specified lists.
 func (c *ImportContactsContact) SetExcludedListIDs(listIDs ...int64) *ImportContactsContact {
 	return c.setField("excluded_list_ids", c.int64SliceToString(listIDs...), true)
 }
 
+// SetField sets contact custom field.
 func (c *ImportContactsContact) SetField(name, value string) *ImportContactsContact {
 	return c.setField(name, value)
 }
@@ -139,16 +158,19 @@ func (c *ImportContactsContact) data() (data map[int]string) {
 	return data
 }
 
+// ImportContactsCollection collection of importable contacts.
 type ImportContactsCollection struct {
 	contacts   []*ImportContactsContact
 	fieldNames []string
 	prepared   bool
 }
 
+// Email creates new email contact, adds it into collection and returns it.
 func (c *ImportContactsCollection) Email(email string) *ImportContactsContact {
 	return c.newContact("email", email)
 }
 
+// Phone creates new phone contact, adds it into collection and returns it.
 func (c *ImportContactsCollection) Phone(phone string) *ImportContactsContact {
 	return c.newContact("phone", phone)
 }
@@ -195,11 +217,13 @@ func (c *ImportContactsCollection) prepare() {
 	c.prepared = true
 }
 
+// FieldNames returns contact field names.
 func (c *ImportContactsCollection) FieldNames() []string {
 	c.prepare()
 	return c.fieldNames
 }
 
+// Data returns prepared to import request contacts map.
 func (c *ImportContactsCollection) Data() (data map[int]map[int]string) {
 	c.prepare()
 
@@ -211,6 +235,7 @@ func (c *ImportContactsCollection) Data() (data map[int]map[int]string) {
 	return
 }
 
+// NewImportContactsCollection returns new importable contacts collection.
 func NewImportContactsCollection() *ImportContactsCollection {
 	return &ImportContactsCollection{}
 }
