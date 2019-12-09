@@ -1,11 +1,11 @@
 package unisender_test
 
 import (
-	"github.com/alexeyco/unisender"
 	"log"
 	"net/http"
 	"testing"
 
+	"github.com/alexeyco/unisender"
 	"github.com/alexeyco/unisender/test"
 )
 
@@ -34,6 +34,93 @@ func TestUniSender_ApiKey(t *testing.T) {
 
 	if apiKeyExpected != apiKeyRequested {
 		t.Fatalf(`API key should be "%s", "%s" given`, apiKeyExpected, apiKeyRequested)
+	}
+}
+
+func TestUniSender_SetLanguageEnglish(t *testing.T) {
+	expectedLanguage := "en"
+	var givenLanguage string
+
+	c := test.NewClient(func(req *http.Request) (res *http.Response, err error) {
+		givenLanguage = req.FormValue("language")
+
+		res = &http.Response{
+			StatusCode: http.StatusOK,
+		}
+
+		return
+	})
+
+	usndr := unisender.New(test.RandomString(12, 36))
+	usndr.SetLanguageEnglish()
+	usndr.SetClient(c)
+
+	err := usndr.DeleteList(123).Execute()
+
+	if err != nil {
+		t.Fatalf(`Error should be nil, "%s" given`, err.Error())
+	}
+
+	if expectedLanguage != givenLanguage {
+		t.Fatalf(`Language should be "%s", "%s" given`, expectedLanguage, givenLanguage)
+	}
+}
+
+func TestUniSender_SetLanguageItalian(t *testing.T) {
+	expectedLanguage := "it"
+	var givenLanguage string
+
+	c := test.NewClient(func(req *http.Request) (res *http.Response, err error) {
+		givenLanguage = req.FormValue("language")
+
+		res = &http.Response{
+			StatusCode: http.StatusOK,
+		}
+
+		return
+	})
+
+	usndr := unisender.New(test.RandomString(12, 36))
+	usndr.SetLanguageItalian()
+	usndr.SetClient(c)
+
+	err := usndr.DeleteList(123).Execute()
+
+	if err != nil {
+		t.Fatalf(`Error should be nil, "%s" given`, err.Error())
+	}
+
+	if expectedLanguage != givenLanguage {
+		t.Fatalf(`Language should be "%s", "%s" given`, expectedLanguage, givenLanguage)
+	}
+}
+
+func TestUniSender_SetLanguageRussian(t *testing.T) {
+	expectedLanguage := "ru"
+	var givenLanguage string
+
+	c := test.NewClient(func(req *http.Request) (res *http.Response, err error) {
+		givenLanguage = req.FormValue("language")
+
+		res = &http.Response{
+			StatusCode: http.StatusOK,
+		}
+
+		return
+	})
+
+	usndr := unisender.New(test.RandomString(12, 36))
+	usndr.SetLanguageRussian()
+	usndr.SetClient(c)
+
+	err := usndr.DeleteList(123).Execute()
+
+	if err != nil {
+		t.Fatalf(`Error should be nil, "%s" given`, err.Error())
+	}
+
+	if expectedLanguage != givenLanguage {
+		t.Fatalf(`Language should be "%s", "%s" given`, expectedLanguage, givenLanguage)
 	}
 }
 
