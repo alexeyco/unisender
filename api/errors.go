@@ -8,7 +8,7 @@ var (
 	// ErrWrongStatusCode returns when the remote server returns a status other than 200
 	ErrWrongStatusCode = errors.New("remote server returns wrong status code")
 
-	// ErrInvalidAPIKey	the specified API access key is invalid. Check whether the value of api_key matches
+	// ErrInvalidAPIKey the specified API access key is invalid. Check whether the value of api_key matches
 	// the value specified in your account.
 	ErrInvalidAPIKey = errors.New("invalid API key")
 
