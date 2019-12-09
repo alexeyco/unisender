@@ -2,6 +2,8 @@ package contacts_test
 
 import (
 	"reflect"
+	"sort"
+	"strconv"
 	"strings"
 	"testing"
 	"time"
@@ -130,15 +132,100 @@ func TestImportContactsContact_SetConfirmTime(t *testing.T) {
 }
 
 func TestImportContactsContact_AddListID(t *testing.T) {
+	l := test.RandomInt(12, 36)
 
+	expectedListIDs := make([]string, l)
+	var givenListIDs []string
+
+	expectedSubscribeTimes := make([]string, l)
+	var givenSubscribeTimes []string
+
+	collection := contacts.NewImportContactsCollection()
+	contact := collection.Email(test.RandomString(12, 36))
+
+	for i := 0; i < l; i++ {
+		listID := test.RandomInt64(9999, 999999)
+		subscribeTime := test.RandomTime(12, 365)
+
+		expectedListIDs[i] = strconv.FormatInt(listID, 10)
+		expectedSubscribeTimes[i] = subscribeTime.Format(time.RFC3339)
+
+		contact.AddListID(listID, subscribeTime)
+	}
+
+	// TODO: fix order
+	data := collection.Data()
+	fieldNames := collection.FieldNames()
+
+	c, ok := data[0]
+	if !ok {
+		t.Fatal("Contact should exist")
+	}
+
+	n, ok := hasField("email_list_ids", fieldNames)
+	if !ok {
+		t.Fatalf(`Field names should have "%s" field`, "email_list_ids")
+	}
+
+	listIDs, ok := c[n]
+	if !ok {
+		t.Fatalf(`Contact should have "%s" field value`, "email_list_ids")
+	}
+
+	n, ok = hasField("email_subscribe_times", fieldNames)
+	if !ok {
+		t.Fatalf(`Field names should have "%s" field`, "email_subscribe_times")
+	}
+
+	subscribeTimes, ok := c[n]
+	if !ok {
+		t.Fatalf(`Contact should have "%s" field value`, "email_subscribe_times")
+	}
+
+	givenListIDs = strings.Split(listIDs, ",")
+	givenSubscribeTimes = strings.Split(subscribeTimes, ",")
+
+	sort.Strings(expectedListIDs)
+	sort.Strings(givenListIDs)
+
+	if !reflect.DeepEqual(expectedListIDs, givenListIDs) {
+		t.Fatal("List IDs should be equal")
+	}
+
+	sort.Strings(expectedSubscribeTimes)
+	sort.Strings(givenSubscribeTimes)
+
+	if !reflect.DeepEqual(expectedSubscribeTimes, givenSubscribeTimes) {
+		t.Fatal("Subscribe times should be equal")
+	}
 }
 
 func TestImportContactsContact_SetUnsubscribedListIDs(t *testing.T) {
+	listIDs := test.RandomInt64Slice(12, 36)
+	l := make([]string, len(listIDs))
+	for n, id := range listIDs {
+		l[n] = strconv.FormatInt(id, 10)
+	}
 
+	collection := contacts.NewImportContactsCollection()
+	collection.Email(test.RandomString(12, 36)).
+		SetUnsubscribedListIDs(listIDs...)
+
+	testImportContactsContactField(t, collection, "email_unsubscribed_list_ids", strings.Join(l, ","))
 }
 
 func TestImportContactsContact_SetExcludedListIDs(t *testing.T) {
+	listIDs := test.RandomInt64Slice(12, 36)
+	l := make([]string, len(listIDs))
+	for n, id := range listIDs {
+		l[n] = strconv.FormatInt(id, 10)
+	}
 
+	collection := contacts.NewImportContactsCollection()
+	collection.Email(test.RandomString(12, 36)).
+		SetExcludedListIDs(listIDs...)
+
+	testImportContactsContactField(t, collection, "email_excluded_list_ids", strings.Join(l, ","))
 }
 
 func TestImportContactsContact_SetField(t *testing.T) {
