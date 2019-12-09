@@ -42,7 +42,10 @@ func RandomInt64(min, max int) int64 {
 
 // RandomTime random time.Time.
 func RandomTime(min, max int) time.Time {
-	return time.Now().AddDate(0, 0, -RandomInt(min, max))
+	return time.Now().
+		AddDate(0, 0, -RandomInt(min, max)).
+		Round(time.Second).
+		UTC()
 }
 
 const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
