@@ -1,6 +1,9 @@
-package unisender
+package unisender_test
 
 import (
+	"github.com/alexeyco/unisender"
+	"github.com/alexeyco/unisender/api"
+	"log"
 	"net/http"
 	"testing"
 
@@ -21,7 +24,7 @@ func TestUniSender_ApiKey(t *testing.T) {
 		return
 	})
 
-	usndr := New(apiKeyExpected)
+	usndr := unisender.New(apiKeyExpected)
 	usndr.SetClient(c)
 
 	err := usndr.DeleteList(123).Execute()
@@ -51,7 +54,7 @@ func TestUniSender_Format(t *testing.T) {
 		return
 	})
 
-	usndr := New(apiKeyExpected)
+	usndr := unisender.New(apiKeyExpected)
 	usndr.SetClient(c)
 
 	err := usndr.DeleteList(123).Execute()
@@ -63,4 +66,66 @@ func TestUniSender_Format(t *testing.T) {
 	if formatExpected != formatRequested {
 		t.Fatalf(`Format should be "%s", "%s" given`, formatExpected, formatRequested)
 	}
+}
+
+func ExampleUniSender_CreateList() {
+	usndr := unisender.New("your-api-key")
+	usndr.SetLanguage(api.LanguageItalian)
+
+	listID, err := usndr.CreateList("Your list name").
+		Execute()
+
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	log.Printf("List created; ID=%d", listID)
+}
+
+func ExampleUniSender_GetLists() {
+
+}
+
+func ExampleUniSender_UpdateList() {
+
+}
+
+func ExampleUniSender_DeleteList() {
+
+}
+
+func ExampleUniSender_GetContact() {
+
+}
+
+func ExampleUniSender_Subscribe() {
+
+}
+
+func ExampleUniSender_Unsubscribe() {
+
+}
+
+func ExampleUniSender_Exclude() {
+
+}
+
+func ExampleUniSender_ImportContacts() {
+
+}
+
+func ExampleUniSender_ExportContacts() {
+
+}
+
+func ExampleUniSender_IsContactInList() {
+
+}
+
+func ExampleUniSender_GetContactCount() {
+
+}
+
+func ExampleUniSender_GetTotalContactsCount() {
+
 }
