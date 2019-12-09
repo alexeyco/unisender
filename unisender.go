@@ -131,9 +131,15 @@ func (u *UniSender) CheckEmail(emailIDs ...int64) *messages.CheckEmailRequest {
 	return messages.CheckEmail(u.request(), emailIDs...)
 }
 
-// CheckEmail returns request to check the delivery status of emails sent using.
+// GetCheckedEmail returns request to check the delivery status of emails sent using.
 func (u *UniSender) GetCheckedEmail(login string) *messages.GetCheckedEmailRequest {
 	return messages.GetCheckedEmail(u.request(), login)
+}
+
+// ValidateSender returns request that sends a message to the email address with a link to confirm the address
+// as the return address.
+func (u *UniSender) ValidateSender(email string) *messages.ValidateSenderRequest {
+	return messages.ValidateSender(u.request(), email)
 }
 
 // GetSenderDomainList returns information about domains.
