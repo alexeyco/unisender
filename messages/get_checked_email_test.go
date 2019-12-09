@@ -3,14 +3,13 @@ package messages_test
 import (
 	"bytes"
 	"encoding/json"
-	"github.com/alexeyco/unisender/messages"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"reflect"
 	"testing"
 
 	"github.com/alexeyco/unisender/api"
+	"github.com/alexeyco/unisender/messages"
 	"github.com/alexeyco/unisender/test"
 )
 
@@ -95,9 +94,6 @@ func TestGetCheckedEmailRequest_Execute(t *testing.T) {
 	}
 
 	if !reflect.DeepEqual(expectedResult, givenResult) {
-		log.Println(expectedResult)
-		log.Println(givenResult)
-
 		t.Fatalf("Results should be equal")
 	}
 }
