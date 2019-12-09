@@ -1,6 +1,7 @@
 package unisender
 
 import (
+	"github.com/alexeyco/unisender/messages"
 	"net/http"
 	"sync"
 
@@ -123,6 +124,11 @@ func (u *UniSender) GetContactCount(listID int64) *contacts.GetContactCountReque
 // GetTotalContactsCount returns the contacts database size by the user login.
 func (u *UniSender) GetTotalContactsCount(login string) *contacts.GetTotalContactsCountRequest {
 	return contacts.GetTotalContactsCount(u.request(), login)
+}
+
+// CheckEmail returns request to check the delivery status of emails sent using.
+func (u *UniSender) CheckEmail(emailIDs ...int64) *messages.CheckEmailRequest {
+	return messages.CheckEmail(u.request(), emailIDs...)
 }
 
 func (u *UniSender) request() *api.Request {
