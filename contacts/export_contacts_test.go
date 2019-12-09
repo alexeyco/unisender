@@ -655,8 +655,8 @@ func TestExportContactsRequest_Execute(t *testing.T) {
 	}
 }
 
-func randomExportContactsResult() *contacts.ExportContactResult {
-	return &contacts.ExportContactResult{
+func randomExportContactsResult() *contacts.ExportContactsResult {
+	return &contacts.ExportContactsResult{
 		TaskUUID: test.RandomString(12, 32),
 		Status:   test.RandomString(12, 32),
 	}

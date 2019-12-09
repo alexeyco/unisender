@@ -7,14 +7,17 @@ import (
 	"strings"
 )
 
+// Logger logger interface.
 type Logger interface {
 	LogRequest(method, url string, values url.Values)
 	LogResponse(method, url string, statusCode int, json []byte)
 }
 
+// DefaultLogger default logger.
 type DefaultLogger struct {
 }
 
+// LogRequest logs request.
 func (l *DefaultLogger) LogRequest(method, url string, values url.Values) {
 	c := len(values)
 
@@ -35,6 +38,7 @@ func (l *DefaultLogger) LogRequest(method, url string, values url.Values) {
 	log.Printf("%s %s\n%s", method, url, strings.Join(rows, "\n"))
 }
 
+// LogResponse logs response.
 func (l *DefaultLogger) LogResponse(method, url string, statusCode int, json []byte) {
 	log.Printf("%s %s %d\n%s", method, url, statusCode, string(json))
 }

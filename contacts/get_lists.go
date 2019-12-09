@@ -2,10 +2,10 @@ package contacts
 
 import "github.com/alexeyco/unisender/api"
 
-// GetListResponse response of createList request.
+// GetListsResponse response of createList request.
 type GetListsResponse []List
 
-// GetListRequest request to get the list of all available campaign lists.
+// GetListsRequest request to get the list of all available campaign lists.
 type GetListsRequest struct {
 	request *api.Request
 }

@@ -35,7 +35,7 @@ func (r *SubscribeRequest) Phone(phone string) *SubscribeRequest {
 	return r.Field("phone", phone)
 }
 
-// Phone sets contact tags.
+// Tags sets contact tags.
 func (r *SubscribeRequest) Tags(tags ...string) *SubscribeRequest {
 	r.request.Add("tags", strings.Join(tags, ","))
 	return r

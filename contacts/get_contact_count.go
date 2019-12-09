@@ -6,6 +6,7 @@ import (
 	"github.com/alexeyco/unisender/api"
 )
 
+// GetContactCountResult request getContactCount request.
 type GetContactCountResult struct {
 	Count int64 `json:"count"`
 }

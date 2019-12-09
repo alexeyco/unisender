@@ -11,6 +11,7 @@ import (
 // LanguageDefault default API response language.
 const LanguageDefault = "en"
 
+// Unisender API client struct.
 type UniSender struct {
 	apiKey   string
 	language string
@@ -19,7 +20,7 @@ type UniSender struct {
 	mu       sync.RWMutex
 }
 
-// SetLanguage sets API response language to English.
+// SetLanguageEnglish sets API response language to English.
 func (u *UniSender) SetLanguageEnglish() {
 	u.mu.Lock()
 	defer u.mu.Unlock()
@@ -27,7 +28,7 @@ func (u *UniSender) SetLanguageEnglish() {
 	u.language = "en"
 }
 
-// SetLanguage sets API response language to Italian.
+// SetLanguageItalian sets API response language to Italian.
 func (u *UniSender) SetLanguageItalian() {
 	u.mu.Lock()
 	defer u.mu.Unlock()
@@ -35,7 +36,7 @@ func (u *UniSender) SetLanguageItalian() {
 	u.language = "it"
 }
 
-// SetLanguage sets API response language to Russian.
+// SetLanguageRussian sets API response language to Russian.
 func (u *UniSender) SetLanguageRussian() {
 	u.mu.Lock()
 	defer u.mu.Unlock()
@@ -74,7 +75,7 @@ func (u *UniSender) UpdateList(listID int64, title string) *contacts.UpdateListR
 	return contacts.UpdateList(u.request(), listID, title)
 }
 
-// UpdateList removes a list.
+// DeleteList removes a list.
 func (u *UniSender) DeleteList(listID int64) *contacts.DeleteListRequest {
 	return contacts.DeleteList(u.request(), listID)
 }
@@ -105,7 +106,7 @@ func (u *UniSender) ImportContacts(collection *contacts.ImportContactsCollection
 }
 
 // ExportContacts export of contact data from UniSender.
-func (u *UniSender) ExportContacts() contacts.ExportContactsRequest {
+func (u *UniSender) ExportContacts() *contacts.ExportContactsRequest {
 	return contacts.ExportContacts(u.request())
 }
 

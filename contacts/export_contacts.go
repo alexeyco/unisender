@@ -6,50 +6,38 @@ import (
 	"github.com/alexeyco/unisender/api"
 )
 
-// See https://www.unisender.com/en/support/api/contacts/exportcontacts/
-
-type ExportContactsRequest interface {
-	NotifyUrl(notifyUrl string) ExportContactsRequest
-	ListID(listID int64) ExportContactsRequest
-	FieldNames(fieldNames ...string) ExportContactsRequest
-	Email(email string) ExportContactsRequest
-	Phone(phone string) ExportContactsRequest
-	Tag(tag string) ExportContactsRequest
-	EmailStatusNew() ExportContactsRequest
-	EmailStatusInvited() ExportContactsRequest
-	EmailStatusActive() ExportContactsRequest
-	EmailStatusInactive() ExportContactsRequest
-	EmailStatusUnsubscribed() ExportContactsRequest
-	EmailStatusBlocked() ExportContactsRequest
-	EmailStatusActivationRequested() ExportContactsRequest
-	PhoneStatusNew() ExportContactsRequest
-	PhoneStatusActive() ExportContactsRequest
-	PhoneStatusInactive() ExportContactsRequest
-	PhoneStatusUnsubscribed() ExportContactsRequest
-	PhoneStatusBlocked() ExportContactsRequest
-	Execute() (res *ExportContactResult, err error)
-}
-
-type ExportContactResult struct {
+// ExportContactsResult exportContacts request result.
+type ExportContactsResult struct {
 	TaskUUID string `json:"task_uuid"`
 	Status   string `json:"status"`
 }
 
-type exportContactsRequest struct {
+// ExportContactsRequest request, that exports of contact data from UniSender.
+type ExportContactsRequest struct {
 	request *api.Request
 }
 
-func (r *exportContactsRequest) NotifyUrl(notifyUrl string) ExportContactsRequest {
+// NotifyUrl sets the URL to which the response will be sent after the report is generated.
+func (r *ExportContactsRequest) NotifyUrl(notifyUrl string) *ExportContactsRequest {
 	r.request.Add("notify_url", notifyUrl)
 	return r
 }
 
-func (r *exportContactsRequest) ListID(listID int64) ExportContactsRequest {
+// ListID optional export list code. If it is not specified, all lists will be exported. Codes of the lists
+// can be obtained by calling the getLists method. Warning: if the list is specified, those email addresses
+// that are not included in the list, but contacts have phone numbers included in this list, will be included
+// in the upload result as well.
+//
+// https://www.unisender.com/en/support/api/partners/getlists/
+func (r *ExportContactsRequest) ListID(listID int64) *ExportContactsRequest {
 	r.request.Add("list_id", strconv.FormatInt(listID, 10))
 	return r
 }
 
-func (r *exportContactsRequest) FieldNames(fieldNames ...string) ExportContactsRequest {
+// FieldNames an array of field names to be exported. If absent, then all possible fields are exported.
+// The transfer method using HTTP: field_names[]=1&field_names[]=2. The names of the system fields do not depend
+// on the language, the names of the user fields are taken from the substitution names.
+func (r *ExportContactsRequest) FieldNames(fieldNames ...string) *ExportContactsRequest {
 	for _, fieldName := range fieldNames {
 		r.request.Add("field_names[]", fieldName)
 	}
@@ -57,83 +45,102 @@ func (r *exportContactsRequest) FieldNames(fieldNames ...string) ExportContactsR
 	return r
 }
 
-func (r *exportContactsRequest) Email(email string) ExportContactsRequest {
+// Email sets email address. If this parameter is specified, the result will contain only one contact
+// with such email address.
+func (r *ExportContactsRequest) Email(email string) *ExportContactsRequest {
 	r.request.Add("email", email)
 	return r
 }
 
-func (r *exportContactsRequest) Phone(phone string) ExportContactsRequest {
+// Phone sets phone number. If this parameter is specified, the result will contain only one contact
+// with such phone number.
+func (r *ExportContactsRequest) Phone(phone string) *ExportContactsRequest {
 	r.request.Add("phone", phone)
 	return r
 }
 
-func (r *exportContactsRequest) Tag(tag string) ExportContactsRequest {
+// Tag sets tag parameter. If this parameter is specified, the search will take into account only contacts
+// that have such tag.
+func (r *ExportContactsRequest) Tag(tag string) *ExportContactsRequest {
 	r.request.Add("tag", tag)
 	return r
 }
 
-func (r *exportContactsRequest) EmailStatusNew() ExportContactsRequest {
+// EmailStatusNew if used, the result will contain only contacts with "new" email address status.
+func (r *ExportContactsRequest) EmailStatusNew() *ExportContactsRequest {
 	r.request.Add("email_status", "new")
 	return r
 }
 
-func (r *exportContactsRequest) EmailStatusInvited() ExportContactsRequest {
+// EmailStatusInvited if used, the result will contain only contacts with "invited" email address status.
+func (r *ExportContactsRequest) EmailStatusInvited() *ExportContactsRequest {
 	r.request.Add("email_status", "invited")
 	return r
 }
 
-func (r *exportContactsRequest) EmailStatusActive() ExportContactsRequest {
+// EmailStatusActive if used, the result will contain only contacts with "active" email address status.
+func (r *ExportContactsRequest) EmailStatusActive() *ExportContactsRequest {
 	r.request.Add("email_status", "active")
 	return r
 }
 
-func (r *exportContactsRequest) EmailStatusInactive() ExportContactsRequest {
+// EmailStatusInactive if used, the result will contain only contacts with "inactive" email address status.
+func (r *ExportContactsRequest) EmailStatusInactive() *ExportContactsRequest {
 	r.request.Add("email_status", "inactive")
 	return r
 }
 
-func (r *exportContactsRequest) EmailStatusUnsubscribed() ExportContactsRequest {
+// EmailStatusUnsubscribed if used, the result will contain only contacts with "ubsubscribed" email address status.
+func (r *ExportContactsRequest) EmailStatusUnsubscribed() *ExportContactsRequest {
 	r.request.Add("email_status", "unsubscribed")
 	return r
 }
 
-func (r *exportContactsRequest) EmailStatusBlocked() ExportContactsRequest {
+// EmailStatusBlocked if used, the result will contain only contacts with "blocked" email address status.
+func (r *ExportContactsRequest) EmailStatusBlocked() *ExportContactsRequest {
 	r.request.Add("email_status", "blocked")
 	return r
 }
 
-func (r *exportContactsRequest) EmailStatusActivationRequested() ExportContactsRequest {
+// EmailStatusActivationRequested if used, the result will contain only contacts with "activation_requested" email address status.
+func (r *ExportContactsRequest) EmailStatusActivationRequested() *ExportContactsRequest {
 	r.request.Add("email_status", "activation_requested")
 	return r
 }
 
-func (r *exportContactsRequest) PhoneStatusNew() ExportContactsRequest {
+// PhoneStatusNew if used, if used, the result will contain only contacts with "new" phone number status.
+func (r *ExportContactsRequest) PhoneStatusNew() *ExportContactsRequest {
 	r.request.Add("phone_status", "new")
 	return r
 }
 
-func (r *exportContactsRequest) PhoneStatusActive() ExportContactsRequest {
+// PhoneStatusActive if used, if used, the result will contain only contacts with "active" phone number status.
+func (r *ExportContactsRequest) PhoneStatusActive() *ExportContactsRequest {
 	r.request.Add("phone_status", "active")
 	return r
 }
 
-func (r *exportContactsRequest) PhoneStatusInactive() ExportContactsRequest {
+// PhoneStatusInactive if used, if used, the result will contain only contacts with "inactive" phone number status.
+func (r *ExportContactsRequest) PhoneStatusInactive() *ExportContactsRequest {
 	r.request.Add("phone_status", "inactive")
 	return r
 }
 
-func (r *exportContactsRequest) PhoneStatusUnsubscribed() ExportContactsRequest {
+// PhoneStatusUnsubscribed if used, if used, the result will contain only contacts with "ubsubscribed" phone number status.
+func (r *ExportContactsRequest) PhoneStatusUnsubscribed() *ExportContactsRequest {
 	r.request.Add("phone_status", "unsubscribed")
 	return r
 }
 
-func (r *exportContactsRequest) PhoneStatusBlocked() ExportContactsRequest {
+// PhoneStatusBlocked if used, if used, the result will contain only contacts with "blocked" phone number status.
+func (r *ExportContactsRequest) PhoneStatusBlocked() *ExportContactsRequest {
 	r.request.Add("phone_status", "blocked")
 	return r
 }
 
-func (r *exportContactsRequest) Execute() (res *ExportContactResult, err error) {
-	var response ExportContactResult
+// Execute sends request to UniSender API and returns result.
+func (r *ExportContactsRequest) Execute() (res *ExportContactsResult, err error) {
+	var response ExportContactsResult
 	if err = r.request.Execute("exportContacts", &response); err != nil {
 		return
 	}
@@ -143,8 +150,11 @@ func (r *exportContactsRequest) Execute() (res *ExportContactResult, err error) 
 	return
 }
 
-func ExportContacts(request *api.Request) ExportContactsRequest {
-	return &exportContactsRequest{
+// ExportContacts returns request, that exports of contact data from UniSender.
+//
+// See https://www.unisender.com/en/support/api/contacts/exportcontacts/
+func ExportContacts(request *api.Request) *ExportContactsRequest {
+	return &ExportContactsRequest{
 		request: request,
 	}
 }

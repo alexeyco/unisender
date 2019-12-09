@@ -35,7 +35,7 @@ func RandomInt(min, max int) int {
 	return rand.Intn(max-min) + min
 }
 
-// RandomInt returns an int64 in the given interval.
+// RandomInt64 returns an int64 in the given interval.
 func RandomInt64(min, max int) int64 {
 	return int64(RandomInt(min, max))
 }
