@@ -11,7 +11,7 @@ import (
 // LanguageDefault default API response language.
 const LanguageDefault = "en"
 
-// Unisender API client struct.
+// UniSender API client struct.
 type UniSender struct {
 	apiKey   string
 	language string

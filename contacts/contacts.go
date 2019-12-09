@@ -2,17 +2,20 @@ package contacts
 
 import "time"
 
+// List mailing list info.
 type List struct {
 	ID    int64  `json:"id"`
 	Title string `json:"title"`
 }
 
+// PersonList list info, contact subscribed.
 type PersonList struct {
 	ID      int64     `json:"id"`
 	Title   string    `json:"title"`
 	AddedAt time.Time `json:"added_at,omitempty"`
 }
 
+// PersonEmail contact email info.
 type PersonEmail struct {
 	Email        string            `json:"email"`
 	AddedAt      time.Time         `json:"added_at"`
@@ -27,6 +30,7 @@ type PersonEmail struct {
 	Fields       map[string]string `json:"fields,omitempty"`
 }
 
+// Person contact struct.
 type Person struct {
 	Email PersonEmail `json:"email"`
 }
