@@ -18,7 +18,7 @@ func (r *roundTripper) RoundTrip(req *http.Request) (res *http.Response, err err
 
 // NewRequest returns test API request.
 func NewRequest(fn func(req *http.Request) (res *http.Response, err error)) *api.Request {
-	return api.NewRequest(NewClient(fn), api.DefaultLanguage)
+	return api.NewRequest(NewClient(fn), "en")
 }
 
 // NewClient returns test http client.

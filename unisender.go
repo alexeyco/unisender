@@ -8,6 +8,9 @@ import (
 	"github.com/alexeyco/unisender/contacts"
 )
 
+// LanguageDefault default API response language.
+const LanguageDefault = "en"
+
 type UniSender struct {
 	apiKey   string
 	language string
@@ -16,12 +19,28 @@ type UniSender struct {
 	mu       sync.RWMutex
 }
 
-// SetLanguage sets API response language
-func (u *UniSender) SetLanguage(language string) {
+// SetLanguage sets API response language to English.
+func (u *UniSender) SetLanguageEnglish() {
 	u.mu.Lock()
 	defer u.mu.Unlock()
 
-	u.language = language
+	u.language = "en"
+}
+
+// SetLanguage sets API response language to Italian.
+func (u *UniSender) SetLanguageItalian() {
+	u.mu.Lock()
+	defer u.mu.Unlock()
+
+	u.language = "it"
+}
+
+// SetLanguage sets API response language to Russian.
+func (u *UniSender) SetLanguageRussian() {
+	u.mu.Lock()
+	defer u.mu.Unlock()
+
+	u.language = "ru"
 }
 
 // SetClient sets custom http.Request to UniSender client.
@@ -119,7 +138,7 @@ func (u *UniSender) request() *api.Request {
 func New(apiKey string) *UniSender {
 	return &UniSender{
 		apiKey:   apiKey,
-		language: api.DefaultLanguage,
+		language: LanguageDefault,
 		client:   http.DefaultClient,
 		mu:       sync.RWMutex{},
 	}

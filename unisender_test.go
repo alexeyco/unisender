@@ -2,7 +2,6 @@ package unisender_test
 
 import (
 	"github.com/alexeyco/unisender"
-	"github.com/alexeyco/unisender/api"
 	"log"
 	"net/http"
 	"testing"
@@ -70,7 +69,7 @@ func TestUniSender_Format(t *testing.T) {
 
 func ExampleUniSender_CreateList() {
 	usndr := unisender.New("your-api-key")
-	usndr.SetLanguage(api.LanguageItalian)
+	usndr.SetLanguageItalian()
 
 	listID, err := usndr.CreateList("Your list name").
 		Execute()
