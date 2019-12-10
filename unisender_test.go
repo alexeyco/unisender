@@ -213,3 +213,21 @@ func ExampleUniSender_GetCampaignCommonStats() {
 
 	log.Println(res)
 }
+
+func ExampleUniSender_GetCampaigns() {
+	usndr := unisender.New("your-api-key").
+		SetLanguageEnglish()
+
+	res, err := usndr.GetCampaigns().
+		From(time.Now().Add(-time.Hour)).
+		To(time.Now()).
+		Limit(100).
+		Offset(0).
+		Execute()
+
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	log.Println(res)
+}

@@ -118,6 +118,14 @@ func (u *UniSender) GetCampaignCommonStats(campaignID int64) *campaigns.GetCampa
 	return campaigns.GetCampaignCommonStats(u.request(), campaignID)
 }
 
+// GetCampaigns returns request to get the list of all available campaigns. The number of mailings received at a time
+// is limited to 10,000. To get a complete mailings list when there is more than 10,000, use the from and to parameters.
+//
+// See: https://www.unisender.com/en/support/statistics/getcampaigns/
+func (u *UniSender) GetCampaigns() *campaigns.GetCampaignsRequest {
+	return campaigns.GetCampaigns(u.request())
+}
+
 // CreateList creates a new contact list.
 func (u *UniSender) CreateList(title string) *contacts.CreateListRequest {
 	return contacts.CreateList(u.request(), title)
