@@ -1,6 +1,7 @@
 package unisender
 
 import (
+	"github.com/alexeyco/unisender/campaigns"
 	"net/http"
 	"sync"
 
@@ -75,6 +76,11 @@ func (u *UniSender) SetLogger(logger api.Logger) *UniSender {
 // GetCurrencyRates returns currency rates.
 func (u *UniSender) GetCurrencyRates() *common.GetCurrencyRatesRequest {
 	return common.GetCurrencyRates(u.request())
+}
+
+// CancelCampaign returns request to cancel a scheduled campaign.
+func (u *UniSender) CancelCampaign(campaignID int64) *campaigns.CancelCampaignRequest {
+	return campaigns.CancelCampaign(u.request(), campaignID)
 }
 
 // CreateList creates a new contact list.

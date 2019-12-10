@@ -168,64 +168,14 @@ func ExampleUniSender_GetCurrencyRates() {
 	log.Println(currencyRates)
 }
 
-func ExampleUniSender_CreateList() {
+func ExampleUniSender_CancelCampaign() {
 	usndr := unisender.New("your-api-key").
-		SetLanguageItalian()
+		SetLanguageEnglish()
 
-	listID, err := usndr.CreateList("Your list name").
-		Execute()
-
-	if err != nil {
+	var campaignID int64 = 123
+	if err := usndr.CancelCampaign(123).Execute(); err != nil {
 		log.Fatalln(err)
 	}
 
-	log.Printf("List created; ID=%d", listID)
-}
-
-func ExampleUniSender_GetLists() {
-
-}
-
-func ExampleUniSender_UpdateList() {
-
-}
-
-func ExampleUniSender_DeleteList() {
-
-}
-
-func ExampleUniSender_GetContact() {
-
-}
-
-func ExampleUniSender_Subscribe() {
-
-}
-
-func ExampleUniSender_Unsubscribe() {
-
-}
-
-func ExampleUniSender_Exclude() {
-
-}
-
-func ExampleUniSender_ImportContacts() {
-
-}
-
-func ExampleUniSender_ExportContacts() {
-
-}
-
-func ExampleUniSender_IsContactInList() {
-
-}
-
-func ExampleUniSender_GetContactCount() {
-
-}
-
-func ExampleUniSender_GetTotalContactsCount() {
-
+	log.Printf("Campaign (id=%d) cancelled", campaignID)
 }
