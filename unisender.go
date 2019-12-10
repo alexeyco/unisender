@@ -211,6 +211,13 @@ func (u *UniSender) GetContact(email string) *contacts.GetContactRequest {
 	return contacts.GetContact(u.request(), email)
 }
 
+// GetContactCount returns request for count contacts by specified conditions.
+//
+// See https://www.unisender.com/en/support/api/contacts/getcontactcount/
+func (u *UniSender) GetContactCount(listID int64) *contacts.GetContactCountRequest {
+	return contacts.GetContactCount(u.request(), listID)
+}
+
 // CheckEmail returns request to check the delivery status of emails sent using the sendEmail method.
 //
 // To speed up the work of the sendEmail method, delivery statuses are stored for a limited period of time,
@@ -419,11 +426,6 @@ func (u *UniSender) ImportContacts(collection *contacts2.ImportContactsCollectio
 // IsContactInList checks whether the contact is in the specified user lists.
 func (u *UniSender) IsContactInList(email string, listIDs ...int64) *contacts2.IsContactInListRequest {
 	return contacts2.IsContactInList(u.request(), email, listIDs...)
-}
-
-// GetContactCount returns the contacts list size.
-func (u *UniSender) GetContactCount(listID int64) *contacts2.GetContactCountRequest {
-	return contacts2.GetContactCount(u.request(), listID)
 }
 
 // GetTotalContactsCount returns the contacts database size by the user login.

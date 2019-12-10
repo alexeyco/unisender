@@ -1,4 +1,4 @@
-package contacts2
+package contacts
 
 import (
 	"strconv"

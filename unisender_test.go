@@ -336,12 +336,26 @@ func ExampleUniSender_GetContact() {
 	log.Println(res)
 }
 
+func ExampleUniSender_GetContactCount() {
+	usndr := unisender.New("your-api-key").
+		SetLanguageEnglish()
+
+	res, err := usndr.GetContactCount(1).
+		ParamsTypeAddress().
+		Execute()
+
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	log.Println(res)
+}
+
 func ExampleUniSender_CheckEmail() {
 	usndr := unisender.New("your-api-key").
 		SetLanguageEnglish()
 
-	var emailID int64 = 123
-	res, err := usndr.CheckEmail(emailID).
+	res, err := usndr.CheckEmail(123).
 		Execute()
 
 	if err != nil {
@@ -355,8 +369,7 @@ func ExampleUniSender_CheckSMS() {
 	usndr := unisender.New("your-api-key").
 		SetLanguageEnglish()
 
-	var smsID int64 = 123
-	res, err := usndr.CheckSMS(smsID).
+	res, err := usndr.CheckSMS(123).
 		Execute()
 
 	if err != nil {

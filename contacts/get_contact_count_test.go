@@ -1,4 +1,4 @@
-package contacts2_test
+package contacts_test
 
 import (
 	"bytes"
@@ -9,7 +9,7 @@ import (
 	"testing"
 
 	"github.com/alexeyco/unisender/api"
-	"github.com/alexeyco/unisender/contacts2"
+	"github.com/alexeyco/unisender/contacts"
 	"github.com/alexeyco/unisender/test"
 )
 
@@ -35,7 +35,7 @@ func TestGetContactCountRequest_ParamsTagID(t *testing.T) {
 		}, nil
 	})
 
-	_, err := contacts2.GetContactCount(req, expectedListID).
+	_, err := contacts.GetContactCount(req, expectedListID).
 		ParamsTagID(expectedParamsTagID).
 		Execute()
 
@@ -74,7 +74,7 @@ func TestGetContactCountRequest_ParamsTypeAddress(t *testing.T) {
 		}, nil
 	})
 
-	_, err := contacts2.GetContactCount(req, expectedListID).
+	_, err := contacts.GetContactCount(req, expectedListID).
 		ParamsTypeAddress(expectedParamsSearch).
 		Execute()
 
@@ -117,7 +117,7 @@ func TestGetContactCountRequest_ParamsTypePhone(t *testing.T) {
 		}, nil
 	})
 
-	_, err := contacts2.GetContactCount(req, expectedListID).
+	_, err := contacts.GetContactCount(req, expectedListID).
 		ParamsTypePhone(expectedParamsSearch).
 		Execute()
 
@@ -155,7 +155,7 @@ func TestGetContactCountRequest_Execute(t *testing.T) {
 		}, nil
 	})
 
-	givenResult, err := contacts2.GetContactCount(req, expectedListID).
+	givenResult, err := contacts.GetContactCount(req, expectedListID).
 		Execute()
 
 	if err != nil {
@@ -171,8 +171,8 @@ func TestGetContactCountRequest_Execute(t *testing.T) {
 	}
 }
 
-func randomGetContactCountResult() *contacts2.GetContactCountResult {
-	return &contacts2.GetContactCountResult{
+func randomGetContactCountResult() *contacts.GetContactCountResult {
+	return &contacts.GetContactCountResult{
 		Count: test.RandomInt64(9999, 999999),
 	}
 }
