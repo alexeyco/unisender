@@ -126,6 +126,37 @@ func (u *UniSender) GetCampaigns() *campaigns.GetCampaignsRequest {
 	return campaigns.GetCampaigns(u.request())
 }
 
+// GetCampaignStatus returns request to find out the status of the campaign.
+//
+// Campaign status possible options:
+//   waits_censor   — campaign is waiting to be checked.
+//
+//   censor_hold    — it is actually equivalent to waits_censor: considered by the administrator, but delayed
+//                    for further check.
+//
+//   declined       — the campaign has been rejected by administrator.
+//
+//   waits_schedule — the task for placing the list in the queue has been received and the campaign is waiting
+//                    to be placed in the queue. As a rule, the campaign stays in this status one or two minutes
+//                    before changing its status on scheduled.
+//
+//   scheduled      — scheduled to be launched. It will be launched as soon as the sending time comes.
+//
+//   in_progress    — messages are being sent.
+//
+//   analysed       — all messages have been sent, the results are being analyzed.
+//
+//   completed      — all messages have been sent and analysis of the results is completed.
+//
+//   stopped        — the campaign is paused.
+//
+//   canceled       — the campaign is canceled (usually due to the lack of money or at the request of the user).
+//
+// See: https://www.unisender.com/en/support/api/partners/getcampaignstatus/
+func (u *UniSender) GetCampaignStatus(campaignID int64) *campaigns.GetCampaignStatusRequest {
+	return campaigns.GetCampaignStatus(u.request(), campaignID)
+}
+
 // CreateList creates a new contact list.
 func (u *UniSender) CreateList(title string) *contacts.CreateListRequest {
 	return contacts.CreateList(u.request(), title)
