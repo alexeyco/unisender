@@ -1,13 +1,13 @@
 package unisender
 
 import (
-	"github.com/alexeyco/unisender/common"
-	"github.com/alexeyco/unisender/messages"
 	"net/http"
 	"sync"
 
 	"github.com/alexeyco/unisender/api"
+	"github.com/alexeyco/unisender/common"
 	"github.com/alexeyco/unisender/contacts"
+	"github.com/alexeyco/unisender/messages"
 )
 
 // LanguageDefault default API response language.

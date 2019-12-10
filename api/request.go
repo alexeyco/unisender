@@ -40,9 +40,12 @@ func (r *Request) Execute(method string, v interface{}) (err error) {
 		return
 	}
 
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return
+	var body []byte
+
+	if resp.Body != nil {
+		if body, err = ioutil.ReadAll(resp.Body); err != nil {
+			return
+		}
 	}
 
 	r.logResponse("POST", u, resp.StatusCode, body)
@@ -50,7 +53,7 @@ func (r *Request) Execute(method string, v interface{}) (err error) {
 		return ErrWrongStatusCode
 	}
 
-	if v == nil {
+	if v == nil || len(body) == 0 {
 		return
 	}
 
