@@ -231,3 +231,18 @@ func ExampleUniSender_GetCampaigns() {
 
 	log.Println(res)
 }
+
+func ExampleUniSender_GetVisitedLinks() {
+	usndr := unisender.New("your-api-key").
+		SetLanguageEnglish()
+
+	var campaignID int64 = 123
+	res, err := usndr.GetVisitedLinks(campaignID).
+		Execute()
+
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	log.Println(res)
+}

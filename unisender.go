@@ -157,6 +157,13 @@ func (u *UniSender) GetCampaignStatus(campaignID int64) *campaigns.GetCampaignSt
 	return campaigns.GetCampaignStatus(u.request(), campaignID)
 }
 
+// GetVisitedLinks returns request to report on the links visited by users in the specified email campaign.
+//
+// See: https://www.unisender.com/en/support/api/partners/getvisitedlinks/
+func (u *UniSender) GetVisitedLinks(campaignID int64) *campaigns.GetVisitedLinksRequest {
+	return campaigns.GetVisitedLinks(u.request(), campaignID)
+}
+
 // CreateList creates a new contact list.
 func (u *UniSender) CreateList(title string) *contacts.CreateListRequest {
 	return contacts.CreateList(u.request(), title)
