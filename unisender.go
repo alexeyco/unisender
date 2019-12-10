@@ -1,13 +1,13 @@
 package unisender
 
 import (
-	"github.com/alexeyco/unisender/contacts"
 	"net/http"
 	"sync"
 
 	"github.com/alexeyco/unisender/api"
 	"github.com/alexeyco/unisender/campaigns"
 	"github.com/alexeyco/unisender/common"
+	"github.com/alexeyco/unisender/contacts"
 	"github.com/alexeyco/unisender/contacts2"
 	"github.com/alexeyco/unisender/messages"
 	"github.com/alexeyco/unisender/messages2"
@@ -186,6 +186,15 @@ func (u *UniSender) DeleteField(fieldID int64) *contacts.DeleteFieldRequest {
 // See: https://www.unisender.com/en/support/api/partners/deletetag/
 func (u *UniSender) DeleteTag(fieldID int64) *contacts.DeleteTagRequest {
 	return contacts.DeleteTag(u.request(), fieldID)
+}
+
+// Exclude returns request, that excludes the contact’s email or phone number from one or several lists.
+// In contrast to the unsubscribe method, it does not mark the contact as "unsubscribed", and it can be included
+// in the list again later using the subscribe method.
+//
+// See https://www.unisender.com/en/support/api/partners/exclude/
+func (u *UniSender) Exclude(contact string) *contacts.ExcludeRequest {
+	return contacts.Exclude(u.request(), contact)
 }
 
 // CheckEmail returns request to check the delivery status of emails sent using the sendEmail method.
@@ -391,11 +400,6 @@ func (u *UniSender) Subscribe() *contacts2.SubscribeRequest {
 // Unsubscribe unsubscribes the contact email or phone number from one or several lists.
 func (u *UniSender) Unsubscribe(contact string) *contacts2.UnsubscribeRequest {
 	return contacts2.Unsubscribe(u.request(), contact)
-}
-
-// Exclude excludes the contact’s email or phone number from one or several lists.
-func (u *UniSender) Exclude(contact string) *contacts2.ExcludeRequest {
-	return contacts2.Exclude(u.request(), contact)
 }
 
 // ImportContacts imports contacts.

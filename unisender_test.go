@@ -288,6 +288,21 @@ func ExampleUniSender_DeleteTag() {
 	}
 }
 
+func ExampleUniSender_Exclude() {
+	usndr := unisender.New("your-api-key").
+		SetLanguageEnglish()
+
+	email := "foo@bar.example"
+	err := usndr.Exclude(email).
+		ContactTypeEmail().
+		ListIDs(1, 2, 3).
+		Execute()
+
+	if err != nil {
+		log.Fatalln(err)
+	}
+}
+
 func ExampleUniSender_CheckEmail() {
 	usndr := unisender.New("your-api-key").
 		SetLanguageEnglish()

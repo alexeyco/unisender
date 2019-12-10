@@ -1,4 +1,4 @@
-package contacts2
+package contacts
 
 import (
 	"strconv"
@@ -46,10 +46,6 @@ func (r *ExcludeRequest) Execute() (err error) {
 }
 
 // Exclude returns request, that excludes the contact’s email or phone number from one or several lists.
-// In contrast to the unsubscribe method, it does not mark the contact as "unsubscribed", and it can be included
-// in the list again later using the subscribe method.
-//
-// See https://www.unisender.com/en/support/api/partners/exclude/
 func Exclude(request *api.Request, contact string) *ExcludeRequest {
 	request.Add("contact", contact)
 
