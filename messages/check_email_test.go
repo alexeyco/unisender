@@ -1,4 +1,4 @@
-package contacts_test
+package messages_test
 
 import (
 	"bytes"
@@ -11,7 +11,7 @@ import (
 	"testing"
 
 	"github.com/alexeyco/unisender/api"
-	"github.com/alexeyco/unisender/contacts"
+	"github.com/alexeyco/unisender/messages"
 	"github.com/alexeyco/unisender/test"
 )
 
@@ -20,7 +20,7 @@ func TestCheckEmailRequest_Execute(t *testing.T) {
 	var givenEmailIDs []int64
 
 	expectedResult := randomCheckEmailResult()
-	var givenResult *contacts.CheckEmailResult
+	var givenResult *messages.CheckEmailResult
 
 	req := test.NewRequest(func(req *http.Request) (res *http.Response, err error) {
 		emailIDs := req.FormValue("email_id")
@@ -41,7 +41,7 @@ func TestCheckEmailRequest_Execute(t *testing.T) {
 		}, nil
 	})
 
-	givenResult, err := contacts.CheckEmail(req, expectedEmailIDs...).
+	givenResult, err := messages.CheckEmail(req, expectedEmailIDs...).
 		Execute()
 
 	if err != nil {
@@ -57,18 +57,18 @@ func TestCheckEmailRequest_Execute(t *testing.T) {
 	}
 }
 
-func randomCheckEmailResult() *contacts.CheckEmailResult {
+func randomCheckEmailResult() *messages.CheckEmailResult {
 	l := test.RandomInt(12, 32)
-	statuses := make([]contacts.CheckEmailResultStatus, l)
+	statuses := make([]messages.CheckEmailResultStatus, l)
 
 	for i := 0; i < l; i++ {
-		statuses[i] = contacts.CheckEmailResultStatus{
+		statuses[i] = messages.CheckEmailResultStatus{
 			ID:     test.RandomInt64(9999, 999999),
 			Status: test.RandomString(12, 36),
 		}
 	}
 
-	return &contacts.CheckEmailResult{
+	return &messages.CheckEmailResult{
 		Statuses: statuses,
 	}
 }

@@ -1,4 +1,4 @@
-package contacts
+package messages
 
 import (
 	"strconv"

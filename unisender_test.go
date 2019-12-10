@@ -261,3 +261,18 @@ func ExampleUniSender_CheckEmail() {
 
 	log.Println(res)
 }
+
+func ExampleUniSender_CheckSMS() {
+	usndr := unisender.New("your-api-key").
+		SetLanguageEnglish()
+
+	var smsID int64 = 123
+	res, err := usndr.CheckSMS(smsID).
+		Execute()
+
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	log.Println(res)
+}
