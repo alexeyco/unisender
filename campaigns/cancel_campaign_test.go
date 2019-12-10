@@ -1,10 +1,11 @@
-package campaigns
+package campaigns_test
 
 import (
 	"net/http"
 	"strconv"
 	"testing"
 
+	"github.com/alexeyco/unisender/campaigns"
 	"github.com/alexeyco/unisender/test"
 )
 
@@ -20,7 +21,7 @@ func TestCancelCampaignRequest_Execute(t *testing.T) {
 		}, nil
 	})
 
-	err := CancelCampaign(req, expectedCampaignID).
+	err := campaigns.CancelCampaign(req, expectedCampaignID).
 		Execute()
 
 	if err != nil {

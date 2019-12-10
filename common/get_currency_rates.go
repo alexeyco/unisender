@@ -23,8 +23,6 @@ func (r *GetCurrencyRatesRequest) Execute() (res []CurrencyRate, err error) {
 }
 
 // GetCurrencyRates allows you to get a list of all currencies in the UniSender system.
-//
-// See: https://www.unisender.com/en/support/api/common/getcurrencyrates/
 func GetCurrencyRates(request *api.Request) *GetCurrencyRatesRequest {
 	request.Add("format", "json")
 

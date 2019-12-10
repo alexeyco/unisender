@@ -4,6 +4,7 @@ import (
 	"log"
 	"net/http"
 	"testing"
+	"time"
 
 	"github.com/alexeyco/unisender"
 	"github.com/alexeyco/unisender/test"
@@ -178,4 +179,22 @@ func ExampleUniSender_CancelCampaign() {
 	}
 
 	log.Printf("Campaign (id=%d) cancelled", campaignID)
+}
+
+func ExampleUniSender_CreateCampaign() {
+	usndr := unisender.New("your-api-key").
+		SetLanguageEnglish()
+
+	var messageID int64 = 123
+	res, err := usndr.CreateCampaign(messageID).
+		StartTime(time.Now().Add(3 * time.Hour)).
+		TrackRead().
+		TrackLinks().
+		Execute()
+
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	log.Println(res)
 }

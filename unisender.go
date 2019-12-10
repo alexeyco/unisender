@@ -1,11 +1,11 @@
 package unisender
 
 import (
-	"github.com/alexeyco/unisender/campaigns"
 	"net/http"
 	"sync"
 
 	"github.com/alexeyco/unisender/api"
+	"github.com/alexeyco/unisender/campaigns"
 	"github.com/alexeyco/unisender/common"
 	"github.com/alexeyco/unisender/contacts"
 	"github.com/alexeyco/unisender/messages"
@@ -73,14 +73,42 @@ func (u *UniSender) SetLogger(logger api.Logger) *UniSender {
 	return u
 }
 
-// GetCurrencyRates returns currency rates.
+// GetCurrencyRates allows you to get a list of all currencies in the UniSender system.
+//
+// See: https://www.unisender.com/en/support/api/common/getcurrencyrates/
 func (u *UniSender) GetCurrencyRates() *common.GetCurrencyRatesRequest {
 	return common.GetCurrencyRates(u.request())
 }
 
 // CancelCampaign returns request to cancel a scheduled campaign.
+//
+// See: https://www.unisender.com/en/support/api/partners/cancel-campaign/
+//
+// A campaign can be canceled if it has one of the following statuses:
+//   * "Planned",
+//   * "Scheduled" (scheduled),
+//   * "Considered by the administration" (censor_hold),
+//   * "Waiting for approval" (waits_censor).
+//
+// The distribution status can be obtained using the getCampaignStatus method.
+//
+// See: https://www.unisender.com/en/support/api/partners/getcampaignstatus/
 func (u *UniSender) CancelCampaign(campaignID int64) *campaigns.CancelCampaignRequest {
 	return campaigns.CancelCampaign(u.request(), campaignID)
+}
+
+// CreateCampaign returns request used to schedule or immediately start sending email or SMS messages. The same message
+// can be sent several times, but the moments of sending should have an interval of at least an hour.
+//
+// See: https://www.unisender.com/en/support/api/partners/createcampaign/
+//
+// This method is used to send the already created messages. To create messages in advance, use the createEmailMessage
+// and createSmsMessage methods.
+//
+// See: https://www.unisender.com/en/support/api/partners/createemailmessage/
+// See: https://www.unisender.com/en/support/api/partners/createsmsmessage/
+func (u *UniSender) CreateCampaign(messageID int64) *campaigns.CreateCampaignRequest {
+	return campaigns.CreateCampaign(u.request(), messageID)
 }
 
 // CreateList creates a new contact list.

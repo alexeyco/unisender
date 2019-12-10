@@ -17,8 +17,6 @@ func (r *CancelCampaignRequest) Execute() (err error) {
 }
 
 // CancelCampaign returns request to cancel a scheduled campaign.
-//
-// See: https://www.unisender.com/en/support/api/partners/cancel-campaign/
 func CancelCampaign(request *api.Request, campaignID int64) *CancelCampaignRequest {
 	request.Add("campaign_id", strconv.FormatInt(campaignID, 10))
 
