@@ -111,6 +111,13 @@ func (u *UniSender) CreateCampaign(messageID int64) *campaigns.CreateCampaignReq
 	return campaigns.CreateCampaign(u.request(), messageID)
 }
 
+// GetCampaignCommonStats general information about the results of delivering messages in the given list.
+//
+// See: https://www.unisender.com/en/support/api/partners/get-campaign-common-stats/
+func (u *UniSender) GetCampaignCommonStats(campaignID int64) *campaigns.GetCampaignCommonStatsRequest {
+	return campaigns.GetCampaignCommonStats(u.request(), campaignID)
+}
+
 // CreateList creates a new contact list.
 func (u *UniSender) CreateList(title string) *contacts.CreateListRequest {
 	return contacts.CreateList(u.request(), title)

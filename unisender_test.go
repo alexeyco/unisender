@@ -198,3 +198,18 @@ func ExampleUniSender_CreateCampaign() {
 
 	log.Println(res)
 }
+
+func ExampleUniSender_GetCampaignCommonStats() {
+	usndr := unisender.New("your-api-key").
+		SetLanguageEnglish()
+
+	var campaignID int64 = 123
+	res, err := usndr.GetCampaignCommonStats(campaignID).
+		Execute()
+
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	log.Println(res)
+}
