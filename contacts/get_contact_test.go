@@ -1,4 +1,4 @@
-package contacts2_test
+package contacts_test
 
 import (
 	"bytes"
@@ -10,7 +10,7 @@ import (
 	"testing"
 
 	"github.com/alexeyco/unisender/api"
-	"github.com/alexeyco/unisender/contacts2"
+	"github.com/alexeyco/unisender/contacts"
 	"github.com/alexeyco/unisender/test"
 )
 
@@ -19,7 +19,7 @@ func TestGetContactRequest_IncludeLists(t *testing.T) {
 	expectedIncludeLists := 1
 	var givenIncludeLists int
 
-	expectedResult := randomPerson()
+	expectedResult := randomGetContactResult()
 
 	req := test.NewRequest(func(req *http.Request) (res *http.Response, err error) {
 		givenIncludeLists, _ = strconv.Atoi(req.FormValue("include_lists"))
@@ -36,7 +36,7 @@ func TestGetContactRequest_IncludeLists(t *testing.T) {
 		}, nil
 	})
 
-	_, err := contacts2.GetContact(req, expectedEmail).
+	_, err := contacts.GetContact(req, expectedEmail).
 		IncludeLists().
 		Execute()
 
@@ -54,7 +54,7 @@ func TestGetContactRequest_IncludeFields(t *testing.T) {
 	expectedIncludeFields := 1
 	var givenIncludeFields int
 
-	expectedResult := randomPerson()
+	expectedResult := randomGetContactResult()
 
 	req := test.NewRequest(func(req *http.Request) (res *http.Response, err error) {
 		givenIncludeFields, _ = strconv.Atoi(req.FormValue("include_fields"))
@@ -71,7 +71,7 @@ func TestGetContactRequest_IncludeFields(t *testing.T) {
 		}, nil
 	})
 
-	_, err := contacts2.GetContact(req, expectedEmail).
+	_, err := contacts.GetContact(req, expectedEmail).
 		IncludeFields().
 		Execute()
 
@@ -89,7 +89,7 @@ func TestGetContactRequest_IncludeDetails(t *testing.T) {
 	expectedIncludeDetails := 1
 	var givenIncludeDetails int
 
-	expectedResult := randomPerson()
+	expectedResult := randomGetContactResult()
 
 	req := test.NewRequest(func(req *http.Request) (res *http.Response, err error) {
 		givenIncludeDetails, _ = strconv.Atoi(req.FormValue("include_details"))
@@ -106,7 +106,7 @@ func TestGetContactRequest_IncludeDetails(t *testing.T) {
 		}, nil
 	})
 
-	_, err := contacts2.GetContact(req, expectedEmail).
+	_, err := contacts.GetContact(req, expectedEmail).
 		IncludeDetails().
 		Execute()
 
@@ -123,7 +123,7 @@ func TestGetContactRequest_Execute(t *testing.T) {
 	expectedEmail := test.RandomString(12, 36)
 	var givenEmail string
 
-	expectedResult := randomPerson()
+	expectedResult := randomGetContactResult()
 
 	req := test.NewRequest(func(req *http.Request) (res *http.Response, err error) {
 		givenEmail = req.FormValue("email")
@@ -140,7 +140,7 @@ func TestGetContactRequest_Execute(t *testing.T) {
 		}, nil
 	})
 
-	givenResult, err := contacts2.GetContact(req, expectedEmail).
+	givenResult, err := contacts.GetContact(req, expectedEmail).
 		Execute()
 
 	if err != nil {
@@ -156,11 +156,11 @@ func TestGetContactRequest_Execute(t *testing.T) {
 	}
 }
 
-func randomPerson() *contacts2.Person {
-	var lists []contacts2.PersonList
+func randomGetContactResult() *contacts.GetContactResult {
+	var lists []contacts.GetContactResultList
 	l := test.RandomInt(1, 12)
 	for i := 0; i < l; i++ {
-		lists = append(lists, contacts2.PersonList{
+		lists = append(lists, contacts.GetContactResultList{
 			ID:      test.RandomInt64(9999, 999999),
 			Title:   test.RandomString(12, 36),
 			AddedAt: test.RandomTime(12, 365),
@@ -173,8 +173,8 @@ func randomPerson() *contacts2.Person {
 		fields[test.RandomString(4, 16)] = test.RandomString(12, 36)
 	}
 
-	return &contacts2.Person{
-		Email: contacts2.PersonEmail{
+	return &contacts.GetContactResult{
+		Email: contacts.GetContactResultEmail{
 			Email:        test.RandomString(12, 36),
 			AddedAt:      test.RandomTime(12, 365),
 			Status:       test.RandomString(12, 36),

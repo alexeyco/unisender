@@ -204,6 +204,13 @@ func (u *UniSender) ExportContacts() *contacts.ExportContactsRequest {
 	return contacts.ExportContacts(u.request())
 }
 
+// GetContact returns request to getting information about a contact (one contact only).
+//
+// See https://www.unisender.com/en/support/api/contacts/getcontact/
+func (u *UniSender) GetContact(email string) *contacts.GetContactRequest {
+	return contacts.GetContact(u.request(), email)
+}
+
 // CheckEmail returns request to check the delivery status of emails sent using the sendEmail method.
 //
 // To speed up the work of the sendEmail method, delivery statuses are stored for a limited period of time,
@@ -392,11 +399,6 @@ func (u *UniSender) UpdateList(listID int64, title string) *contacts2.UpdateList
 // DeleteList removes a list.
 func (u *UniSender) DeleteList(listID int64) *contacts2.DeleteListRequest {
 	return contacts2.DeleteList(u.request(), listID)
-}
-
-// GetContact returns information about single contact.
-func (u *UniSender) GetContact(email string) *contacts2.GetContactRequest {
-	return contacts2.GetContact(u.request(), email)
 }
 
 // Subscribe subscribes the contact email or phone number to one or several lists.
