@@ -181,6 +181,13 @@ func (u *UniSender) DeleteField(fieldID int64) *contacts.DeleteFieldRequest {
 	return contacts.DeleteField(u.request(), fieldID)
 }
 
+// DeleteTag returns request to delete a user tag.
+//
+// See: https://www.unisender.com/en/support/api/partners/deletetag/
+func (u *UniSender) DeleteTag(fieldID int64) *contacts.DeleteTagRequest {
+	return contacts.DeleteTag(u.request(), fieldID)
+}
+
 // CheckEmail returns request to check the delivery status of emails sent using the sendEmail method.
 //
 // To speed up the work of the sendEmail method, delivery statuses are stored for a limited period of time,

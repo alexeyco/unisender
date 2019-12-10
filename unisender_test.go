@@ -275,6 +275,19 @@ func ExampleUniSender_DeleteField() {
 	}
 }
 
+func ExampleUniSender_DeleteTag() {
+	usndr := unisender.New("your-api-key").
+		SetLanguageEnglish()
+
+	var tagID int64 = 123
+	err := usndr.DeleteTag(tagID).
+		Execute()
+
+	if err != nil {
+		log.Fatalln(err)
+	}
+}
+
 func ExampleUniSender_CheckEmail() {
 	usndr := unisender.New("your-api-key").
 		SetLanguageEnglish()
