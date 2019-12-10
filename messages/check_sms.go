@@ -19,7 +19,7 @@ type CheckSMSRequest struct {
 // Execute sends request to UniSender API and returns result.
 func (r *CheckSMSRequest) Execute() (res string, err error) {
 	var result CheckSMSResult
-	if err = r.request.Execute("checkSMS", &result); err != nil {
+	if err = r.request.Execute("checkSms", &result); err != nil {
 		return
 	}
 

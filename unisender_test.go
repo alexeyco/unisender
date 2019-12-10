@@ -247,6 +247,21 @@ func ExampleUniSender_GetVisitedLinks() {
 	log.Println(res)
 }
 
+func ExampleUniSender_CreateField() {
+	usndr := unisender.New("your-api-key").
+		SetLanguageEnglish()
+
+	fieldID, err := usndr.CreateField("SomeField").
+		TypeString().
+		Execute()
+
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	log.Println(fieldID)
+}
+
 func ExampleUniSender_CheckEmail() {
 	usndr := unisender.New("your-api-key").
 		SetLanguageEnglish()

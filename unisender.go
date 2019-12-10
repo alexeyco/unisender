@@ -1,6 +1,7 @@
 package unisender
 
 import (
+	"github.com/alexeyco/unisender/contacts"
 	"net/http"
 	"sync"
 
@@ -163,6 +164,14 @@ func (u *UniSender) GetVisitedLinks(campaignID int64) *campaigns.GetVisitedLinks
 // See: https://www.unisender.com/en/support/api/common/getcurrencyrates/
 func (u *UniSender) GetCurrencyRates() *common.GetCurrencyRatesRequest {
 	return common.GetCurrencyRates(u.request())
+}
+
+// CreateField returns request to create a new user field, the value of which can be set for each recipient,
+// and then it can be substituted in the letter.
+//
+// See: https://www.unisender.com/en/support/api/partners/createfield/
+func (u *UniSender) CreateField(name string) *contacts.CreateFieldRequest {
+	return contacts.CreateField(u.request(), name)
 }
 
 // CheckEmail returns request to check the delivery status of emails sent using the sendEmail method.
