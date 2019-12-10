@@ -1,4 +1,4 @@
-package contacts2_test
+package contacts_test
 
 import (
 	"bytes"
@@ -11,7 +11,7 @@ import (
 	"testing"
 
 	"github.com/alexeyco/unisender/api"
-	"github.com/alexeyco/unisender/contacts2"
+	"github.com/alexeyco/unisender/contacts"
 	"github.com/alexeyco/unisender/test"
 )
 
@@ -36,7 +36,7 @@ func TestExportContactsRequest_NotifyUrl(t *testing.T) {
 		}, nil
 	})
 
-	_, err := contacts2.ExportContacts(req).
+	_, err := contacts.ExportContacts(req).
 		NotifyUrl(expectedNotifyUrl).
 		Execute()
 
@@ -70,7 +70,7 @@ func TestExportContactsRequest_ListID(t *testing.T) {
 		}, nil
 	})
 
-	_, err := contacts2.ExportContacts(req).
+	_, err := contacts.ExportContacts(req).
 		ListID(expectedListID).
 		Execute()
 
@@ -104,7 +104,7 @@ func TestExportContactsRequest_FieldNames(t *testing.T) {
 		}, nil
 	})
 
-	_, err := contacts2.ExportContacts(req).
+	_, err := contacts.ExportContacts(req).
 		FieldNames(expectedFieldNames...).
 		Execute()
 
@@ -138,7 +138,7 @@ func TestExportContactsRequest_Email(t *testing.T) {
 		}, nil
 	})
 
-	_, err := contacts2.ExportContacts(req).
+	_, err := contacts.ExportContacts(req).
 		Email(expectedEmail).
 		Execute()
 
@@ -172,7 +172,7 @@ func TestExportContactsRequest_Phone(t *testing.T) {
 		}, nil
 	})
 
-	_, err := contacts2.ExportContacts(req).
+	_, err := contacts.ExportContacts(req).
 		Phone(expectedPhone).
 		Execute()
 
@@ -206,7 +206,7 @@ func TestExportContactsRequest_Tag(t *testing.T) {
 		}, nil
 	})
 
-	_, err := contacts2.ExportContacts(req).
+	_, err := contacts.ExportContacts(req).
 		Tag(expectedTag).
 		Execute()
 
@@ -240,7 +240,7 @@ func TestExportContactsRequest_EmailStatusNew(t *testing.T) {
 		}, nil
 	})
 
-	_, err := contacts2.ExportContacts(req).
+	_, err := contacts.ExportContacts(req).
 		EmailStatusNew().
 		Execute()
 
@@ -274,7 +274,7 @@ func TestExportContactsRequest_EmailStatusInvited(t *testing.T) {
 		}, nil
 	})
 
-	_, err := contacts2.ExportContacts(req).
+	_, err := contacts.ExportContacts(req).
 		EmailStatusInvited().
 		Execute()
 
@@ -308,7 +308,7 @@ func TestExportContactsRequest_EmailStatusActive(t *testing.T) {
 		}, nil
 	})
 
-	_, err := contacts2.ExportContacts(req).
+	_, err := contacts.ExportContacts(req).
 		EmailStatusActive().
 		Execute()
 
@@ -342,7 +342,7 @@ func TestExportContactsRequest_EmailStatusInactive(t *testing.T) {
 		}, nil
 	})
 
-	_, err := contacts2.ExportContacts(req).
+	_, err := contacts.ExportContacts(req).
 		EmailStatusInactive().
 		Execute()
 
@@ -376,7 +376,7 @@ func TestExportContactsRequest_EmailStatusUnsubscribed(t *testing.T) {
 		}, nil
 	})
 
-	_, err := contacts2.ExportContacts(req).
+	_, err := contacts.ExportContacts(req).
 		EmailStatusUnsubscribed().
 		Execute()
 
@@ -410,7 +410,7 @@ func TestExportContactsRequest_EmailStatusBlocked(t *testing.T) {
 		}, nil
 	})
 
-	_, err := contacts2.ExportContacts(req).
+	_, err := contacts.ExportContacts(req).
 		EmailStatusBlocked().
 		Execute()
 
@@ -444,7 +444,7 @@ func TestExportContactsRequest_EmailStatusActivationRequested(t *testing.T) {
 		}, nil
 	})
 
-	_, err := contacts2.ExportContacts(req).
+	_, err := contacts.ExportContacts(req).
 		EmailStatusActivationRequested().
 		Execute()
 
@@ -478,7 +478,7 @@ func TestExportContactsRequest_PhoneStatusNew(t *testing.T) {
 		}, nil
 	})
 
-	_, err := contacts2.ExportContacts(req).
+	_, err := contacts.ExportContacts(req).
 		PhoneStatusNew().
 		Execute()
 
@@ -512,7 +512,7 @@ func TestExportContactsRequest_PhoneStatusActive(t *testing.T) {
 		}, nil
 	})
 
-	_, err := contacts2.ExportContacts(req).
+	_, err := contacts.ExportContacts(req).
 		PhoneStatusActive().
 		Execute()
 
@@ -546,7 +546,7 @@ func TestExportContactsRequest_PhoneStatusInactive(t *testing.T) {
 		}, nil
 	})
 
-	_, err := contacts2.ExportContacts(req).
+	_, err := contacts.ExportContacts(req).
 		PhoneStatusInactive().
 		Execute()
 
@@ -580,7 +580,7 @@ func TestExportContactsRequest_PhoneStatusUnsubscribed(t *testing.T) {
 		}, nil
 	})
 
-	_, err := contacts2.ExportContacts(req).
+	_, err := contacts.ExportContacts(req).
 		PhoneStatusUnsubscribed().
 		Execute()
 
@@ -614,7 +614,7 @@ func TestExportContactsRequest_PhoneStatusBlocked(t *testing.T) {
 		}, nil
 	})
 
-	_, err := contacts2.ExportContacts(req).
+	_, err := contacts.ExportContacts(req).
 		PhoneStatusBlocked().
 		Execute()
 
@@ -643,7 +643,7 @@ func TestExportContactsRequest_Execute(t *testing.T) {
 		}, nil
 	})
 
-	givenResult, err := contacts2.ExportContacts(req).
+	givenResult, err := contacts.ExportContacts(req).
 		Execute()
 
 	if err != nil {
@@ -655,8 +655,8 @@ func TestExportContactsRequest_Execute(t *testing.T) {
 	}
 }
 
-func randomExportContactsResult() *contacts2.ExportContactsResult {
-	return &contacts2.ExportContactsResult{
+func randomExportContactsResult() *contacts.ExportContactsResult {
+	return &contacts.ExportContactsResult{
 		TaskUUID: test.RandomString(12, 32),
 		Status:   test.RandomString(12, 32),
 	}

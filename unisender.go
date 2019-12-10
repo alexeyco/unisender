@@ -197,6 +197,13 @@ func (u *UniSender) Exclude(contact string) *contacts.ExcludeRequest {
 	return contacts.Exclude(u.request(), contact)
 }
 
+// ExportContacts returns request, that exports of contact data from UniSender.
+//
+// See https://www.unisender.com/en/support/api/contacts/exportcontacts/
+func (u *UniSender) ExportContacts() *contacts.ExportContactsRequest {
+	return contacts.ExportContacts(u.request())
+}
+
 // CheckEmail returns request to check the delivery status of emails sent using the sendEmail method.
 //
 // To speed up the work of the sendEmail method, delivery statuses are stored for a limited period of time,
@@ -405,11 +412,6 @@ func (u *UniSender) Unsubscribe(contact string) *contacts2.UnsubscribeRequest {
 // ImportContacts imports contacts.
 func (u *UniSender) ImportContacts(collection *contacts2.ImportContactsCollection) *contacts2.ImportContactsRequest {
 	return contacts2.ImportContacts(u.request(), collection)
-}
-
-// ExportContacts export of contact data from UniSender.
-func (u *UniSender) ExportContacts() *contacts2.ExportContactsRequest {
-	return contacts2.ExportContacts(u.request())
 }
 
 // IsContactInList checks whether the contact is in the specified user lists.

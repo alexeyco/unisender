@@ -303,6 +303,22 @@ func ExampleUniSender_Exclude() {
 	}
 }
 
+func ExampleUniSender_ExportContacts() {
+	usndr := unisender.New("your-api-key").
+		SetLanguageEnglish()
+
+	res, err := usndr.ExportContacts().
+		EmailStatusBlocked().
+		NotifyUrl("https://foo.bar/example").
+		Execute()
+
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	log.Println(res)
+}
+
 func ExampleUniSender_CheckEmail() {
 	usndr := unisender.New("your-api-key").
 		SetLanguageEnglish()

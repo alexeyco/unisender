@@ -1,4 +1,4 @@
-package contacts2
+package contacts
 
 import (
 	"strconv"
@@ -151,8 +151,6 @@ func (r *ExportContactsRequest) Execute() (res *ExportContactsResult, err error)
 }
 
 // ExportContacts returns request, that exports of contact data from UniSender.
-//
-// See https://www.unisender.com/en/support/api/contacts/exportcontacts/
 func ExportContacts(request *api.Request) *ExportContactsRequest {
 	return &ExportContactsRequest{
 		request: request,
