@@ -174,6 +174,13 @@ func (u *UniSender) CreateField(name string) *contacts.CreateFieldRequest {
 	return contacts.CreateField(u.request(), name)
 }
 
+// DeleteField returns request to delete a user field.
+//
+// See: https://www.unisender.com/en/support/api/partners/deletefield/
+func (u *UniSender) DeleteField(fieldID int64) *contacts.DeleteFieldRequest {
+	return contacts.DeleteField(u.request(), fieldID)
+}
+
 // CheckEmail returns request to check the delivery status of emails sent using the sendEmail method.
 //
 // To speed up the work of the sendEmail method, delivery statuses are stored for a limited period of time,

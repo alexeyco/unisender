@@ -262,6 +262,19 @@ func ExampleUniSender_CreateField() {
 	log.Println(fieldID)
 }
 
+func ExampleUniSender_DeleteField() {
+	usndr := unisender.New("your-api-key").
+		SetLanguageEnglish()
+
+	var fieldID int64 = 123
+	err := usndr.DeleteField(fieldID).
+		Execute()
+
+	if err != nil {
+		log.Fatalln(err)
+	}
+}
+
 func ExampleUniSender_CheckEmail() {
 	usndr := unisender.New("your-api-key").
 		SetLanguageEnglish()
