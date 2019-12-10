@@ -246,3 +246,18 @@ func ExampleUniSender_GetVisitedLinks() {
 
 	log.Println(res)
 }
+
+func ExampleUniSender_CheckEmail() {
+	usndr := unisender.New("your-api-key").
+		SetLanguageEnglish()
+
+	var emailID int64 = 123
+	res, err := usndr.CheckEmail(emailID).
+		Execute()
+
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	log.Println(res)
+}

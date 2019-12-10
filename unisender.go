@@ -1,14 +1,15 @@
 package unisender
 
 import (
+	"github.com/alexeyco/unisender/contacts"
 	"net/http"
 	"sync"
 
 	"github.com/alexeyco/unisender/api"
 	"github.com/alexeyco/unisender/campaigns"
 	"github.com/alexeyco/unisender/common"
-	"github.com/alexeyco/unisender/contacts"
-	"github.com/alexeyco/unisender/messages"
+	"github.com/alexeyco/unisender/contacts2"
+	"github.com/alexeyco/unisender/messages2"
 )
 
 // LanguageDefault default API response language.
@@ -71,13 +72,6 @@ func (u *UniSender) SetLogger(logger api.Logger) *UniSender {
 	u.logger = logger
 
 	return u
-}
-
-// GetCurrencyRates allows you to get a list of all currencies in the UniSender system.
-//
-// See: https://www.unisender.com/en/support/api/common/getcurrencyrates/
-func (u *UniSender) GetCurrencyRates() *common.GetCurrencyRatesRequest {
-	return common.GetCurrencyRates(u.request())
 }
 
 // CancelCampaign returns request to cancel a scheduled campaign.
@@ -164,95 +158,107 @@ func (u *UniSender) GetVisitedLinks(campaignID int64) *campaigns.GetVisitedLinks
 	return campaigns.GetVisitedLinks(u.request(), campaignID)
 }
 
+// GetCurrencyRates allows you to get a list of all currencies in the UniSender system.
+//
+// See: https://www.unisender.com/en/support/api/common/getcurrencyrates/
+func (u *UniSender) GetCurrencyRates() *common.GetCurrencyRatesRequest {
+	return common.GetCurrencyRates(u.request())
+}
+
+// CheckEmail returns request to check the delivery status of emails sent using the sendEmail method.
+//
+// To speed up the work of the sendEmail method, delivery statuses are stored for a limited period of time,
+// i.e. only for a month.
+//
+// See: https://www.unisender.com/en/support/api/messages/checkemail/
+func (u *UniSender) CheckEmail(emailIDs ...int64) *contacts.CheckEmailRequest {
+	return contacts.CheckEmail(u.request(), emailIDs...)
+}
+
 // CreateList creates a new contact list.
-func (u *UniSender) CreateList(title string) *contacts.CreateListRequest {
-	return contacts.CreateList(u.request(), title)
+func (u *UniSender) CreateList(title string) *contacts2.CreateListRequest {
+	return contacts2.CreateList(u.request(), title)
 }
 
 // GetLists returns all available campaign lists.
-func (u *UniSender) GetLists() *contacts.GetListsRequest {
-	return contacts.GetLists(u.request())
+func (u *UniSender) GetLists() *contacts2.GetListsRequest {
+	return contacts2.GetLists(u.request())
 }
 
 // UpdateList changes campaign list properties.
-func (u *UniSender) UpdateList(listID int64, title string) *contacts.UpdateListRequest {
-	return contacts.UpdateList(u.request(), listID, title)
+func (u *UniSender) UpdateList(listID int64, title string) *contacts2.UpdateListRequest {
+	return contacts2.UpdateList(u.request(), listID, title)
 }
 
 // DeleteList removes a list.
-func (u *UniSender) DeleteList(listID int64) *contacts.DeleteListRequest {
-	return contacts.DeleteList(u.request(), listID)
+func (u *UniSender) DeleteList(listID int64) *contacts2.DeleteListRequest {
+	return contacts2.DeleteList(u.request(), listID)
 }
 
 // GetContact returns information about single contact.
-func (u *UniSender) GetContact(email string) *contacts.GetContactRequest {
-	return contacts.GetContact(u.request(), email)
+func (u *UniSender) GetContact(email string) *contacts2.GetContactRequest {
+	return contacts2.GetContact(u.request(), email)
 }
 
 // Subscribe subscribes the contact email or phone number to one or several lists.
-func (u *UniSender) Subscribe() *contacts.SubscribeRequest {
-	return contacts.Subscribe(u.request())
+func (u *UniSender) Subscribe() *contacts2.SubscribeRequest {
+	return contacts2.Subscribe(u.request())
 }
 
 // Unsubscribe unsubscribes the contact email or phone number from one or several lists.
-func (u *UniSender) Unsubscribe(contact string) *contacts.UnsubscribeRequest {
-	return contacts.Unsubscribe(u.request(), contact)
+func (u *UniSender) Unsubscribe(contact string) *contacts2.UnsubscribeRequest {
+	return contacts2.Unsubscribe(u.request(), contact)
 }
 
 // Exclude excludes the contact’s email or phone number from one or several lists.
-func (u *UniSender) Exclude(contact string) *contacts.ExcludeRequest {
-	return contacts.Exclude(u.request(), contact)
+func (u *UniSender) Exclude(contact string) *contacts2.ExcludeRequest {
+	return contacts2.Exclude(u.request(), contact)
 }
 
 // ImportContacts imports contacts.
-func (u *UniSender) ImportContacts(collection *contacts.ImportContactsCollection) *contacts.ImportContactsRequest {
-	return contacts.ImportContacts(u.request(), collection)
+func (u *UniSender) ImportContacts(collection *contacts2.ImportContactsCollection) *contacts2.ImportContactsRequest {
+	return contacts2.ImportContacts(u.request(), collection)
 }
 
 // ExportContacts export of contact data from UniSender.
-func (u *UniSender) ExportContacts() *contacts.ExportContactsRequest {
-	return contacts.ExportContacts(u.request())
+func (u *UniSender) ExportContacts() *contacts2.ExportContactsRequest {
+	return contacts2.ExportContacts(u.request())
 }
 
 // IsContactInList checks whether the contact is in the specified user lists.
-func (u *UniSender) IsContactInList(email string, listIDs ...int64) *contacts.IsContactInListRequest {
-	return contacts.IsContactInList(u.request(), email, listIDs...)
+func (u *UniSender) IsContactInList(email string, listIDs ...int64) *contacts2.IsContactInListRequest {
+	return contacts2.IsContactInList(u.request(), email, listIDs...)
 }
 
 // GetContactCount returns the contacts list size.
-func (u *UniSender) GetContactCount(listID int64) *contacts.GetContactCountRequest {
-	return contacts.GetContactCount(u.request(), listID)
+func (u *UniSender) GetContactCount(listID int64) *contacts2.GetContactCountRequest {
+	return contacts2.GetContactCount(u.request(), listID)
 }
 
 // GetTotalContactsCount returns the contacts database size by the user login.
-func (u *UniSender) GetTotalContactsCount(login string) *contacts.GetTotalContactsCountRequest {
-	return contacts.GetTotalContactsCount(u.request(), login)
-}
-
-// CheckEmail returns request to check the delivery status of emails sent using.
-func (u *UniSender) CheckEmail(emailIDs ...int64) *messages.CheckEmailRequest {
-	return messages.CheckEmail(u.request(), emailIDs...)
+func (u *UniSender) GetTotalContactsCount(login string) *contacts2.GetTotalContactsCountRequest {
+	return contacts2.GetTotalContactsCount(u.request(), login)
 }
 
 // GetCheckedEmail returns request to check the delivery status of emails sent using.
-func (u *UniSender) GetCheckedEmail(login string) *messages.GetCheckedEmailRequest {
-	return messages.GetCheckedEmail(u.request(), login)
+func (u *UniSender) GetCheckedEmail(login string) *messages2.GetCheckedEmailRequest {
+	return messages2.GetCheckedEmail(u.request(), login)
 }
 
 // ValidateSender returns request that sends a message to the email address with a link to confirm the address
 // as the return address.
-func (u *UniSender) ValidateSender(email string) *messages.ValidateSenderRequest {
-	return messages.ValidateSender(u.request(), email)
+func (u *UniSender) ValidateSender(email string) *messages2.ValidateSenderRequest {
+	return messages2.ValidateSender(u.request(), email)
 }
 
 // GetSenderDomainList returns information about domains.
-func (u *UniSender) GetSenderDomainList(login string) *messages.GetSenderDomainListRequest {
-	return messages.GetSenderDomainList(u.request(), login)
+func (u *UniSender) GetSenderDomainList(login string) *messages2.GetSenderDomainListRequest {
+	return messages2.GetSenderDomainList(u.request(), login)
 }
 
 // SetSenderDomain register the domain in the list.
-func (u *UniSender) SetSenderDomain(login, domain string) *messages.SetSenderDomainRequest {
-	return messages.SetSenderDomain(u.request(), login, domain)
+func (u *UniSender) SetSenderDomain(login, domain string) *messages2.SetSenderDomainRequest {
+	return messages2.SetSenderDomain(u.request(), login, domain)
 }
 
 func (u *UniSender) request() *api.Request {
