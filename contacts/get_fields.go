@@ -2,7 +2,7 @@ package contacts
 
 import "github.com/alexeyco/unisender/api"
 
-// GetFieldsResult user fields list.
+// GetFieldsResult user field.
 type GetFieldsResult struct {
 	ID        int64  `json:"id"`
 	Name      string `json:"name"`

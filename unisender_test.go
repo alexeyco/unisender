@@ -379,6 +379,20 @@ func ExampleUniSender_GetFields() {
 	log.Println(res)
 }
 
+func ExampleUniSender_GetTags() {
+	usndr := unisender.New("your-api-key").
+		SetLanguageEnglish()
+
+	res, err := usndr.GetTags().
+		Execute()
+
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	log.Println(res)
+}
+
 func ExampleUniSender_CheckEmail() {
 	usndr := unisender.New("your-api-key").
 		SetLanguageEnglish()

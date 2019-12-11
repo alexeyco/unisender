@@ -232,6 +232,13 @@ func (u *UniSender) GetFields() *contacts.GetFieldsRequest {
 	return contacts.GetFields(u.request())
 }
 
+// GetFields returns request to get the list of user tags.
+//
+// See: https://www.unisender.com/en/support/api/partners/gettags/
+func (u *UniSender) GetTags() *contacts.GetTagsRequest {
+	return contacts.GetTags(u.request())
+}
+
 // CheckEmail returns request to check the delivery status of emails sent using the sendEmail method.
 //
 // To speed up the work of the sendEmail method, delivery statuses are stored for a limited period of time,
