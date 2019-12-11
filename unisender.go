@@ -9,6 +9,7 @@ import (
 	"github.com/alexeyco/unisender/common"
 	"github.com/alexeyco/unisender/contacts"
 	"github.com/alexeyco/unisender/contacts2"
+	"github.com/alexeyco/unisender/lists"
 	"github.com/alexeyco/unisender/messages"
 	"github.com/alexeyco/unisender/messages2"
 )
@@ -293,6 +294,13 @@ func (u *UniSender) UpdateField(fieldID int64, name string) *contacts.UpdateFiel
 	return contacts.UpdateField(u.request(), fieldID, name)
 }
 
+// CreateList returns request to create a new contact list.
+//
+// See https://www.unisender.com/en/support/api/partners/createlist/
+func (u *UniSender) CreateList(title string) *lists.CreateListRequest {
+	return lists.CreateList(u.request(), title)
+}
+
 // CheckEmail returns request to check the delivery status of emails sent using the sendEmail method.
 //
 // To speed up the work of the sendEmail method, delivery statuses are stored for a limited period of time,
@@ -461,11 +469,6 @@ func (u *UniSender) CheckEmail(emailIDs ...int64) *messages.CheckEmailRequest {
 // See: https://www.unisender.com/en/support/api/partners/check-sms/
 func (u *UniSender) CheckSMS(smsID int64) *messages.CheckSMSRequest {
 	return messages.CheckSMS(u.request(), smsID)
-}
-
-// CreateList creates a new contact list.
-func (u *UniSender) CreateList(title string) *contacts2.CreateListRequest {
-	return contacts2.CreateList(u.request(), title)
 }
 
 // GetLists returns all available campaign lists.

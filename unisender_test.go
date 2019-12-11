@@ -490,6 +490,22 @@ func ExampleUniSender_UpdateField() {
 	log.Println(res)
 }
 
+func ExampleUniSender_CreateList() {
+	usndr := unisender.New("your-api-key").
+		SetLanguageEnglish()
+
+	res, err := usndr.CreateList("My new mailing list").
+		BeforeSubscribeUrl("https://before-subscribe.url").
+		AfterSubscribeUrl("https://after-subscribe.url").
+		Execute()
+
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	log.Println(res)
+}
+
 func ExampleUniSender_CheckEmail() {
 	usndr := unisender.New("your-api-key").
 		SetLanguageEnglish()

@@ -1,9 +1,9 @@
-package contacts2
+package lists
 
 import "github.com/alexeyco/unisender/api"
 
-// CreateListResponse response of createList request.
-type CreateListResponse struct {
+// CreateListResult response of createList request.
+type CreateListResult struct {
 	ID int64 `json:"id"`
 }
 
@@ -36,19 +36,17 @@ func (r *CreateListRequest) AfterSubscribeUrl(u string) *CreateListRequest {
 
 // Execute sends request to UniSender API and returns result.
 func (r *CreateListRequest) Execute() (listID int64, err error) {
-	var res CreateListResponse
-	if err = r.request.Execute("createList", &res); err != nil {
+	var result CreateListResult
+	if err = r.request.Execute("createList", &result); err != nil {
 		return
 	}
 
-	listID = res.ID
+	listID = result.ID
 
 	return
 }
 
 // CreateList returns request to create a new contact list.
-//
-// See https://www.unisender.com/en/support/api/partners/createlist/
 func CreateList(request *api.Request, title string) *CreateListRequest {
 	request.Add("title", title)
 

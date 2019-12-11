@@ -1,4 +1,4 @@
-package contacts2_test
+package lists_test
 
 import (
 	"bytes"
@@ -8,7 +8,7 @@ import (
 	"testing"
 
 	"github.com/alexeyco/unisender/api"
-	"github.com/alexeyco/unisender/contacts2"
+	"github.com/alexeyco/unisender/lists"
 	"github.com/alexeyco/unisender/test"
 )
 
@@ -23,7 +23,7 @@ func TestCreateListRequest_BeforeSubscribeUrl(t *testing.T) {
 		givenBeforeSubscribeUrl = req.FormValue("before_subscribe_url")
 
 		result := api.Response{
-			Result: &contacts2.CreateListResponse{
+			Result: &lists.CreateListResult{
 				ID: expectedListID,
 			},
 		}
@@ -36,7 +36,7 @@ func TestCreateListRequest_BeforeSubscribeUrl(t *testing.T) {
 		}, nil
 	})
 
-	_, err := contacts2.CreateList(req, expectedTitle).
+	_, err := lists.CreateList(req, expectedTitle).
 		BeforeSubscribeUrl(expectedBeforeSubscribeUrl).
 		Execute()
 
@@ -60,7 +60,7 @@ func TestCreateListRequest_AfterSubscribeUrl(t *testing.T) {
 		givenAfterSubscribeUrl = req.FormValue("after_subscribe_url")
 
 		result := api.Response{
-			Result: &contacts2.CreateListResponse{
+			Result: &lists.CreateListResult{
 				ID: expectedListID,
 			},
 		}
@@ -73,7 +73,7 @@ func TestCreateListRequest_AfterSubscribeUrl(t *testing.T) {
 		}, nil
 	})
 
-	_, err := contacts2.CreateList(req, expectedTitle).
+	_, err := lists.CreateList(req, expectedTitle).
 		AfterSubscribeUrl(expectedAfterSubscribeUrl).
 		Execute()
 
@@ -96,7 +96,7 @@ func TestCreateListRequest_Execute(t *testing.T) {
 		givenTitle = req.FormValue("title")
 
 		result := api.Response{
-			Result: &contacts2.CreateListResponse{
+			Result: &lists.CreateListResult{
 				ID: expectedListID,
 			},
 		}
@@ -109,7 +109,7 @@ func TestCreateListRequest_Execute(t *testing.T) {
 		}, nil
 	})
 
-	givenListID, err := contacts2.CreateList(req, expectedTitle).
+	givenListID, err := lists.CreateList(req, expectedTitle).
 		Execute()
 
 	if err != nil {
