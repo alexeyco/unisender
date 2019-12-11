@@ -225,6 +225,13 @@ func (u *UniSender) GetContactFieldValues(email string, fieldIDs ...int64) *cont
 	return contacts.GetContactFieldValues(u.request(), email, fieldIDs...)
 }
 
+// GetFields returns request to get the list of user fields.
+//
+// See: https://www.unisender.com/en/support/api/partners/getfields/
+func (u *UniSender) GetFields() *contacts.GetFieldsRequest {
+	return contacts.GetFields(u.request())
+}
+
 // CheckEmail returns request to check the delivery status of emails sent using the sendEmail method.
 //
 // To speed up the work of the sendEmail method, delivery statuses are stored for a limited period of time,
