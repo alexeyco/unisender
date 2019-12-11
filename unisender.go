@@ -268,6 +268,14 @@ func (u *UniSender) IsContactInList(email string, listIDs ...int64) *contacts.Is
 	return contacts.IsContactInList(u.request(), email, listIDs...)
 }
 
+// Subscribe returns request that adds contacts (email address and/or mobile phone) of a contact to one
+// or several lists, and also allows you to add/change the values ​​of additional fields and labels.
+//
+// See https://www.unisender.com/en/support/api/contacts/subscribe/
+func (u *UniSender) Subscribe() *contacts.SubscribeRequest {
+	return contacts.Subscribe(u.request())
+}
+
 // CheckEmail returns request to check the delivery status of emails sent using the sendEmail method.
 //
 // To speed up the work of the sendEmail method, delivery statuses are stored for a limited period of time,
@@ -456,11 +464,6 @@ func (u *UniSender) UpdateList(listID int64, title string) *contacts2.UpdateList
 // DeleteList removes a list.
 func (u *UniSender) DeleteList(listID int64) *contacts2.DeleteListRequest {
 	return contacts2.DeleteList(u.request(), listID)
-}
-
-// Subscribe subscribes the contact email or phone number to one or several lists.
-func (u *UniSender) Subscribe() *contacts2.SubscribeRequest {
-	return contacts2.Subscribe(u.request())
 }
 
 // Unsubscribe unsubscribes the contact email or phone number from one or several lists.

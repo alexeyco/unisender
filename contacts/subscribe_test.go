@@ -1,4 +1,4 @@
-package contacts2_test
+package contacts_test
 
 import (
 	"bytes"
@@ -12,7 +12,7 @@ import (
 	"testing"
 
 	"github.com/alexeyco/unisender/api"
-	"github.com/alexeyco/unisender/contacts2"
+	"github.com/alexeyco/unisender/contacts"
 	"github.com/alexeyco/unisender/test"
 )
 
@@ -30,7 +30,7 @@ func TestSubscribeRequest_Field(t *testing.T) {
 		givenValue = req.FormValue(fmt.Sprintf("fields[%s]", expectedField))
 
 		result := api.Response{
-			Result: &contacts2.SubscribeResponse{
+			Result: &contacts.SubscribeResult{
 				PersonID: expectedPersonID,
 			},
 		}
@@ -43,7 +43,7 @@ func TestSubscribeRequest_Field(t *testing.T) {
 		}, nil
 	})
 
-	_, err := contacts2.Subscribe(req, expectedListIDs...).
+	_, err := contacts.Subscribe(req, expectedListIDs...).
 		Field(expectedField, expectedValue).
 		Execute()
 
@@ -68,7 +68,7 @@ func TestSubscribeRequest_Email(t *testing.T) {
 		givenContact = req.FormValue("fields[email]")
 
 		result := api.Response{
-			Result: &contacts2.SubscribeResponse{
+			Result: &contacts.SubscribeResult{
 				PersonID: expectedPersonID,
 			},
 		}
@@ -81,7 +81,7 @@ func TestSubscribeRequest_Email(t *testing.T) {
 		}, nil
 	})
 
-	_, err := contacts2.Subscribe(req, expectedListIDs...).
+	_, err := contacts.Subscribe(req, expectedListIDs...).
 		Email(expectedContact).
 		Execute()
 
@@ -106,7 +106,7 @@ func TestSubscribeRequest_Phone(t *testing.T) {
 		givenContact = req.FormValue("fields[phone]")
 
 		result := api.Response{
-			Result: &contacts2.SubscribeResponse{
+			Result: &contacts.SubscribeResult{
 				PersonID: expectedPersonID,
 			},
 		}
@@ -119,7 +119,7 @@ func TestSubscribeRequest_Phone(t *testing.T) {
 		}, nil
 	})
 
-	_, err := contacts2.Subscribe(req, expectedListIDs...).
+	_, err := contacts.Subscribe(req, expectedListIDs...).
 		Phone(expectedContact).
 		Execute()
 
@@ -144,7 +144,7 @@ func TestSubscribeRequest_Tags(t *testing.T) {
 		givenTags = strings.Split(req.FormValue("tags"), ",")
 
 		result := api.Response{
-			Result: &contacts2.SubscribeResponse{
+			Result: &contacts.SubscribeResult{
 				PersonID: expectedPersonID,
 			},
 		}
@@ -157,7 +157,7 @@ func TestSubscribeRequest_Tags(t *testing.T) {
 		}, nil
 	})
 
-	_, err := contacts2.Subscribe(req, expectedListIDs...).
+	_, err := contacts.Subscribe(req, expectedListIDs...).
 		Tags(expectedTags...).
 		Execute()
 
@@ -183,7 +183,7 @@ func TestSubscribeRequest_DoubleOptinUnconfirmed(t *testing.T) {
 		givenDoubleOptin, _ = strconv.Atoi(req.FormValue("double_optin"))
 
 		result := api.Response{
-			Result: &contacts2.SubscribeResponse{
+			Result: &contacts.SubscribeResult{
 				PersonID: expectedPersonID,
 			},
 		}
@@ -196,7 +196,7 @@ func TestSubscribeRequest_DoubleOptinUnconfirmed(t *testing.T) {
 		}, nil
 	})
 
-	_, err := contacts2.Subscribe(req, expectedListIDs...).
+	_, err := contacts.Subscribe(req, expectedListIDs...).
 		Email(expectedContact).
 		DoubleOptinUnconfirmed().
 		Execute()
@@ -223,7 +223,7 @@ func TestSubscribeRequest_DoubleOptinConfirmed(t *testing.T) {
 		givenDoubleOptin, _ = strconv.Atoi(req.FormValue("double_optin"))
 
 		result := api.Response{
-			Result: &contacts2.SubscribeResponse{
+			Result: &contacts.SubscribeResult{
 				PersonID: expectedPersonID,
 			},
 		}
@@ -236,7 +236,7 @@ func TestSubscribeRequest_DoubleOptinConfirmed(t *testing.T) {
 		}, nil
 	})
 
-	_, err := contacts2.Subscribe(req, expectedListIDs...).
+	_, err := contacts.Subscribe(req, expectedListIDs...).
 		Email(expectedContact).
 		DoubleOptinConfirmed().
 		Execute()
@@ -263,7 +263,7 @@ func TestSubscribeRequest_DoubleOptinConfirmedIfActiveOrNew(t *testing.T) {
 		givenDoubleOptin, _ = strconv.Atoi(req.FormValue("double_optin"))
 
 		result := api.Response{
-			Result: &contacts2.SubscribeResponse{
+			Result: &contacts.SubscribeResult{
 				PersonID: expectedPersonID,
 			},
 		}
@@ -276,7 +276,7 @@ func TestSubscribeRequest_DoubleOptinConfirmedIfActiveOrNew(t *testing.T) {
 		}, nil
 	})
 
-	_, err := contacts2.Subscribe(req, expectedListIDs...).
+	_, err := contacts.Subscribe(req, expectedListIDs...).
 		Email(expectedContact).
 		DoubleOptinConfirmedIfActiveOrNew().
 		Execute()
@@ -303,7 +303,7 @@ func TestSubscribeRequest_DoNotOverwrite(t *testing.T) {
 		givenOverwrite, _ = strconv.Atoi(req.FormValue("overwrite"))
 
 		result := api.Response{
-			Result: &contacts2.SubscribeResponse{
+			Result: &contacts.SubscribeResult{
 				PersonID: expectedPersonID,
 			},
 		}
@@ -316,7 +316,7 @@ func TestSubscribeRequest_DoNotOverwrite(t *testing.T) {
 		}, nil
 	})
 
-	_, err := contacts2.Subscribe(req, expectedListIDs...).
+	_, err := contacts.Subscribe(req, expectedListIDs...).
 		Email(expectedContact).
 		DoNotOverwrite().
 		Execute()
@@ -343,7 +343,7 @@ func TestSubscribeRequest_OverwriteAll(t *testing.T) {
 		givenOverwrite, _ = strconv.Atoi(req.FormValue("overwrite"))
 
 		result := api.Response{
-			Result: &contacts2.SubscribeResponse{
+			Result: &contacts.SubscribeResult{
 				PersonID: expectedPersonID,
 			},
 		}
@@ -356,7 +356,7 @@ func TestSubscribeRequest_OverwriteAll(t *testing.T) {
 		}, nil
 	})
 
-	_, err := contacts2.Subscribe(req, expectedListIDs...).
+	_, err := contacts.Subscribe(req, expectedListIDs...).
 		Email(expectedContact).
 		OverwriteAll().
 		Execute()
@@ -383,7 +383,7 @@ func TestSubscribeRequest_OverwritePartially(t *testing.T) {
 		givenOverwrite, _ = strconv.Atoi(req.FormValue("overwrite"))
 
 		result := api.Response{
-			Result: &contacts2.SubscribeResponse{
+			Result: &contacts.SubscribeResult{
 				PersonID: expectedPersonID,
 			},
 		}
@@ -396,7 +396,7 @@ func TestSubscribeRequest_OverwritePartially(t *testing.T) {
 		}, nil
 	})
 
-	_, err := contacts2.Subscribe(req, expectedListIDs...).
+	_, err := contacts.Subscribe(req, expectedListIDs...).
 		Email(expectedContact).
 		OverwritePartially().
 		Execute()
@@ -426,7 +426,7 @@ func TestSubscribeRequest_Execute(t *testing.T) {
 		}
 
 		result := api.Response{
-			Result: &contacts2.SubscribeResponse{
+			Result: &contacts.SubscribeResult{
 				PersonID: expectedPersonID,
 			},
 		}
@@ -439,7 +439,7 @@ func TestSubscribeRequest_Execute(t *testing.T) {
 		}, nil
 	})
 
-	givenPersonID, err := contacts2.Subscribe(req, expectedListIDs...).
+	givenPersonID, err := contacts.Subscribe(req, expectedListIDs...).
 		Email(expectedContact).
 		Execute()
 

@@ -1,4 +1,4 @@
-package contacts2
+package contacts
 
 import (
 	"fmt"
@@ -8,8 +8,8 @@ import (
 	"github.com/alexeyco/unisender/api"
 )
 
-// SubscribeResponse response of subscribe request.
-type SubscribeResponse struct {
+// SubscribeResult response of subscribe request.
+type SubscribeResult struct {
 	PersonID int64 `json:"person_id"`
 }
 
@@ -96,20 +96,18 @@ func (r *SubscribeRequest) OverwritePartially() *SubscribeRequest {
 
 // Execute sends request to UniSender API and returns result.
 func (r *SubscribeRequest) Execute() (personID int64, err error) {
-	var res SubscribeResponse
-	if err = r.request.Execute("subscribe", &res); err != nil {
+	var result SubscribeResult
+	if err = r.request.Execute("subscribe", &result); err != nil {
 		return
 	}
 
-	personID = res.PersonID
+	personID = result.PersonID
 
 	return
 }
 
 // Subscribe returns request that adds contacts (email address and/or mobile phone) of a contact to one
-// or several lists, and also allows you to add/change the values ​​of additional fields and labels.
-//
-// See https://www.unisender.com/en/support/api/contacts/subscribe/
+// or several lists.
 func Subscribe(request *api.Request, listIDs ...int64) *SubscribeRequest {
 	ids := make([]string, len(listIDs))
 	for n, id := range listIDs {
