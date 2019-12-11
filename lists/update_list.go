@@ -1,4 +1,4 @@
-package contacts2
+package lists
 
 import (
 	"strconv"
@@ -39,8 +39,6 @@ func (r *UpdateListRequest) Execute() error {
 }
 
 // UpdateList returns request to change campaign list properties.
-//
-// See https://www.unisender.com/en/support/api/partners/updatelist/
 func UpdateList(request *api.Request, listID int64, title string) *UpdateListRequest {
 	request.Add("list_id", strconv.FormatInt(listID, 10)).
 		Add("title", title)

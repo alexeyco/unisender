@@ -8,7 +8,6 @@ import (
 	"github.com/alexeyco/unisender/campaigns"
 	"github.com/alexeyco/unisender/common"
 	"github.com/alexeyco/unisender/contacts"
-	"github.com/alexeyco/unisender/contacts2"
 	"github.com/alexeyco/unisender/lists"
 	"github.com/alexeyco/unisender/messages"
 	"github.com/alexeyco/unisender/messages2"
@@ -315,6 +314,13 @@ func (u *UniSender) GetLists() *lists.GetListsRequest {
 	return lists.GetLists(u.request())
 }
 
+// UpdateList returns request to change campaign list properties.
+//
+// See https://www.unisender.com/en/support/api/partners/updatelist/
+func (u *UniSender) UpdateList(listID int64, title string) *lists.UpdateListRequest {
+	return lists.UpdateList(u.request(), listID, title)
+}
+
 // CheckEmail returns request to check the delivery status of emails sent using the sendEmail method.
 //
 // To speed up the work of the sendEmail method, delivery statuses are stored for a limited period of time,
@@ -483,11 +489,6 @@ func (u *UniSender) CheckEmail(emailIDs ...int64) *messages.CheckEmailRequest {
 // See: https://www.unisender.com/en/support/api/partners/check-sms/
 func (u *UniSender) CheckSMS(smsID int64) *messages.CheckSMSRequest {
 	return messages.CheckSMS(u.request(), smsID)
-}
-
-// UpdateList changes campaign list properties.
-func (u *UniSender) UpdateList(listID int64, title string) *contacts2.UpdateListRequest {
-	return contacts2.UpdateList(u.request(), listID, title)
 }
 
 // GetCheckedEmail returns request to check the delivery status of emails sent using.

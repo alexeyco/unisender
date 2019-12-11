@@ -1,11 +1,11 @@
-package contacts2_test
+package lists_test
 
 import (
 	"net/http"
 	"strconv"
 	"testing"
 
-	"github.com/alexeyco/unisender/contacts2"
+	"github.com/alexeyco/unisender/lists"
 	"github.com/alexeyco/unisender/test"
 )
 
@@ -24,7 +24,7 @@ func TestUpdateListRequest_BeforeSubscribeUrl(t *testing.T) {
 		}, nil
 	})
 
-	err := contacts2.UpdateList(req, expectedListID, expectedTitle).
+	err := lists.UpdateList(req, expectedListID, expectedTitle).
 		BeforeSubscribeUrl(expectedBeforeSubscribeUrl).
 		Execute()
 
@@ -52,7 +52,7 @@ func TestUpdateListRequest_AfterSubscribeUrl(t *testing.T) {
 		}, nil
 	})
 
-	err := contacts2.UpdateList(req, expectedListID, expectedTitle).
+	err := lists.UpdateList(req, expectedListID, expectedTitle).
 		AfterSubscribeUrl(expectedAfterSubscribeUrl).
 		Execute()
 
@@ -81,7 +81,7 @@ func TestUpdateListRequest_Execute(t *testing.T) {
 		}, nil
 	})
 
-	err := contacts2.UpdateList(req, expectedListID, expectedTitle).Execute()
+	err := lists.UpdateList(req, expectedListID, expectedTitle).Execute()
 
 	if err != nil {
 		t.Fatalf(`Error should be nil, "%s" given`, err.Error())
