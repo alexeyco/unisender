@@ -558,6 +558,13 @@ func (u *UniSender) GetActualMessageVersion(messageID int64) *messages.GetActual
 	return messages.GetActualMessageVersion(u.request(), messageID)
 }
 
+// GetMessage returns request to get information about SMS or email message.
+//
+// See: https://www.unisender.com/en/support/api/partners/getmessage-method/
+func (u *UniSender) GetMessage(messageID int64) *messages.GetMessageRequest {
+	return messages.GetMessage(u.request(), messageID)
+}
+
 // GetCheckedEmail returns request to check the delivery status of emails sent using.
 func (u *UniSender) GetCheckedEmail(login string) *messages2.GetCheckedEmailRequest {
 	return messages2.GetCheckedEmail(u.request(), login)

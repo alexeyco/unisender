@@ -681,3 +681,17 @@ func ExampleUniSender_GetActualMessageVersion() {
 
 	log.Println(res)
 }
+
+func ExampleUniSender_GetMessage() {
+	usndr := unisender.New("your-api-key").
+		SetLanguageEnglish()
+
+	res, err := usndr.GetMessage(123).
+		Execute()
+
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	log.Println(res)
+}
