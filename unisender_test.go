@@ -611,3 +611,20 @@ func ExampleUniSender_CreateEmailMessage() {
 
 	log.Println(res)
 }
+
+func ExampleUniSender_CreateEmailTemplate() {
+	usndr := unisender.New("your-api-key").
+		SetLanguageEnglish()
+
+	res, err := usndr.CreateEmailTemplate("My template title").
+		Subject("Welcome aboard!").
+		Body("<b>Hi!</b>").
+		LangDE().
+		Execute()
+
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	log.Println(res)
+}
