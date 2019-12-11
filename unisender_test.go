@@ -667,3 +667,17 @@ func ExampleUniSender_DeleteTemplate() {
 		log.Fatalln(err)
 	}
 }
+
+func ExampleUniSender_GetActualMessageVersion() {
+	usndr := unisender.New("your-api-key").
+		SetLanguageEnglish()
+
+	res, err := usndr.GetActualMessageVersion(123).
+		Execute()
+
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	log.Println(res)
+}

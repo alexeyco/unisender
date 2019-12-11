@@ -6,14 +6,14 @@ import (
 	"github.com/alexeyco/unisender/api"
 )
 
-// DeleteTemplateRequest request to delete a message.
+// DeleteTemplateRequest request to delete a template.
 type DeleteTemplateRequest struct {
 	request *api.Request
 }
 
 // Execute sends request to UniSender API and returns result.
 func (r *DeleteTemplateRequest) Execute() (err error) {
-	err = r.request.Execute("deleteMessage", nil)
+	err = r.request.Execute("deleteTemplate", nil)
 	return
 }
 

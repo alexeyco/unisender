@@ -539,6 +539,25 @@ func (u *UniSender) DeleteTemplate(messageID int64) *messages.DeleteTemplateRequ
 	return messages.DeleteTemplate(u.request(), messageID)
 }
 
+// GetActualMessageVersion returns request to get actual message version. The version history functionality
+// is implemented in your personal account in UniSender. You can edit a letter you have sent before, or change
+// the mailing list, and in this case a new version of the letter will be created. The version is the message_id
+// that is transferred when the campaign is created with createCampaign method. The current version can be only one.
+// You can specify in the personal account interface which version is considered relevant. When you create campaigns
+// using API, the version history functionality is not supported: when you edit a letter that has not been previously
+// sent within campaigns (updateEmailMessage method), message_id is not changed; when you edit a letter
+// that has been previously sent, the result of calling the updateEmailMessage method will be a letter with a new id.
+//
+// Since users can use both the API integration and the UniSender personal account, there are situations
+// when users create new versions of a letter in the personal account. Since irrelevant versions of the letter
+// cannot be sent, the error will be returned to the user if he tries to use message_id of an irrelevant version
+// of the letter: «error»: «Unable to create campaign. The letter has a new version (12345678)».
+//
+// See: https://www.unisender.com/en/support/api/partners/get-actual-message-version/
+func (u *UniSender) GetActualMessageVersion(messageID int64) *messages.GetActualMessageVersionRequest {
+	return messages.GetActualMessageVersion(u.request(), messageID)
+}
+
 // GetCheckedEmail returns request to check the delivery status of emails sent using.
 func (u *UniSender) GetCheckedEmail(login string) *messages2.GetCheckedEmailRequest {
 	return messages2.GetCheckedEmail(u.request(), login)
