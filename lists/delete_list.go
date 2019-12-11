@@ -1,4 +1,4 @@
-package contacts2
+package lists
 
 import (
 	"strconv"
@@ -17,8 +17,6 @@ func (r *DeleteListRequest) Execute() error {
 }
 
 // DeleteList returns request to delete a list.
-//
-// See https://www.unisender.com/en/support/api/partners/deletelist/
 func DeleteList(request *api.Request, listID int64) *DeleteListRequest {
 	request.Add("list_id", strconv.FormatInt(listID, 10))
 

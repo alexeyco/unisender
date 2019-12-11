@@ -301,6 +301,13 @@ func (u *UniSender) CreateList(title string) *lists.CreateListRequest {
 	return lists.CreateList(u.request(), title)
 }
 
+// DeleteList returns request to delete a list.
+//
+// See https://www.unisender.com/en/support/api/partners/deletelist/
+func (u *UniSender) DeleteList(listID int64) *lists.DeleteListRequest {
+	return lists.DeleteList(u.request(), listID)
+}
+
 // GetLists returns request to get the list of all available campaign lists.
 //
 // See https://www.unisender.com/en/support/api/partners/getlists/
@@ -481,11 +488,6 @@ func (u *UniSender) CheckSMS(smsID int64) *messages.CheckSMSRequest {
 // UpdateList changes campaign list properties.
 func (u *UniSender) UpdateList(listID int64, title string) *contacts2.UpdateListRequest {
 	return contacts2.UpdateList(u.request(), listID, title)
-}
-
-// DeleteList removes a list.
-func (u *UniSender) DeleteList(listID int64) *contacts2.DeleteListRequest {
-	return contacts2.DeleteList(u.request(), listID)
 }
 
 // GetCheckedEmail returns request to check the delivery status of emails sent using.

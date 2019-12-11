@@ -506,6 +506,32 @@ func ExampleUniSender_CreateList() {
 	log.Println(res)
 }
 
+func ExampleUniSender_DeleteList() {
+	usndr := unisender.New("your-api-key").
+		SetLanguageEnglish()
+
+	err := usndr.DeleteList(123).
+		Execute()
+
+	if err != nil {
+		log.Fatalln(err)
+	}
+}
+
+func ExampleUniSender_GetLists() {
+	usndr := unisender.New("your-api-key").
+		SetLanguageEnglish()
+
+	res, err := usndr.GetLists().
+		Execute()
+
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	log.Println(res)
+}
+
 func ExampleUniSender_CheckEmail() {
 	usndr := unisender.New("your-api-key").
 		SetLanguageEnglish()
