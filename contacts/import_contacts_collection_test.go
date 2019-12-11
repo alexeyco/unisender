@@ -1,4 +1,4 @@
-package contacts2_test
+package contacts_test
 
 import (
 	"reflect"
@@ -8,12 +8,12 @@ import (
 	"testing"
 	"time"
 
-	"github.com/alexeyco/unisender/contacts2"
+	"github.com/alexeyco/unisender/contacts"
 	"github.com/alexeyco/unisender/test"
 )
 
 func TestImportContactsContact_Delete(t *testing.T) {
-	collection := contacts2.NewImportContactsCollection()
+	collection := contacts.NewImportContactsCollection()
 	collection.Email(test.RandomString(12, 36)).
 		Delete()
 
@@ -24,7 +24,7 @@ func TestImportContactsContact_SetTags(t *testing.T) {
 	expectedTags := test.RandomStringSlice(12, 36)
 	givenTags := strings.Join(expectedTags, ",")
 
-	collection := contacts2.NewImportContactsCollection()
+	collection := contacts.NewImportContactsCollection()
 	collection.Email(test.RandomString(12, 36)).
 		SetTags(expectedTags...)
 
@@ -32,7 +32,7 @@ func TestImportContactsContact_SetTags(t *testing.T) {
 }
 
 func TestImportContactsContact_SetStatusNew(t *testing.T) {
-	collection := contacts2.NewImportContactsCollection()
+	collection := contacts.NewImportContactsCollection()
 	collection.Email(test.RandomString(12, 36)).
 		SetStatusNew()
 
@@ -40,7 +40,7 @@ func TestImportContactsContact_SetStatusNew(t *testing.T) {
 }
 
 func TestImportContactsContact_SetStatusActive(t *testing.T) {
-	collection := contacts2.NewImportContactsCollection()
+	collection := contacts.NewImportContactsCollection()
 	collection.Email(test.RandomString(12, 36)).
 		SetStatusActive()
 
@@ -48,7 +48,7 @@ func TestImportContactsContact_SetStatusActive(t *testing.T) {
 }
 
 func TestImportContactsContact_SetStatusInactive(t *testing.T) {
-	collection := contacts2.NewImportContactsCollection()
+	collection := contacts.NewImportContactsCollection()
 	collection.Email(test.RandomString(12, 36)).
 		SetStatusInactive()
 
@@ -56,7 +56,7 @@ func TestImportContactsContact_SetStatusInactive(t *testing.T) {
 }
 
 func TestImportContactsContact_SetStatusUnsubscribed(t *testing.T) {
-	collection := contacts2.NewImportContactsCollection()
+	collection := contacts.NewImportContactsCollection()
 	collection.Email(test.RandomString(12, 36)).
 		SetStatusUnsubscribed()
 
@@ -64,7 +64,7 @@ func TestImportContactsContact_SetStatusUnsubscribed(t *testing.T) {
 }
 
 func TestImportContactsContact_SetAvailabilityAvailable(t *testing.T) {
-	collection := contacts2.NewImportContactsCollection()
+	collection := contacts.NewImportContactsCollection()
 	collection.Email(test.RandomString(12, 36)).
 		SetAvailabilityAvailable()
 
@@ -72,7 +72,7 @@ func TestImportContactsContact_SetAvailabilityAvailable(t *testing.T) {
 }
 
 func TestImportContactsContact_SetAvailabilityUnreachable(t *testing.T) {
-	collection := contacts2.NewImportContactsCollection()
+	collection := contacts.NewImportContactsCollection()
 	collection.Email(test.RandomString(12, 36)).
 		SetAvailabilityUnreachable()
 
@@ -80,7 +80,7 @@ func TestImportContactsContact_SetAvailabilityUnreachable(t *testing.T) {
 }
 
 func TestImportContactsContact_SetAvailabilityTempUnreachable(t *testing.T) {
-	collection := contacts2.NewImportContactsCollection()
+	collection := contacts.NewImportContactsCollection()
 	collection.Email(test.RandomString(12, 36)).
 		SetAvailabilityTempUnreachable()
 
@@ -88,7 +88,7 @@ func TestImportContactsContact_SetAvailabilityTempUnreachable(t *testing.T) {
 }
 
 func TestImportContactsContact_SetAvailabilityMailboxFull(t *testing.T) {
-	collection := contacts2.NewImportContactsCollection()
+	collection := contacts.NewImportContactsCollection()
 	collection.Email(test.RandomString(12, 36)).
 		SetAvailabilityMailboxFull()
 
@@ -96,7 +96,7 @@ func TestImportContactsContact_SetAvailabilityMailboxFull(t *testing.T) {
 }
 
 func TestImportContactsContact_SetAvailabilitySpamRejected(t *testing.T) {
-	collection := contacts2.NewImportContactsCollection()
+	collection := contacts.NewImportContactsCollection()
 	collection.Email(test.RandomString(12, 36)).
 		SetAvailabilitySpamRejected()
 
@@ -104,7 +104,7 @@ func TestImportContactsContact_SetAvailabilitySpamRejected(t *testing.T) {
 }
 
 func TestImportContactsContact_SetAvailabilitySpamFolder(t *testing.T) {
-	collection := contacts2.NewImportContactsCollection()
+	collection := contacts.NewImportContactsCollection()
 	collection.Email(test.RandomString(12, 36)).
 		SetAvailabilitySpamFolder()
 
@@ -114,7 +114,7 @@ func TestImportContactsContact_SetAvailabilitySpamFolder(t *testing.T) {
 func TestImportContactsContact_SetAddTime(t *testing.T) {
 	addTime := test.RandomTime(12, 365)
 
-	collection := contacts2.NewImportContactsCollection()
+	collection := contacts.NewImportContactsCollection()
 	collection.Email(test.RandomString(12, 36)).
 		SetAddTime(addTime)
 
@@ -124,7 +124,7 @@ func TestImportContactsContact_SetAddTime(t *testing.T) {
 func TestImportContactsContact_SetConfirmTime(t *testing.T) {
 	confirmedTime := test.RandomTime(12, 365)
 
-	collection := contacts2.NewImportContactsCollection()
+	collection := contacts.NewImportContactsCollection()
 	collection.Email(test.RandomString(12, 36)).
 		SetConfirmTime(confirmedTime)
 
@@ -140,7 +140,7 @@ func TestImportContactsContact_AddListID(t *testing.T) {
 	expectedSubscribeTimes := make([]string, l)
 	var givenSubscribeTimes []string
 
-	collection := contacts2.NewImportContactsCollection()
+	collection := contacts.NewImportContactsCollection()
 	contact := collection.Email(test.RandomString(12, 36))
 
 	for i := 0; i < l; i++ {
@@ -206,7 +206,7 @@ func TestImportContactsContact_SetUnsubscribedListIDs(t *testing.T) {
 		l[n] = strconv.FormatInt(id, 10)
 	}
 
-	collection := contacts2.NewImportContactsCollection()
+	collection := contacts.NewImportContactsCollection()
 	collection.Email(test.RandomString(12, 36)).
 		SetUnsubscribedListIDs(listIDs...)
 
@@ -220,7 +220,7 @@ func TestImportContactsContact_SetExcludedListIDs(t *testing.T) {
 		l[n] = strconv.FormatInt(id, 10)
 	}
 
-	collection := contacts2.NewImportContactsCollection()
+	collection := contacts.NewImportContactsCollection()
 	collection.Email(test.RandomString(12, 36)).
 		SetExcludedListIDs(listIDs...)
 
@@ -231,7 +231,7 @@ func TestImportContactsContact_SetField(t *testing.T) {
 	fieldName := test.RandomString(12, 36)
 	fieldValue := test.RandomString(12, 36)
 
-	collection := contacts2.NewImportContactsCollection()
+	collection := contacts.NewImportContactsCollection()
 	collection.Email(test.RandomString(12, 36)).
 		SetField(fieldName, fieldValue)
 
@@ -240,7 +240,7 @@ func TestImportContactsContact_SetField(t *testing.T) {
 
 func testImportContactsContactField(
 	t *testing.T,
-	collection *contacts2.ImportContactsCollection,
+	collection *contacts.ImportContactsCollection,
 	field, expectedValue string,
 ) {
 	var givenValue string
@@ -272,7 +272,7 @@ func TestImportContactsCollection_Email(t *testing.T) {
 	expectedEmail := test.RandomString(12, 36)
 	var givenEmail string
 
-	collection := contacts2.NewImportContactsCollection()
+	collection := contacts.NewImportContactsCollection()
 	collection.Email(expectedEmail)
 
 	fieldNames := collection.FieldNames()
@@ -302,7 +302,7 @@ func TestImportContactsCollection_Phone(t *testing.T) {
 	expectedPhone := test.RandomString(12, 36)
 	var givenPhone string
 
-	collection := contacts2.NewImportContactsCollection()
+	collection := contacts.NewImportContactsCollection()
 	collection.Phone(expectedPhone)
 
 	fieldNames := collection.FieldNames()
@@ -334,7 +334,7 @@ func TestImportContactsCollection_FieldNames(t *testing.T) {
 	expectedFieldNames := append([]string{"email"}, test.RandomStringSlice(12, 36)...)
 	var givenFieldNames []string
 
-	collection := contacts2.NewImportContactsCollection()
+	collection := contacts.NewImportContactsCollection()
 	contact := collection.Email(expectedEmail)
 
 	for _, fieldName := range expectedFieldNames {

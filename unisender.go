@@ -246,6 +246,21 @@ func (u *UniSender) GetTotalContactsCount(login string) *contacts.GetTotalContac
 	return contacts.GetTotalContactsCount(u.request(), login)
 }
 
+// ImportContacts returns request to bulk import of contacts. It can also be used for periodic synchronization
+// with the contact database stored on your own server (see also the description of the exportContacts method).
+// You can import data of no more than 500 contacts per call. Larger lists must be imported in a few calls.
+//
+// If there are new addresses among the signed e-mail addresses, then by default they receive the status "new".
+//
+// Technical restrictions: the maximum number of user fields is 50. The timeout per call is 30 seconds from the moment
+// the request is completely transmitted to the server. If no response is received after the timeout,
+// then it is recommended to make up to two retries, and if there is no answer again, then contact technical support.
+//
+// See https://www.unisender.com/en/support/api/contacts/importcontacts/
+func (u *UniSender) ImportContacts(collection *contacts.ImportContactsCollection) *contacts.ImportContactsRequest {
+	return contacts.ImportContacts(u.request(), collection)
+}
+
 // CheckEmail returns request to check the delivery status of emails sent using the sendEmail method.
 //
 // To speed up the work of the sendEmail method, delivery statuses are stored for a limited period of time,
@@ -444,11 +459,6 @@ func (u *UniSender) Subscribe() *contacts2.SubscribeRequest {
 // Unsubscribe unsubscribes the contact email or phone number from one or several lists.
 func (u *UniSender) Unsubscribe(contact string) *contacts2.UnsubscribeRequest {
 	return contacts2.Unsubscribe(u.request(), contact)
-}
-
-// ImportContacts imports contacts.
-func (u *UniSender) ImportContacts(collection *contacts2.ImportContactsCollection) *contacts2.ImportContactsRequest {
-	return contacts2.ImportContacts(u.request(), collection)
 }
 
 // IsContactInList checks whether the contact is in the specified user lists.
