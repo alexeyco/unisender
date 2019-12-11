@@ -655,3 +655,15 @@ func ExampleUniSender_DeleteMessage() {
 		log.Fatalln(err)
 	}
 }
+
+func ExampleUniSender_DeleteTemplate() {
+	usndr := unisender.New("your-api-key").
+		SetLanguageEnglish()
+
+	err := usndr.DeleteTemplate(123).
+		Execute()
+
+	if err != nil {
+		log.Fatalln(err)
+	}
+}

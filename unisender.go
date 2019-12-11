@@ -532,6 +532,13 @@ func (u *UniSender) DeleteMessage(messageID int64) *messages.DeleteMessageReques
 	return messages.DeleteMessage(u.request(), messageID)
 }
 
+// DeleteTemplate returns request to delete a template.
+//
+// See: https://www.unisender.com/en/support/api/partners/deletetemplate/
+func (u *UniSender) DeleteTemplate(messageID int64) *messages.DeleteTemplateRequest {
+	return messages.DeleteTemplate(u.request(), messageID)
+}
+
 // GetCheckedEmail returns request to check the delivery status of emails sent using.
 func (u *UniSender) GetCheckedEmail(login string) *messages2.GetCheckedEmailRequest {
 	return messages2.GetCheckedEmail(u.request(), login)
