@@ -462,6 +462,19 @@ func ExampleUniSender_Subscribe() {
 	log.Println(res)
 }
 
+func ExampleUniSender_Unsubscribe() {
+	usndr := unisender.New("your-api-key").
+		SetLanguageEnglish()
+
+	err := usndr.Unsubscribe("foo@bar.example").
+		ContactTypeEmail().
+		Execute()
+
+	if err != nil {
+		log.Fatalln(err)
+	}
+}
+
 func ExampleUniSender_CheckEmail() {
 	usndr := unisender.New("your-api-key").
 		SetLanguageEnglish()

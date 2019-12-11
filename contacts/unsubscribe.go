@@ -1,4 +1,4 @@
-package contacts2
+package contacts
 
 import (
 	"strconv"
@@ -46,11 +46,6 @@ func (r *UnsubscribeRequest) Execute() (err error) {
 }
 
 // Unsubscribe returns request that unsubscribes the contact email or phone number from one or several lists.
-// In contrast to the exclude method, it does not exclude a contact from the lists, but marks the contact
-// as "unsubscribed". It is impossible to restore the «active» status through API – it is only the contact
-// who can do this by clicking on the activation link in the letter.
-//
-// See https://www.unisender.com/en/support/api/partners/unsubscribe/
 func Unsubscribe(request *api.Request, contact string) *UnsubscribeRequest {
 	request.Add("contact", contact)
 

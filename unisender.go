@@ -276,6 +276,16 @@ func (u *UniSender) Subscribe() *contacts.SubscribeRequest {
 	return contacts.Subscribe(u.request())
 }
 
+// Unsubscribe returns request that unsubscribes the contact email or phone number from one or several lists.
+// In contrast to the exclude method, it does not exclude a contact from the lists, but marks the contact
+// as "unsubscribed". It is impossible to restore the «active» status through API – it is only the contact
+// who can do this by clicking on the activation link in the letter.
+//
+// See https://www.unisender.com/en/support/api/partners/unsubscribe/
+func (u *UniSender) Unsubscribe(contact string) *contacts.UnsubscribeRequest {
+	return contacts.Unsubscribe(u.request(), contact)
+}
+
 // CheckEmail returns request to check the delivery status of emails sent using the sendEmail method.
 //
 // To speed up the work of the sendEmail method, delivery statuses are stored for a limited period of time,
@@ -464,11 +474,6 @@ func (u *UniSender) UpdateList(listID int64, title string) *contacts2.UpdateList
 // DeleteList removes a list.
 func (u *UniSender) DeleteList(listID int64) *contacts2.DeleteListRequest {
 	return contacts2.DeleteList(u.request(), listID)
-}
-
-// Unsubscribe unsubscribes the contact email or phone number from one or several lists.
-func (u *UniSender) Unsubscribe(contact string) *contacts2.UnsubscribeRequest {
-	return contacts2.Unsubscribe(u.request(), contact)
 }
 
 // GetCheckedEmail returns request to check the delivery status of emails sent using.

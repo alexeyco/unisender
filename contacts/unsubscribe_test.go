@@ -1,4 +1,4 @@
-package contacts2_test
+package contacts_test
 
 import (
 	"net/http"
@@ -7,7 +7,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/alexeyco/unisender/contacts2"
+	"github.com/alexeyco/unisender/contacts"
 	"github.com/alexeyco/unisender/test"
 )
 
@@ -25,7 +25,7 @@ func TestUnsubscribeRequest_ContactTypeEmail(t *testing.T) {
 		}, nil
 	})
 
-	err := contacts2.Unsubscribe(req, expectedContact).
+	err := contacts.Unsubscribe(req, expectedContact).
 		ContactTypeEmail().
 		Execute()
 
@@ -52,7 +52,7 @@ func TestUnsubscribeRequest_ContactTypePhone(t *testing.T) {
 		}, nil
 	})
 
-	err := contacts2.Unsubscribe(req, expectedContact).
+	err := contacts.Unsubscribe(req, expectedContact).
 		ContactTypePhone().
 		Execute()
 
@@ -83,7 +83,7 @@ func TestUnsubscribeRequest_ListIDs(t *testing.T) {
 		}, nil
 	})
 
-	err := contacts2.Unsubscribe(req, expectedContact).
+	err := contacts.Unsubscribe(req, expectedContact).
 		ListIDs(expectedListIDs...).
 		Execute()
 
@@ -108,7 +108,7 @@ func TestUnsubscribeRequest_Execute(t *testing.T) {
 		}, nil
 	})
 
-	err := contacts2.Unsubscribe(req, expectedContact).
+	err := contacts.Unsubscribe(req, expectedContact).
 		ContactTypeEmail().
 		Execute()
 
