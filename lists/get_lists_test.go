@@ -1,4 +1,4 @@
-package contacts2_test
+package lists_test
 
 import (
 	"bytes"
@@ -9,12 +9,12 @@ import (
 	"testing"
 
 	"github.com/alexeyco/unisender/api"
-	"github.com/alexeyco/unisender/contacts2"
+	"github.com/alexeyco/unisender/lists"
 	"github.com/alexeyco/unisender/test"
 )
 
 func TestGetListsRequest_Execute(t *testing.T) {
-	expectedLists := getRandomListsSlice()
+	expectedLists := randomGetListsResult()
 
 	req := test.NewRequest(func(req *http.Request) (res *http.Response, err error) {
 		result := api.Response{
@@ -29,7 +29,7 @@ func TestGetListsRequest_Execute(t *testing.T) {
 		}, nil
 	})
 
-	givenLists, err := contacts2.GetLists(req).Execute()
+	givenLists, err := lists.GetLists(req).Execute()
 	if err != nil {
 		t.Fatalf(`Error should be nil, "%s" given`, err.Error())
 	}
@@ -43,10 +43,10 @@ func TestGetListsRequest_Execute(t *testing.T) {
 	}
 }
 
-func getRandomListsSlice() (slice []contacts2.List) {
+func randomGetListsResult() (slice []lists.GetListsResult) {
 	l := test.RandomInt(12, 36)
 	for i := 0; i < l; i++ {
-		slice = append(slice, contacts2.List{
+		slice = append(slice, lists.GetListsResult{
 			ID:    test.RandomInt64(9999, 999999),
 			Title: test.RandomString(12, 36),
 		})

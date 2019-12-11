@@ -301,6 +301,13 @@ func (u *UniSender) CreateList(title string) *lists.CreateListRequest {
 	return lists.CreateList(u.request(), title)
 }
 
+// GetLists returns request to get the list of all available campaign lists.
+//
+// See https://www.unisender.com/en/support/api/partners/getlists/
+func (u *UniSender) GetLists() *lists.GetListsRequest {
+	return lists.GetLists(u.request())
+}
+
 // CheckEmail returns request to check the delivery status of emails sent using the sendEmail method.
 //
 // To speed up the work of the sendEmail method, delivery statuses are stored for a limited period of time,
@@ -469,11 +476,6 @@ func (u *UniSender) CheckEmail(emailIDs ...int64) *messages.CheckEmailRequest {
 // See: https://www.unisender.com/en/support/api/partners/check-sms/
 func (u *UniSender) CheckSMS(smsID int64) *messages.CheckSMSRequest {
 	return messages.CheckSMS(u.request(), smsID)
-}
-
-// GetLists returns all available campaign lists.
-func (u *UniSender) GetLists() *contacts2.GetListsRequest {
-	return contacts2.GetLists(u.request())
 }
 
 // UpdateList changes campaign list properties.
