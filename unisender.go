@@ -286,6 +286,13 @@ func (u *UniSender) Unsubscribe(contact string) *contacts.UnsubscribeRequest {
 	return contacts.Unsubscribe(u.request(), contact)
 }
 
+// UpdateField returns request to change user field parameters.
+//
+// See: https://www.unisender.com/en/support/api/partners/updatefield/
+func (u *UniSender) UpdateField(fieldID int64, name string) *contacts.UpdateFieldRequest {
+	return contacts.UpdateField(u.request(), fieldID, name)
+}
+
 // CheckEmail returns request to check the delivery status of emails sent using the sendEmail method.
 //
 // To speed up the work of the sendEmail method, delivery statuses are stored for a limited period of time,

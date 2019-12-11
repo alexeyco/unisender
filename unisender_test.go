@@ -475,6 +475,21 @@ func ExampleUniSender_Unsubscribe() {
 	}
 }
 
+func ExampleUniSender_UpdateField() {
+	usndr := unisender.New("your-api-key").
+		SetLanguageEnglish()
+
+	res, err := usndr.UpdateField(123, "Name").
+		PublicName("PublicName").
+		Execute()
+
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	log.Println(res)
+}
+
 func ExampleUniSender_CheckEmail() {
 	usndr := unisender.New("your-api-key").
 		SetLanguageEnglish()
