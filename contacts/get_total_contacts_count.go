@@ -1,9 +1,9 @@
-package contacts2
+package contacts
 
 import "github.com/alexeyco/unisender/api"
 
-// GetTotalContactsCountResponse response of getTotalContactsCount request.
-type GetTotalContactsCountResponse struct {
+// GetTotalContactsCountResult response of getTotalContactsCount request.
+type GetTotalContactsCountResult struct {
 	Total int64 `json:"total"`
 }
 
@@ -14,19 +14,17 @@ type GetTotalContactsCountRequest struct {
 
 // Execute sends request to UniSender API and returns result.
 func (r *GetTotalContactsCountRequest) Execute() (count int64, err error) {
-	var res GetTotalContactsCountResponse
-	if err = r.request.Execute("getTotalContactsCount", &res); err != nil {
+	var result GetTotalContactsCountResult
+	if err = r.request.Execute("getTotalContactsCount", &result); err != nil {
 		return
 	}
 
-	count = res.Total
+	count = result.Total
 
 	return
 }
 
 // GetTotalContactsCount returns request that counts contacts database size by the user login.
-//
-// See https://www.unisender.com/en/support/api/partners/gettotalcontactscount/
 func GetTotalContactsCount(request *api.Request, login string) *GetTotalContactsCountRequest {
 	request.Add("login", login)
 

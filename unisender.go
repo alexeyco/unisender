@@ -239,6 +239,13 @@ func (u *UniSender) GetTags() *contacts.GetTagsRequest {
 	return contacts.GetTags(u.request())
 }
 
+// GetTotalContactsCount returns request that counts contacts database size by the user login.
+//
+// See: https://www.unisender.com/en/support/api/partners/gettotalcontactscount/
+func (u *UniSender) GetTotalContactsCount(login string) *contacts.GetTotalContactsCountRequest {
+	return contacts.GetTotalContactsCount(u.request(), login)
+}
+
 // CheckEmail returns request to check the delivery status of emails sent using the sendEmail method.
 //
 // To speed up the work of the sendEmail method, delivery statuses are stored for a limited period of time,
@@ -447,11 +454,6 @@ func (u *UniSender) ImportContacts(collection *contacts2.ImportContactsCollectio
 // IsContactInList checks whether the contact is in the specified user lists.
 func (u *UniSender) IsContactInList(email string, listIDs ...int64) *contacts2.IsContactInListRequest {
 	return contacts2.IsContactInList(u.request(), email, listIDs...)
-}
-
-// GetTotalContactsCount returns the contacts database size by the user login.
-func (u *UniSender) GetTotalContactsCount(login string) *contacts2.GetTotalContactsCountRequest {
-	return contacts2.GetTotalContactsCount(u.request(), login)
 }
 
 // GetCheckedEmail returns request to check the delivery status of emails sent using.

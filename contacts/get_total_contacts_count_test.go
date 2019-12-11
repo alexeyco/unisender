@@ -1,4 +1,4 @@
-package contacts2_test
+package contacts_test
 
 import (
 	"bytes"
@@ -8,7 +8,7 @@ import (
 	"testing"
 
 	"github.com/alexeyco/unisender/api"
-	"github.com/alexeyco/unisender/contacts2"
+	"github.com/alexeyco/unisender/contacts"
 	"github.com/alexeyco/unisender/test"
 )
 
@@ -16,13 +16,16 @@ func TestGetTotalContactCountRequest_Execute(t *testing.T) {
 	expectedLogin := test.RandomString(12, 36)
 	var givenLogin string
 
-	expectedResult := randomGetTotalContactsCountResult()
+	expectedResult := test.RandomInt64(9999, 999999)
+	var givenResult int64
 
 	req := test.NewRequest(func(req *http.Request) (res *http.Response, err error) {
 		givenLogin = req.FormValue("login")
 
 		result := api.Response{
-			Result: expectedResult,
+			Result: &contacts.GetTotalContactsCountResult{
+				Total: test.RandomInt64(9999, 999999),
+			},
 		}
 
 		response, _ := json.Marshal(&result)
@@ -33,7 +36,7 @@ func TestGetTotalContactCountRequest_Execute(t *testing.T) {
 		}, nil
 	})
 
-	givenResult, err := contacts2.GetTotalContactsCount(req, expectedLogin).
+	givenResult, err := contacts.GetTotalContactsCount(req, expectedLogin).
 		Execute()
 
 	if err != nil {
@@ -44,13 +47,7 @@ func TestGetTotalContactCountRequest_Execute(t *testing.T) {
 		t.Fatalf(`Login should be "%s", "%s" given`, expectedLogin, givenLogin)
 	}
 
-	if expectedResult.Total != givenResult {
-		t.Fatalf(`Total count should be %d, %d given`, expectedResult.Total, givenResult)
-	}
-}
-
-func randomGetTotalContactsCountResult() *contacts2.GetTotalContactsCountResponse {
-	return &contacts2.GetTotalContactsCountResponse{
-		Total: test.RandomInt64(9999, 999999),
+	if expectedResult != givenResult {
+		t.Fatalf(`Total contacts count should be %d, %d given`, expectedResult, givenResult)
 	}
 }
