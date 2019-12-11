@@ -321,6 +321,15 @@ func (u *UniSender) UpdateList(listID int64, title string) *lists.UpdateListRequ
 	return lists.UpdateList(u.request(), listID, title)
 }
 
+// UpdateOptInEmail updates OptInEmail text. Each campaign list has the attached text of the invitation
+// to subscribe and confirm the email that is sent to the contact to confirm the campaign. If the contact subscribes
+// to several lists at once, a letter with the text of the first list will be sent. The text of the letter
+// can be changed using the updateOptInEmail method. The text must include at least one link with
+// the attribute href=”{{ConfirmUrl}}”.
+func (u *UniSender) UpdateOptInEmail(listID int64) *lists.UpdateOptInEmailRequest {
+	return lists.UpdateOptInEmail(u.request(), listID)
+}
+
 // CheckEmail returns request to check the delivery status of emails sent using the sendEmail method.
 //
 // To speed up the work of the sendEmail method, delivery statuses are stored for a limited period of time,
