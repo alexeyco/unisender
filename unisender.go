@@ -565,6 +565,13 @@ func (u *UniSender) GetMessage(messageID int64) *messages.GetMessageRequest {
 	return messages.GetMessage(u.request(), messageID)
 }
 
+// GetTemplate returns request to get information about the specified template.
+//
+// See: https://www.unisender.com/en/support/api/partners/gettemplate/
+func (u *UniSender) GetTemplate(templateID int64) *messages.GetTemplateRequest {
+	return messages.GetTemplate(u.request(), templateID)
+}
+
 // GetCheckedEmail returns request to check the delivery status of emails sent using.
 func (u *UniSender) GetCheckedEmail(login string) *messages2.GetCheckedEmailRequest {
 	return messages2.GetCheckedEmail(u.request(), login)
