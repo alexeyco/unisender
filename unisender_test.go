@@ -1,6 +1,7 @@
 package unisender_test
 
 import (
+	"github.com/alexeyco/unisender/contacts"
 	"log"
 	"net/http"
 	"testing"
@@ -384,6 +385,58 @@ func ExampleUniSender_GetTags() {
 		SetLanguageEnglish()
 
 	res, err := usndr.GetTags().
+		Execute()
+
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	log.Println(res)
+}
+
+func ExampleUniSender_GetTotalContactsCount() {
+	usndr := unisender.New("your-api-key").
+		SetLanguageEnglish()
+
+	res, err := usndr.GetTotalContactsCount("my-login").
+		Execute()
+
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	log.Println(res)
+}
+
+func ExampleUniSender_ImportContacts() {
+	usndr := unisender.New("your-api-key").
+		SetLanguageEnglish()
+
+	collection := contacts.NewImportContactsCollection()
+	collection.Email("foo1@bar.example").
+		AddListID(1, time.Now()).
+		SetAvailabilityAvailable().
+		SetStatusActive()
+
+	collection.Email("foo2@bar.example").
+		Delete()
+
+	res, err := usndr.ImportContacts(collection).
+		Execute()
+
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	log.Println(res)
+}
+
+func ExampleUniSender_IsContactInList() {
+	usndr := unisender.New("your-api-key").
+		SetLanguageEnglish()
+
+	res, err := usndr.IsContactInList("foo@bar.example", 1, 2, 3).
+		ConditionOr().
 		Execute()
 
 	if err != nil {

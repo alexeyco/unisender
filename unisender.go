@@ -261,6 +261,13 @@ func (u *UniSender) ImportContacts(collection *contacts.ImportContactsCollection
 	return contacts.ImportContacts(u.request(), collection)
 }
 
+// IsContactInList returns request to check whether the contact is in the specified user lists.
+//
+// See https://www.unisender.com/en/support/api/contacts/iscontactinlist/
+func (u *UniSender) IsContactInList(email string, listIDs ...int64) *contacts.IsContactInListRequest {
+	return contacts.IsContactInList(u.request(), email, listIDs...)
+}
+
 // CheckEmail returns request to check the delivery status of emails sent using the sendEmail method.
 //
 // To speed up the work of the sendEmail method, delivery statuses are stored for a limited period of time,
@@ -459,11 +466,6 @@ func (u *UniSender) Subscribe() *contacts2.SubscribeRequest {
 // Unsubscribe unsubscribes the contact email or phone number from one or several lists.
 func (u *UniSender) Unsubscribe(contact string) *contacts2.UnsubscribeRequest {
 	return contacts2.Unsubscribe(u.request(), contact)
-}
-
-// IsContactInList checks whether the contact is in the specified user lists.
-func (u *UniSender) IsContactInList(email string, listIDs ...int64) *contacts2.IsContactInListRequest {
-	return contacts2.IsContactInList(u.request(), email, listIDs...)
 }
 
 // GetCheckedEmail returns request to check the delivery status of emails sent using.

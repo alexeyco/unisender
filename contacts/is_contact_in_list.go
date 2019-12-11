@@ -1,4 +1,4 @@
-package contacts2
+package contacts
 
 import (
 	"strconv"
@@ -31,8 +31,6 @@ func (r *IsContactInListRequest) Execute() (res bool, err error) {
 }
 
 // IsContactInList returns request to check whether the contact is in the specified user lists.
-//
-// See https://www.unisender.com/en/support/api/contacts/iscontactinlist/
 func IsContactInList(request *api.Request, email string, listIDs ...int64) *IsContactInListRequest {
 	ids := make([]string, len(listIDs))
 	for n, id := range listIDs {

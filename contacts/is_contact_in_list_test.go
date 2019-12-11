@@ -1,4 +1,4 @@
-package contacts2_test
+package contacts_test
 
 import (
 	"bytes"
@@ -11,7 +11,7 @@ import (
 	"testing"
 
 	"github.com/alexeyco/unisender/api"
-	"github.com/alexeyco/unisender/contacts2"
+	"github.com/alexeyco/unisender/contacts"
 	"github.com/alexeyco/unisender/test"
 )
 
@@ -37,7 +37,7 @@ func TestIsContactInListRequest_ConditionOr(t *testing.T) {
 		}, nil
 	})
 
-	_, err := contacts2.IsContactInList(req, expectedEmail, expectedListIDs...).
+	_, err := contacts.IsContactInList(req, expectedEmail, expectedListIDs...).
 		ConditionOr().
 		Execute()
 
@@ -72,7 +72,7 @@ func TestIsContactInListRequest_ConditionAnd(t *testing.T) {
 		}, nil
 	})
 
-	_, err := contacts2.IsContactInList(req, expectedEmail, expectedListIDs...).
+	_, err := contacts.IsContactInList(req, expectedEmail, expectedListIDs...).
 		ConditionAnd().
 		Execute()
 
@@ -120,7 +120,7 @@ func TestIsContactInListRequest_Execute(t *testing.T) {
 		}, nil
 	})
 
-	givenResult, err := contacts2.IsContactInList(req, expectedEmail, expectedListIDs...).
+	givenResult, err := contacts.IsContactInList(req, expectedEmail, expectedListIDs...).
 		ConditionAnd().
 		Execute()
 
