@@ -326,6 +326,8 @@ func (u *UniSender) UpdateList(listID int64, title string) *lists.UpdateListRequ
 // to several lists at once, a letter with the text of the first list will be sent. The text of the letter
 // can be changed using the updateOptInEmail method. The text must include at least one link with
 // the attribute href=”{{ConfirmUrl}}”.
+//
+// See https://www.unisender.com/en/support/api/partners/updateoptinemail/
 func (u *UniSender) UpdateOptInEmail(listID int64) *lists.UpdateOptInEmailRequest {
 	return lists.UpdateOptInEmail(u.request(), listID)
 }
@@ -498,6 +500,14 @@ func (u *UniSender) CheckEmail(emailIDs ...int64) *messages.CheckEmailRequest {
 // See: https://www.unisender.com/en/support/api/partners/check-sms/
 func (u *UniSender) CheckSMS(smsID int64) *messages.CheckSMSRequest {
 	return messages.CheckSMS(u.request(), smsID)
+}
+
+// CreateEmailMessage returns request o create an email without sending it.
+// The email is sent using another method — createCampaign.
+//
+// See: https://www.unisender.com/en/support/api/partners/createemailmessage/
+func (u *UniSender) CreateEmailMessage(listID int64) *messages.CreateEmailMessageRequest {
+	return messages.CreateEmailMessage(u.request(), listID)
 }
 
 // GetCheckedEmail returns request to check the delivery status of emails sent using.
