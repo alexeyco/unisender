@@ -643,3 +643,15 @@ func ExampleUniSender_CreateSMSMessage() {
 
 	log.Println(res)
 }
+
+func ExampleUniSender_DeleteMessage() {
+	usndr := unisender.New("your-api-key").
+		SetLanguageEnglish()
+
+	err := usndr.DeleteMessage(123).
+		Execute()
+
+	if err != nil {
+		log.Fatalln(err)
+	}
+}

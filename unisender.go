@@ -525,6 +525,13 @@ func (u *UniSender) CreateSMSMessage(sender string) *messages.CreateSMSMessageRe
 	return messages.CreateSMSMessage(u.request(), sender)
 }
 
+// DeleteMessage returns request to delete a message.
+//
+// See: https://www.unisender.com/en/support/api/partners/deletemessage/
+func (u *UniSender) DeleteMessage(messageID int64) *messages.DeleteMessageRequest {
+	return messages.DeleteMessage(u.request(), messageID)
+}
+
 // GetCheckedEmail returns request to check the delivery status of emails sent using.
 func (u *UniSender) GetCheckedEmail(login string) *messages2.GetCheckedEmailRequest {
 	return messages2.GetCheckedEmail(u.request(), login)
