@@ -3,6 +3,7 @@ package messages
 import (
 	"fmt"
 	"strconv"
+	"strings"
 
 	"github.com/alexeyco/unisender/api"
 )
@@ -178,6 +179,12 @@ func (r *CreateEmailMessageRequest) WrapTypeLeft() *CreateEmailMessageRequest {
 // WrapTypeCenter sets letter text alignment to center.
 func (r *CreateEmailMessageRequest) WrapTypeCenter() *CreateEmailMessageRequest {
 	r.request.Add("wrap_type", "center")
+	return r
+}
+
+// Categories sets message categories.
+func (r *CreateEmailMessageRequest) Categories(categories ...string) *CreateEmailMessageRequest {
+	r.request.Add("categories", strings.Join(categories, ","))
 	return r
 }
 

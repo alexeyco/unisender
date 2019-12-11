@@ -628,3 +628,18 @@ func ExampleUniSender_CreateEmailTemplate() {
 
 	log.Println(res)
 }
+
+func ExampleUniSender_CreateSMSMessage() {
+	usndr := unisender.New("your-api-key").
+		SetLanguageEnglish()
+
+	res, err := usndr.CreateSMSMessage("+1234567").
+		Body("<b>Hi!</b>").
+		Execute()
+
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	log.Println(res)
+}

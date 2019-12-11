@@ -517,6 +517,14 @@ func (u *UniSender) CreateEmailTemplate(title string) *messages.CreateEmailTempl
 	return messages.CreateEmailTemplate(u.request(), title)
 }
 
+// CreateSMSMessage returns request to create an sms without sending it.
+// The sms is sent using another method — createCampaign.
+//
+// See: https://www.unisender.com/en/support/api/messages/createsmsmessage/
+func (u *UniSender) CreateSMSMessage(sender string) *messages.CreateSMSMessageRequest {
+	return messages.CreateSMSMessage(u.request(), sender)
+}
+
 // GetCheckedEmail returns request to check the delivery status of emails sent using.
 func (u *UniSender) GetCheckedEmail(login string) *messages2.GetCheckedEmailRequest {
 	return messages2.GetCheckedEmail(u.request(), login)

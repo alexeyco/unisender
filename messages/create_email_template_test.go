@@ -630,6 +630,6 @@ func TestCreateEmailTemplateRequest_Execute(t *testing.T) {
 	}
 
 	if expectedResult != givenResult {
-		t.Fatalf("Message ID should be %d, %d given", expectedResult, givenResult)
+		t.Fatalf("Template ID should be %d, %d given", expectedResult, givenResult)
 	}
 }
