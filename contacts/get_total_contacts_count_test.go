@@ -24,7 +24,7 @@ func TestGetTotalContactCountRequest_Execute(t *testing.T) {
 
 		result := api.Response{
 			Result: &contacts.GetTotalContactsCountResult{
-				Total: test.RandomInt64(9999, 999999),
+				Total: expectedResult,
 			},
 		}
 
