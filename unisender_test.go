@@ -242,7 +242,7 @@ func ExampleUniSender_GetVisitedLinks() {
 	log.Println(res)
 }
 
-func TestUniSender_GetWebVersion(t *testing.T) {
+func ExampleUniSender_GetWebVersion() {
 	usndr := unisender.New("your-api-key").
 		SetLanguageEnglish()
 
