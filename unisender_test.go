@@ -174,20 +174,16 @@ func ExampleUniSender_CancelCampaign() {
 	usndr := unisender.New("your-api-key").
 		SetLanguageEnglish()
 
-	var campaignID int64 = 123
 	if err := usndr.CancelCampaign(123).Execute(); err != nil {
 		log.Fatalln(err)
 	}
-
-	log.Printf("Campaign (id=%d) cancelled", campaignID)
 }
 
 func ExampleUniSender_CreateCampaign() {
 	usndr := unisender.New("your-api-key").
 		SetLanguageEnglish()
 
-	var messageID int64 = 123
-	res, err := usndr.CreateCampaign(messageID).
+	res, err := usndr.CreateCampaign(123).
 		StartTime(time.Now().Add(3 * time.Hour)).
 		TrackRead().
 		TrackLinks().
@@ -204,8 +200,7 @@ func ExampleUniSender_GetCampaignCommonStats() {
 	usndr := unisender.New("your-api-key").
 		SetLanguageEnglish()
 
-	var campaignID int64 = 123
-	res, err := usndr.GetCampaignCommonStats(campaignID).
+	res, err := usndr.GetCampaignCommonStats(123).
 		Execute()
 
 	if err != nil {
@@ -237,8 +232,21 @@ func ExampleUniSender_GetVisitedLinks() {
 	usndr := unisender.New("your-api-key").
 		SetLanguageEnglish()
 
-	var campaignID int64 = 123
-	res, err := usndr.GetVisitedLinks(campaignID).
+	res, err := usndr.GetVisitedLinks(123).
+		Execute()
+
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	log.Println(res)
+}
+
+func TestUniSender_GetWebVersion(t *testing.T) {
+	usndr := unisender.New("your-api-key").
+		SetLanguageEnglish()
+
+	res, err := usndr.GetWebVersion(123).
 		Execute()
 
 	if err != nil {
@@ -267,8 +275,7 @@ func ExampleUniSender_DeleteField() {
 	usndr := unisender.New("your-api-key").
 		SetLanguageEnglish()
 
-	var fieldID int64 = 123
-	err := usndr.DeleteField(fieldID).
+	err := usndr.DeleteField(123).
 		Execute()
 
 	if err != nil {
@@ -280,8 +287,7 @@ func ExampleUniSender_DeleteTag() {
 	usndr := unisender.New("your-api-key").
 		SetLanguageEnglish()
 
-	var tagID int64 = 123
-	err := usndr.DeleteTag(tagID).
+	err := usndr.DeleteTag(123).
 		Execute()
 
 	if err != nil {

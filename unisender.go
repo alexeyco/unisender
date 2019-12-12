@@ -159,6 +159,16 @@ func (u *UniSender) GetVisitedLinks(campaignID int64) *campaigns.GetVisitedLinks
 	return campaigns.GetVisitedLinks(u.request(), campaignID)
 }
 
+// GetWebVersion returns request to get the link to the web version of the letter.
+//
+// Sometimes it is useful to get a link to the web version of the letter. For example, you made a campaign and want
+// to show how this email looks in a browser, or share it in social media.
+//
+// See: https://www.unisender.com/en/support/api/partners/getwebversion/
+func (u *UniSender) GetWebVersion(campaignID int64) *campaigns.GetWebVersionRequest {
+	return campaigns.GetWebVersion(u.request(), campaignID)
+}
+
 // GetCurrencyRates allows you to get a list of all currencies in the UniSender system.
 //
 // See: https://www.unisender.com/en/support/api/common/getcurrencyrates/
