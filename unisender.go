@@ -629,6 +629,13 @@ func (u *UniSender) UpdateEmailMessage(messageID int64) *messages.UpdateEmailMes
 	return messages.UpdateEmailMessage(u.request(), messageID)
 }
 
+// UpdateEmailTemplate returns request to change existing email template.
+//
+// See: https://www.unisender.com/en/support/api/partners/updateemailtemplate/
+func (u *UniSender) UpdateEmailTemplate(templateID int64) *messages.UpdateEmailTemplateRequest {
+	return messages.UpdateEmailTemplate(u.request(), templateID)
+}
+
 // GetCheckedEmail returns request, that gets an object with confirmed and unconfirmed sender’s addresses.
 // Unconfirmed sender’s address is the address to which the message was sent with a link to confirm the return address,
 // but the confirmation link wasn’t clicked.

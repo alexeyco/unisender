@@ -852,6 +852,22 @@ func ExampleUniSender_UpdateEmailMessage() {
 	}
 }
 
+func ExampleUniSender_UpdateEmailTemplate() {
+	usndr := unisender.New("your-api-key").
+		SetLanguageEnglish()
+
+	err := usndr.UpdateEmailTemplate(123).
+		Title("New template title").
+		Subject("Welcome aboard!").
+		Body("<b>Hi!</b>").
+		LangDE().
+		Execute()
+
+	if err != nil {
+		log.Fatalln(err)
+	}
+}
+
 func ExampleUniSender_GetCheckedEmail() {
 	usndr := unisender.New("your-api-key").
 		SetLanguageEnglish()
