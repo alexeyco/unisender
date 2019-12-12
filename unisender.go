@@ -615,6 +615,13 @@ func (u *UniSender) SendSMS(phone ...string) *messages.SendSMSRequest {
 	return messages.SendSMS(u.request(), phone...)
 }
 
+// SendTestEmail returns request to send a test email message.
+//
+// See: https://www.unisender.com/en/support/api/partners/sendtestemail/
+func (u *UniSender) SendTestEmail(emailID int64) *messages.SendTestEmailRequest {
+	return messages.SendTestEmail(u.request(), emailID)
+}
+
 // GetCheckedEmail returns request to check the delivery status of emails sent using.
 func (u *UniSender) GetCheckedEmail(login string) *messages2.GetCheckedEmailRequest {
 	return messages2.GetCheckedEmail(u.request(), login)

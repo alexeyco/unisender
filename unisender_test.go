@@ -820,3 +820,16 @@ func ExampleUniSender_SendSMS() {
 
 	log.Println(res)
 }
+
+func ExampleUniSender_SendTestEmail() {
+	usndr := unisender.New("your-api-key").
+		SetLanguageEnglish()
+
+	err := usndr.SendTestEmail(123).
+		To("foo@bar.example").
+		Execute()
+
+	if err != nil {
+		log.Fatalln(err)
+	}
+}
