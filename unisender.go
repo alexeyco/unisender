@@ -622,6 +622,13 @@ func (u *UniSender) SendTestEmail(emailID int64) *messages.SendTestEmailRequest 
 	return messages.SendTestEmail(u.request(), emailID)
 }
 
+// UpdateEmailMessage returns request to change existing email message.
+//
+// See: https://www.unisender.com/en/support/api/partners/updateemailmessage/
+func (u *UniSender) UpdateEmailMessage(messageID int64) *messages.UpdateEmailMessageRequest {
+	return messages.UpdateEmailMessage(u.request(), messageID)
+}
+
 // GetCheckedEmail returns request, that gets an object with confirmed and unconfirmed sender’s addresses.
 // Unconfirmed sender’s address is the address to which the message was sent with a link to confirm the return address,
 // but the confirmation link wasn’t clicked.
