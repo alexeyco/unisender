@@ -1,13 +1,13 @@
 package unisender_test
 
 import (
-	"github.com/alexeyco/unisender/contacts"
 	"log"
 	"net/http"
 	"testing"
 	"time"
 
 	"github.com/alexeyco/unisender"
+	"github.com/alexeyco/unisender/contacts"
 	"github.com/alexeyco/unisender/test"
 )
 
@@ -796,6 +796,22 @@ func ExampleUniSender_SendEmail() {
 		Body("<p>Hi there!</p>").
 		LangFR().
 		WrapTypeSkip().
+		Execute()
+
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	log.Println(res)
+}
+
+func ExampleUniSender_SendSMS() {
+	usndr := unisender.New("your-api-key").
+		SetLanguageEnglish()
+
+	res, err := usndr.SendSMS("+1234567890").
+		Sender("+987654321").
+		Text("Hi there!").
 		Execute()
 
 	if err != nil {
