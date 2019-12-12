@@ -1,4 +1,4 @@
-package messages2_test
+package partners_test
 
 import (
 	"bytes"
@@ -9,7 +9,7 @@ import (
 	"testing"
 
 	"github.com/alexeyco/unisender/api"
-	"github.com/alexeyco/unisender/messages2"
+	"github.com/alexeyco/unisender/partners"
 	"github.com/alexeyco/unisender/test"
 )
 
@@ -20,7 +20,7 @@ func TestSetSenderDomainRequest_Execute(t *testing.T) {
 	expectedDomain := test.RandomString(12, 36)
 	var givenDomain string
 
-	expectedResult := &messages2.SetSenderDomainResponse{
+	expectedResult := &partners.SetSenderDomainResult{
 		DKIM: test.RandomString(12, 36),
 	}
 
@@ -40,7 +40,7 @@ func TestSetSenderDomainRequest_Execute(t *testing.T) {
 		}, nil
 	})
 
-	givenResult, err := messages2.SetSenderDomain(req, expectedLogin, expectedDomain).
+	givenResult, err := partners.SetSenderDomain(req, expectedLogin, expectedDomain).
 		Execute()
 
 	if err != nil {

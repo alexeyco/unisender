@@ -833,3 +833,59 @@ func ExampleUniSender_SendTestEmail() {
 		log.Fatalln(err)
 	}
 }
+
+func ExampleUniSender_GetCheckedEmail() {
+	usndr := unisender.New("your-api-key").
+		SetLanguageEnglish()
+
+	res, err := usndr.GetCheckedEmail("my-login").
+		Execute()
+
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	log.Println(res)
+}
+
+func ExampleUniSender_GetSenderDomainList() {
+	usndr := unisender.New("your-api-key").
+		SetLanguageEnglish()
+
+	res, err := usndr.GetSenderDomainList("my-login").
+		Execute()
+
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	log.Println(res)
+}
+
+func ExampleUniSender_SetSenderDomain() {
+	usndr := unisender.New("your-api-key").
+		SetLanguageEnglish()
+
+	res, err := usndr.SetSenderDomain("my-login", "john-doe.com").
+		Execute()
+
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	log.Println(res)
+}
+
+func ExampleUniSender_ValidateSender() {
+	usndr := unisender.New("your-api-key").
+		SetLanguageEnglish()
+
+	res, err := usndr.ValidateSender("foo@bar.example").
+		Execute()
+
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	log.Println(res)
+}

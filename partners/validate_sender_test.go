@@ -1,4 +1,4 @@
-package messages2_test
+package partners_test
 
 import (
 	"bytes"
@@ -8,7 +8,7 @@ import (
 	"testing"
 
 	"github.com/alexeyco/unisender/api"
-	"github.com/alexeyco/unisender/messages2"
+	"github.com/alexeyco/unisender/partners"
 	"github.com/alexeyco/unisender/test"
 )
 
@@ -22,7 +22,7 @@ func TestValidateSenderRequest_Login(t *testing.T) {
 		givenLogin = req.FormValue("login")
 
 		result := api.Response{
-			Result: &messages2.ValidateSenderResponse{
+			Result: &partners.ValidateSenderResult{
 				Message: test.RandomString(12, 36),
 			},
 		}
@@ -35,7 +35,7 @@ func TestValidateSenderRequest_Login(t *testing.T) {
 		}, nil
 	})
 
-	_, err := messages2.ValidateSender(req, expectedEmail).
+	_, err := partners.ValidateSender(req, expectedEmail).
 		Login(expectedLogin).
 		Execute()
 
@@ -59,7 +59,7 @@ func TestValidateSenderRequest_Execute(t *testing.T) {
 		givenEmail = req.FormValue("email")
 
 		result := api.Response{
-			Result: &messages2.ValidateSenderResponse{
+			Result: &partners.ValidateSenderResult{
 				Message: expectedMessage,
 			},
 		}
@@ -72,7 +72,7 @@ func TestValidateSenderRequest_Execute(t *testing.T) {
 		}, nil
 	})
 
-	givenMessage, err := messages2.ValidateSender(req, expectedEmail).
+	givenMessage, err := partners.ValidateSender(req, expectedEmail).
 		Execute()
 
 	if err != nil {

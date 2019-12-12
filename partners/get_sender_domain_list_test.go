@@ -1,4 +1,4 @@
-package messages2_test
+package partners_test
 
 import (
 	"bytes"
@@ -10,7 +10,7 @@ import (
 	"testing"
 
 	"github.com/alexeyco/unisender/api"
-	"github.com/alexeyco/unisender/messages2"
+	"github.com/alexeyco/unisender/partners"
 	"github.com/alexeyco/unisender/test"
 )
 
@@ -20,7 +20,7 @@ func TestGetSenderDomainListRequest_Domain(t *testing.T) {
 	expectedDomain := test.RandomString(12, 36)
 	var givenDomain string
 
-	expectedResult := randomGetSenderDomainListResponse()
+	expectedResult := randomGetSenderDomainListResult()
 
 	req := test.NewRequest(func(req *http.Request) (res *http.Response, err error) {
 		givenDomain = req.FormValue("domain")
@@ -37,7 +37,7 @@ func TestGetSenderDomainListRequest_Domain(t *testing.T) {
 		}, nil
 	})
 
-	_, err := messages2.GetSenderDomainList(req, expectedLogin).
+	_, err := partners.GetSenderDomainList(req, expectedLogin).
 		Domain(expectedDomain).
 		Execute()
 
@@ -56,7 +56,7 @@ func TestGetSenderDomainListRequest_Limit(t *testing.T) {
 	expectedLimit := test.RandomInt(1, 99)
 	var givenLimit int
 
-	expectedResult := randomGetSenderDomainListResponse()
+	expectedResult := randomGetSenderDomainListResult()
 
 	req := test.NewRequest(func(req *http.Request) (res *http.Response, err error) {
 		givenLimit, _ = strconv.Atoi(req.FormValue("limit"))
@@ -73,7 +73,7 @@ func TestGetSenderDomainListRequest_Limit(t *testing.T) {
 		}, nil
 	})
 
-	_, err := messages2.GetSenderDomainList(req, expectedLogin).
+	_, err := partners.GetSenderDomainList(req, expectedLogin).
 		Limit(expectedLimit).
 		Execute()
 
@@ -92,7 +92,7 @@ func TestGetSenderDomainListRequest_Offset(t *testing.T) {
 	expectedOffset := test.RandomInt(1, 99)
 	var givenOffset int
 
-	expectedResult := randomGetSenderDomainListResponse()
+	expectedResult := randomGetSenderDomainListResult()
 
 	req := test.NewRequest(func(req *http.Request) (res *http.Response, err error) {
 		givenOffset, _ = strconv.Atoi(req.FormValue("offset"))
@@ -109,7 +109,7 @@ func TestGetSenderDomainListRequest_Offset(t *testing.T) {
 		}, nil
 	})
 
-	_, err := messages2.GetSenderDomainList(req, expectedLogin).
+	_, err := partners.GetSenderDomainList(req, expectedLogin).
 		Offset(expectedOffset).
 		Execute()
 
@@ -126,7 +126,7 @@ func TestGetSenderDomainListRequest_Execute(t *testing.T) {
 	expectedLogin := test.RandomString(12, 36)
 	var givenLogin string
 
-	expectedResult := randomGetSenderDomainListResponse()
+	expectedResult := randomGetSenderDomainListResult()
 
 	req := test.NewRequest(func(req *http.Request) (res *http.Response, err error) {
 		givenLogin = req.FormValue("username")
@@ -143,7 +143,7 @@ func TestGetSenderDomainListRequest_Execute(t *testing.T) {
 		}, nil
 	})
 
-	givenResult, err := messages2.GetSenderDomainList(req, expectedLogin).
+	givenResult, err := partners.GetSenderDomainList(req, expectedLogin).
 		Execute()
 
 	if err != nil {
@@ -159,10 +159,10 @@ func TestGetSenderDomainListRequest_Execute(t *testing.T) {
 	}
 }
 
-func randomGetSenderDomainListResponse() *messages2.GetSenderDomainListResponse {
-	return &messages2.GetSenderDomainListResponse{
+func randomGetSenderDomainListResult() *partners.GetSenderDomainListResult {
+	return &partners.GetSenderDomainListResult{
 		Status: test.RandomString(12, 36),
-		Domains: []messages2.GetSenderDomainListResponseDomain{
+		Domains: []partners.GetSenderDomainListResultDomain{
 			{
 				Domain: test.RandomString(12, 36),
 				Status: test.RandomString(12, 36),

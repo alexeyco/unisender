@@ -1,4 +1,4 @@
-package messages2
+package partners
 
 import (
 	"strconv"
@@ -6,17 +6,17 @@ import (
 	"github.com/alexeyco/unisender/api"
 )
 
-// GetSenderDomainListResponseDomain domain info.
-type GetSenderDomainListResponseDomain struct {
+// GetSenderDomainListResultDomain domain info.
+type GetSenderDomainListResultDomain struct {
 	Domain string `json:"Domain"`
 	Status string `json:"Status"`
 	Key    string `json:"key"`
 }
 
-// GetSenderDomainListResponse domain list.
-type GetSenderDomainListResponse struct {
-	Status  string                              `json:"status"`
-	Domains []GetSenderDomainListResponseDomain `json:"domains"`
+// GetSenderDomainListResult domain list.
+type GetSenderDomainListResult struct {
+	Status  string                            `json:"status"`
+	Domains []GetSenderDomainListResultDomain `json:"domains"`
 }
 
 // GetSenderDomainListRequest request to get domains information.
@@ -45,20 +45,18 @@ func (r *GetSenderDomainListRequest) Offset(offset int) *GetSenderDomainListRequ
 }
 
 // Execute sends request to UniSender API and returns result.
-func (r *GetSenderDomainListRequest) Execute() (res *GetSenderDomainListResponse, err error) {
-	var response GetSenderDomainListResponse
-	if err = r.request.Execute("getSenderDomainList", &response); err != nil {
+func (r *GetSenderDomainListRequest) Execute() (res *GetSenderDomainListResult, err error) {
+	var result GetSenderDomainListResult
+	if err = r.request.Execute("getSenderDomainList", &result); err != nil {
 		return
 	}
 
-	res = &response
+	res = &result
 
 	return
 }
 
 // GetSenderDomainList returns information about domains.
-//
-// See: https://www.unisender.com/en/support/api/messages/getsenderdomainlist/
 func GetSenderDomainList(request *api.Request, login string) *GetSenderDomainListRequest {
 	request.Add("username", login).
 		Add("format", "json")

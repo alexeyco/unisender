@@ -1,4 +1,4 @@
-package messages2_test
+package partners_test
 
 import (
 	"bytes"
@@ -9,7 +9,7 @@ import (
 	"testing"
 
 	"github.com/alexeyco/unisender/api"
-	"github.com/alexeyco/unisender/messages2"
+	"github.com/alexeyco/unisender/partners"
 	"github.com/alexeyco/unisender/test"
 )
 
@@ -19,7 +19,7 @@ func TestGetCheckedEmailRequest_Email(t *testing.T) {
 	expectedEmail := test.RandomString(12, 36)
 	var givenEmail string
 
-	expectedResult := []messages2.GetCheckedEmailResponse{
+	expectedResult := []partners.GetCheckedEmailResponse{
 		{
 			Email:     test.RandomString(12, 36),
 			Name:      test.RandomString(12, 36),
@@ -42,7 +42,7 @@ func TestGetCheckedEmailRequest_Email(t *testing.T) {
 		}, nil
 	})
 
-	_, err := messages2.GetCheckedEmail(req, expectedLogin).
+	_, err := partners.GetCheckedEmail(req, expectedLogin).
 		Email(expectedEmail).
 		Execute()
 
@@ -59,7 +59,7 @@ func TestGetCheckedEmailRequest_Execute(t *testing.T) {
 	expectedLogin := test.RandomString(12, 36)
 	var givenLogin string
 
-	expectedResult := []messages2.GetCheckedEmailResponse{
+	expectedResult := []partners.GetCheckedEmailResponse{
 		{
 			Email:     test.RandomString(12, 36),
 			Name:      test.RandomString(12, 36),
@@ -82,7 +82,7 @@ func TestGetCheckedEmailRequest_Execute(t *testing.T) {
 		}, nil
 	})
 
-	givenResult, err := messages2.GetCheckedEmail(req, expectedLogin).
+	givenResult, err := partners.GetCheckedEmail(req, expectedLogin).
 		Execute()
 
 	if err != nil {

@@ -1,4 +1,4 @@
-package messages2
+package partners
 
 import "github.com/alexeyco/unisender/api"
 
@@ -28,10 +28,6 @@ func (r *GetCheckedEmailRequest) Execute() (res []GetCheckedEmailResponse, err e
 }
 
 // GetCheckedEmail returns request, that gets an object with confirmed and unconfirmed sender’s addresses.
-// Unconfirmed sender’s address is the address to which the message was sent with a link to confirm the return address,
-// but the confirmation link wasn’t clicked.
-//
-// See: https://www.unisender.com/en/support/api/messages/getcheckedemail/
 func GetCheckedEmail(request *api.Request, login string) *GetCheckedEmailRequest {
 	request.Add("login", login)
 

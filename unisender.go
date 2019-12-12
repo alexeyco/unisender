@@ -1,6 +1,7 @@
 package unisender
 
 import (
+	"github.com/alexeyco/unisender/partners"
 	"net/http"
 	"sync"
 
@@ -10,7 +11,6 @@ import (
 	"github.com/alexeyco/unisender/contacts"
 	"github.com/alexeyco/unisender/lists"
 	"github.com/alexeyco/unisender/messages"
-	"github.com/alexeyco/unisender/messages2"
 )
 
 // LanguageDefault default API response language.
@@ -622,25 +622,36 @@ func (u *UniSender) SendTestEmail(emailID int64) *messages.SendTestEmailRequest 
 	return messages.SendTestEmail(u.request(), emailID)
 }
 
-// GetCheckedEmail returns request to check the delivery status of emails sent using.
-func (u *UniSender) GetCheckedEmail(login string) *messages2.GetCheckedEmailRequest {
-	return messages2.GetCheckedEmail(u.request(), login)
-}
-
-// ValidateSender returns request that sends a message to the email address with a link to confirm the address
-// as the return address.
-func (u *UniSender) ValidateSender(email string) *messages2.ValidateSenderRequest {
-	return messages2.ValidateSender(u.request(), email)
+// GetCheckedEmail returns request, that gets an object with confirmed and unconfirmed sender’s addresses.
+// Unconfirmed sender’s address is the address to which the message was sent with a link to confirm the return address,
+// but the confirmation link wasn’t clicked.
+//
+// See: https://www.unisender.com/en/support/api/messages/getcheckedemail/
+func (u *UniSender) GetCheckedEmail(login string) *partners.GetCheckedEmailRequest {
+	return partners.GetCheckedEmail(u.request(), login)
 }
 
 // GetSenderDomainList returns information about domains.
-func (u *UniSender) GetSenderDomainList(login string) *messages2.GetSenderDomainListRequest {
-	return messages2.GetSenderDomainList(u.request(), login)
+//
+// See: https://www.unisender.com/en/support/api/messages/getsenderdomainlist/
+func (u *UniSender) GetSenderDomainList(login string) *partners.GetSenderDomainListRequest {
+	return partners.GetSenderDomainList(u.request(), login)
 }
 
-// SetSenderDomain register the domain in the list.
-func (u *UniSender) SetSenderDomain(login, domain string) *messages2.SetSenderDomainRequest {
-	return messages2.SetSenderDomain(u.request(), login, domain)
+// SetSenderDomain register the domain in the list for authentication and generate a dkim key for it. Confirm
+// the address on the domain to add the domain to the list.
+//
+// See: https://www.unisender.com/en/support/api/messages/setsenderdomain/
+func (u *UniSender) SetSenderDomain(login, domain string) *partners.SetSenderDomainRequest {
+	return partners.SetSenderDomain(u.request(), login, domain)
+}
+
+// ValidateSender sends a message to the email address with a link to confirm the address as the return address.
+// After clicking on this link, you can send messages on behalf of this email address.
+//
+// See: https://www.unisender.com/en/support/api/messages/validatesender/
+func (u *UniSender) ValidateSender(email string) *partners.ValidateSenderRequest {
+	return partners.ValidateSender(u.request(), email)
 }
 
 func (u *UniSender) request() *api.Request {
