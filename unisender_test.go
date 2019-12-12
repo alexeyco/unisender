@@ -747,3 +747,21 @@ func ExampleUniSender_GetTemplate() {
 
 	log.Println(res)
 }
+
+func ExampleUniSender_ListMessages() {
+	usndr := unisender.New("your-api-key").
+		SetLanguageEnglish()
+
+	res, err := usndr.ListMessages().
+		From(time.Now().Add(-24 * time.Hour)).
+		To(time.Now()).
+		Limit(30).
+		Offset(0).
+		Execute()
+
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	log.Println(res)
+}

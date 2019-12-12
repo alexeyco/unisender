@@ -586,6 +586,13 @@ func (u *UniSender) GetTemplate(templateID int64) *messages.GetTemplateRequest {
 	return messages.GetTemplate(u.request(), templateID)
 }
 
+// GetMessages returns request to get the list of letters, but without body.
+//
+// See: https://www.unisender.com/en/support/api/partners/listmessages/
+func (u *UniSender) ListMessages() *messages.ListMessagesRequest {
+	return messages.ListMessages(u.request())
+}
+
 // GetCheckedEmail returns request to check the delivery status of emails sent using.
 func (u *UniSender) GetCheckedEmail(login string) *messages2.GetCheckedEmailRequest {
 	return messages2.GetCheckedEmail(u.request(), login)
