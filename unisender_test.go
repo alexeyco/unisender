@@ -696,6 +696,24 @@ func ExampleUniSender_GetMessage() {
 	log.Println(res)
 }
 
+func ExampleUniSender_GetMessages() {
+	usndr := unisender.New("your-api-key").
+		SetLanguageEnglish()
+
+	res, err := usndr.GetMessages().
+		From(time.Now().Add(-24 * time.Hour)).
+		To(time.Now()).
+		Limit(30).
+		Offset(0).
+		Execute()
+
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	log.Println(res)
+}
+
 func ExampleUniSender_GetTemplate() {
 	usndr := unisender.New("your-api-key").
 		SetLanguageEnglish()
