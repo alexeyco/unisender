@@ -784,3 +784,23 @@ func ExampleUniSender_ListTemplates() {
 
 	log.Println(res)
 }
+
+func ExampleUniSender_SendEmail() {
+	usndr := unisender.New("your-api-key").
+		SetLanguageEnglish()
+
+	res, err := usndr.SendEmail("foo@bar.example").
+		SenderName("John Doe").
+		SenderEmail("john@doe.example").
+		Subject("Hi there").
+		Body("<p>Hi there!</p>").
+		LangFR().
+		WrapTypeSkip().
+		Execute()
+
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	log.Println(res)
+}

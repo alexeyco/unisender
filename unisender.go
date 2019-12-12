@@ -600,6 +600,14 @@ func (u *UniSender) ListTemplates() *messages.ListTemplatesRequest {
 	return messages.ListTemplates(u.request())
 }
 
+// SendEmail returns request to send a single individual email without personalization and with limited possibilities
+// to obtain statistics.
+//
+// See: https://www.unisender.com/en/support/api/partners/sendemail/
+func (u *UniSender) SendEmail(email string) *messages.SendEmailRequest {
+	return messages.SendEmail(u.request(), email)
+}
+
 // GetCheckedEmail returns request to check the delivery status of emails sent using.
 func (u *UniSender) GetCheckedEmail(login string) *messages2.GetCheckedEmailRequest {
 	return messages2.GetCheckedEmail(u.request(), login)
