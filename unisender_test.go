@@ -682,6 +682,24 @@ func ExampleUniSender_GetActualMessageVersion() {
 	log.Println(res)
 }
 
+func ExampleUniSender_GetMessages() {
+	usndr := unisender.New("your-api-key").
+		SetLanguageEnglish()
+
+	res, err := usndr.GetMessages().
+		From(time.Now().Add(-24 * time.Hour)).
+		To(time.Now()).
+		Limit(30).
+		Offset(0).
+		Execute()
+
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	log.Println(res)
+}
+
 func ExampleUniSender_GetMessage() {
 	usndr := unisender.New("your-api-key").
 		SetLanguageEnglish()
@@ -696,11 +714,12 @@ func ExampleUniSender_GetMessage() {
 	log.Println(res)
 }
 
-func ExampleUniSender_GetMessages() {
+func ExampleUniSender_GetTemplates() {
 	usndr := unisender.New("your-api-key").
 		SetLanguageEnglish()
 
-	res, err := usndr.GetMessages().
+	res, err := usndr.GetTemplates().
+		TypeSystem().
 		From(time.Now().Add(-24 * time.Hour)).
 		To(time.Now()).
 		Limit(30).

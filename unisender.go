@@ -558,6 +558,13 @@ func (u *UniSender) GetActualMessageVersion(messageID int64) *messages.GetActual
 	return messages.GetActualMessageVersion(u.request(), messageID)
 }
 
+// GetMessages returns request to get the list of letters.
+//
+// See: https://www.unisender.com/en/support/api/partners/getmessages/
+func (u *UniSender) GetMessages() *messages.GetMessagesRequest {
+	return messages.GetMessages(u.request())
+}
+
 // GetMessage returns request to get information about SMS or email message.
 //
 // See: https://www.unisender.com/en/support/api/partners/getmessage-method/
@@ -565,11 +572,11 @@ func (u *UniSender) GetMessage(messageID int64) *messages.GetMessageRequest {
 	return messages.GetMessage(u.request(), messageID)
 }
 
-// GetMessages returns request to get the list of letters.
+// GetTemplates returns request to get the list of templates.
 //
-// See: https://www.unisender.com/en/support/api/partners/getmessages/
-func (u *UniSender) GetMessages() *messages.GetMessagesRequest {
-	return messages.GetMessages(u.request())
+// See: https://www.unisender.com/en/support/api/partners/gettemplates/
+func (u *UniSender) GetTemplates() *messages.GetTemplatesRequest {
+	return messages.GetTemplates(u.request())
 }
 
 // GetTemplate returns request to get information about the specified template.
