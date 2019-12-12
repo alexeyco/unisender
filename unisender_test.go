@@ -1,6 +1,7 @@
 package unisender_test
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	"testing"
@@ -153,6 +154,185 @@ func TestUniSender_Format(t *testing.T) {
 
 	if formatExpected != formatRequested {
 		t.Fatalf(`Format should be "%s", "%s" given`, formatExpected, formatRequested)
+	}
+}
+
+type caller func(usndr *unisender.UniSender)
+
+func TestUnisender(t *testing.T) {
+	data := map[string]caller{
+		// Campaigns
+		"cancelCampaign": func(usndr *unisender.UniSender) {
+			_ = usndr.CancelCampaign(0).Execute()
+		},
+		"createCampaign": func(usndr *unisender.UniSender) {
+			_, _ = usndr.CreateCampaign(0).Execute()
+		},
+		"getCampaignCommonStats": func(usndr *unisender.UniSender) {
+			_, _ = usndr.GetCampaignCommonStats(0).Execute()
+		},
+		"getCampaignStatus": func(usndr *unisender.UniSender) {
+			_, _ = usndr.GetCampaignStatus(0).Execute()
+		},
+		"getCampaigns": func(usndr *unisender.UniSender) {
+			_, _ = usndr.GetCampaigns().Execute()
+		},
+		"getVisitedLinks": func(usndr *unisender.UniSender) {
+			_, _ = usndr.GetVisitedLinks(0).Execute()
+		},
+		"getWebVersion": func(usndr *unisender.UniSender) {
+			_, _ = usndr.GetWebVersion(0).Execute()
+		},
+		// Common
+		"getCurrencyRates": func(usndr *unisender.UniSender) {
+			_, _ = usndr.GetCurrencyRates().Execute()
+		},
+		// Contacts
+		"createField": func(usndr *unisender.UniSender) {
+			_, _ = usndr.CreateField("").Execute()
+		},
+		"deleteField": func(usndr *unisender.UniSender) {
+			_ = usndr.DeleteField(0).Execute()
+		},
+		"deleteTag": func(usndr *unisender.UniSender) {
+			_ = usndr.DeleteTag(0).Execute()
+		},
+		"exclude": func(usndr *unisender.UniSender) {
+			_ = usndr.Exclude("").Execute()
+		},
+		"exportContacts": func(usndr *unisender.UniSender) {
+			_, _ = usndr.ExportContacts().Execute()
+		},
+		"getContact": func(usndr *unisender.UniSender) {
+			_, _ = usndr.GetContact("").Execute()
+		},
+		"getContactCount": func(usndr *unisender.UniSender) {
+			_, _ = usndr.GetContactCount(0).Execute()
+		},
+		"getContactFieldValues": func(usndr *unisender.UniSender) {
+			_, _ = usndr.GetContactFieldValues("").Execute()
+		},
+		"getFields": func(usndr *unisender.UniSender) {
+			_, _ = usndr.GetFields().Execute()
+		},
+		"getTags": func(usndr *unisender.UniSender) {
+			_, _ = usndr.GetTags().Execute()
+		},
+		"getTotalContactsCount": func(usndr *unisender.UniSender) {
+			_, _ = usndr.GetTotalContactsCount("").Execute()
+		},
+		"importContacts": func(usndr *unisender.UniSender) {
+			_, _ = usndr.ImportContacts(contacts.NewImportContactsCollection()).Execute()
+		},
+		"isContactInList": func(usndr *unisender.UniSender) {
+			_, _ = usndr.IsContactInList("").Execute()
+		},
+		"subscribe": func(usndr *unisender.UniSender) {
+			_, _ = usndr.Subscribe().Execute()
+		},
+		"unsubscribe": func(usndr *unisender.UniSender) {
+			_ = usndr.Unsubscribe("").Execute()
+		},
+		"updateField": func(usndr *unisender.UniSender) {
+			_, _ = usndr.UpdateField(0, "").Execute()
+		},
+		// Lists
+		"createList": func(usndr *unisender.UniSender) {
+			_, _ = usndr.CreateList("").Execute()
+		},
+		"deleteList": func(usndr *unisender.UniSender) {
+			_ = usndr.DeleteList(0).Execute()
+		},
+		"getLists": func(usndr *unisender.UniSender) {
+			_, _ = usndr.GetLists().Execute()
+		},
+		"updateList": func(usndr *unisender.UniSender) {
+			_ = usndr.UpdateList(0, "").Execute()
+		},
+		"updateOptInEmail": func(usndr *unisender.UniSender) {
+			_ = usndr.UpdateOptInEmail(0).Execute()
+		},
+		// Messages
+		"checkEmail": func(usndr *unisender.UniSender) {
+			_, _ = usndr.CheckEmail().Execute()
+		},
+		"checkSms": func(usndr *unisender.UniSender) {
+			_, _ = usndr.CheckSMS(0).Execute()
+		},
+		"createEmailMessage": func(usndr *unisender.UniSender) {
+			_, _ = usndr.CreateEmailMessage(0).Execute()
+		},
+		"createEmailTemplate": func(usndr *unisender.UniSender) {
+			_, _ = usndr.CreateEmailTemplate("").Execute()
+		},
+		"createSmsMessage": func(usndr *unisender.UniSender) {
+			_, _ = usndr.CreateSMSMessage("").Execute()
+		},
+		"deleteMessage": func(usndr *unisender.UniSender) {
+			_ = usndr.DeleteMessage(0).Execute()
+		},
+		"deleteTemplate": func(usndr *unisender.UniSender) {
+			_ = usndr.DeleteTemplate(0).Execute()
+		},
+		"getActualMessageVersion": func(usndr *unisender.UniSender) {
+			_, _ = usndr.GetActualMessageVersion(0).Execute()
+		},
+		"getMessage": func(usndr *unisender.UniSender) {
+			_, _ = usndr.GetMessage(0).Execute()
+		},
+		"getMessages": func(usndr *unisender.UniSender) {
+			_, _ = usndr.GetMessages().Execute()
+		},
+		"getTemplate": func(usndr *unisender.UniSender) {
+			_, _ = usndr.GetTemplate(0).Execute()
+		},
+		"getTemplates": func(usndr *unisender.UniSender) {
+			_, _ = usndr.GetTemplates().Execute()
+		},
+		"listMessages": func(usndr *unisender.UniSender) {
+			_, _ = usndr.ListMessages().Execute()
+		},
+		"listTemplates": func(usndr *unisender.UniSender) {
+			_, _ = usndr.ListTemplates().Execute()
+		},
+		"sendEmail": func(usndr *unisender.UniSender) {
+			_, _ = usndr.SendEmail("").Execute()
+		},
+		"sendSms": func(usndr *unisender.UniSender) {
+			_, _ = usndr.SendSMS("").Execute()
+		},
+		"sendTestEmail": func(usndr *unisender.UniSender) {
+			_ = usndr.SendTestEmail(0).Execute()
+		},
+		"updateEmailMessage": func(usndr *unisender.UniSender) {
+			_ = usndr.UpdateEmailMessage(0).Execute()
+		},
+		"updateEmailTemplate": func(usndr *unisender.UniSender) {
+			_ = usndr.UpdateEmailTemplate(0).Execute()
+		},
+		// Partners
+	}
+
+	var givenUrl string
+	usndr := unisender.New("nothing").
+		SetLanguageEnglish().
+		SetClient(test.NewClient(func(req *http.Request) (res *http.Response, err error) {
+			givenUrl = req.URL.String()
+
+			res = &http.Response{
+				StatusCode: http.StatusOK,
+			}
+
+			return
+		}))
+
+	for method, fn := range data {
+		expectedUrl := fmt.Sprintf("https://api.unisender.com/en/api/%s", method)
+		fn(usndr)
+
+		if expectedUrl != givenUrl {
+			t.Errorf(`URL should be "%s", "%s" given`, expectedUrl, givenUrl)
+		}
 	}
 }
 

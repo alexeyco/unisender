@@ -66,7 +66,7 @@ func (r *ListTemplatesRequest) Offset(offset int) *ListTemplatesRequest {
 
 // Execute sends request to UniSender API and returns result.
 func (r *ListTemplatesRequest) Execute() (res []ListTemplatesResult, err error) {
-	err = r.request.Execute("getTemplates", &res)
+	err = r.request.Execute("listTemplates", &res)
 	return
 }
 

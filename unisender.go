@@ -194,8 +194,8 @@ func (u *UniSender) DeleteField(fieldID int64) *contacts.DeleteFieldRequest {
 // DeleteTag returns request to delete a user tag.
 //
 // See: https://www.unisender.com/en/support/api/partners/deletetag/
-func (u *UniSender) DeleteTag(fieldID int64) *contacts.DeleteTagRequest {
-	return contacts.DeleteTag(u.request(), fieldID)
+func (u *UniSender) DeleteTag(tagID int64) *contacts.DeleteTagRequest {
+	return contacts.DeleteTag(u.request(), tagID)
 }
 
 // Exclude returns request, that excludes the contact’s email or phone number from one or several lists.
