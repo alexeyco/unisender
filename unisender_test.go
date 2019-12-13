@@ -1054,6 +1054,35 @@ func ExampleUniSender_UpdateEmailTemplate() {
 	}
 }
 
+func ExampleUniSender_ChangeTariff() {
+	usndr := unisender.New("your-api-key").
+		SetLanguageEnglish()
+
+	res, err := usndr.ChangeTariff("my-login", 123).
+		Execute()
+
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	log.Println(res)
+}
+
+func ExampleUniSender_CheckUserExists() {
+	usndr := unisender.New("your-api-key").
+		SetLanguageEnglish()
+
+	res, err := usndr.CheckUserExists().
+		Email("foo@bar.example").
+		Execute()
+
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	log.Println(res)
+}
+
 func ExampleUniSender_GetCheckedEmail() {
 	usndr := unisender.New("your-api-key").
 		SetLanguageEnglish()

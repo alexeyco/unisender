@@ -653,6 +653,14 @@ func (u *UniSender) ChangeTariff(login string, tariffID int64) *partners.ChangeT
 	return partners.ChangeTariff(u.request(), login, tariffID)
 }
 
+// CheckUserExists returns request to check whether the user with the given login and email has been registered. It is intended
+// to be called only by resellers.
+//
+// See: https://www.unisender.com/en/support/api/partners/checkuserexists/
+func (u *UniSender) CheckUserExists() *partners.CheckUserExistsRequest {
+	return partners.CheckUserExists(u.request())
+}
+
 // GetCheckedEmail returns request, that gets an object with confirmed and unconfirmed sender’s addresses.
 // Unconfirmed sender’s address is the address to which the message was sent with a link to confirm the return address,
 // but the confirmation link wasn’t clicked.
