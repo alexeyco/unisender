@@ -1,7 +1,6 @@
 package unisender
 
 import (
-	"github.com/alexeyco/unisender/partners"
 	"net/http"
 	"sync"
 
@@ -11,6 +10,7 @@ import (
 	"github.com/alexeyco/unisender/contacts"
 	"github.com/alexeyco/unisender/lists"
 	"github.com/alexeyco/unisender/messages"
+	"github.com/alexeyco/unisender/partners"
 )
 
 // LanguageDefault default API response language.
@@ -644,6 +644,13 @@ func (u *UniSender) UpdateEmailMessage(messageID int64) *messages.UpdateEmailMes
 // See: https://www.unisender.com/en/support/api/partners/updateemailtemplate/
 func (u *UniSender) UpdateEmailTemplate(templateID int64) *messages.UpdateEmailTemplateRequest {
 	return messages.UpdateEmailTemplate(u.request(), templateID)
+}
+
+// ChangeTariff returns request to change tariff. This method is only possible for accounts that have a reseller status.
+//
+// See: https://www.unisender.com/en/support/api/partners/changetariff/
+func (u *UniSender) ChangeTariff(login string, tariffID int64) *partners.ChangeTariffRequest {
+	return partners.ChangeTariff(u.request(), login, tariffID)
 }
 
 // GetCheckedEmail returns request, that gets an object with confirmed and unconfirmed sender’s addresses.
