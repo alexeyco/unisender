@@ -661,6 +661,13 @@ func (u *UniSender) CheckUserExists() *partners.CheckUserExistsRequest {
 	return partners.CheckUserExists(u.request())
 }
 
+// GetUserInfo
+//
+// See: https://www.unisender.com/en/support/api/partners/getuserinfo/
+func (u *UniSender) GetUserInfo(login string) *partners.GetUserInfoRequest {
+	return partners.GetUserInfo(u.request(), login)
+}
+
 // GetCheckedEmail returns request, that gets an object with confirmed and unconfirmed sender’s addresses.
 // Unconfirmed sender’s address is the address to which the message was sent with a link to confirm the return address,
 // but the confirmation link wasn’t clicked.

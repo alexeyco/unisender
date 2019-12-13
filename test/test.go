@@ -53,6 +53,16 @@ func RandomTime(min, max int) time.Time {
 		UTC()
 }
 
+// RandomAPITime returns random api.Time.
+func RandomAPITime() api.Time {
+	t := time.Now().
+		AddDate(0, 0, -RandomInt(1, 365)).
+		Round(time.Second).
+		UTC()
+
+	return api.Time(t)
+}
+
 const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 
 // RandomString returns random string with random length in given interval.
